@@ -1,0 +1,53 @@
+{
+  "name": "@cityssm/dynamics-gp",
+  "version": "0.1.0",
+  "description": "Read only inquiries into Microsoft Dynamics GP.",
+  "keywords": [
+    "dynamics-gp",
+    "microsoft-dynamics",
+    "mssql",
+    "sql-server"
+  ],
+  "homepage": "https://github.com/cityssm/node-dynamics-gp#readme",
+  "bugs": {
+    "url": "https://github.com/cityssm/node-dynamics-gp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/node-dynamics-gp.git"
+  },
+  "license": "MIT",
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "type": "module",
+  "exports": {
+    ".": "./gp.js",
+    "./gp.js": "./gp.js",
+    "./diamond.js": "./diamond.js"
+  },
+  "scripts": {
+    "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* mocha --timeout 10000",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
+  },
+  "dependencies": {
+    "@cityssm/mssql-multi-pool": "^2.2.0",
+    "debug": "^4.3.4",
+    "mssql": "^9.1.1",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/mocha": "^10.0.1",
+    "@types/mssql": "^8.1.2",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.35.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-unicorn": "^45.0.2"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  }
+}
