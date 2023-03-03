@@ -1,10 +1,11 @@
 {
   "name": "@cityssm/dynamics-gp",
   "version": "0.1.0",
-  "description": "Read only inquiries into Microsoft Dynamics GP.",
+  "description": "Read only inquiries into Microsoft Dynamics GP using a SQL Server connection.",
   "keywords": [
     "dynamics-gp",
     "microsoft-dynamics",
+    "microsoft-dynamics-gp",
     "mssql",
     "sql-server"
   ],

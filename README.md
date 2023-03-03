@@ -5,7 +5,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b850568e64485c966d4a/maintainability)](https://codeclimate.com/github/cityssm/node-dynamics-gp/maintainability)
 [![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/node-dynamics-gp)](https://app.snyk.io/org/cityssm/project/8c481db2-2a7c-45a6-98a7-1a0105af103e)
 
-_Read only inquiries into Microsoft Dynamics GP._
+_Read only inquiries into Microsoft Dynamics GP using a SQL Server connection._
 
 The purpose of this project to make it easy to incorporate on prem Dynamics GP data
 into custom business applications. It connects to the underlying SQL Server directly,
