@@ -31,6 +31,7 @@ _Tested with Microsoft Dynamics GP 2018._
 
 - ✔️ Validating a corresponding receipt number was properly entered.
 - ✔️ Displaying the status of an outstanding invoice in a business application.
+- ✔️ Populating contact fields based on customer information.
 
 ### Not So Good Use Cases
 
