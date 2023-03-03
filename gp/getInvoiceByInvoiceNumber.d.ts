@@ -1,2 +1,2 @@
 import type { GPInvoice } from './types';
-export declare function getInvoiceByInvoiceNumber(documentTypeOrAbbreviationOrName: number | string, invoiceNumber: string): Promise<GPInvoice>;
+export declare function getInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice>;

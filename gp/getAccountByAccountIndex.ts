@@ -64,4 +64,8 @@ export async function getAccountByAccountIndex(
   return account
 }
 
+export function clearAccountCache() {
+  accountCache.flushAll()
+}
+
 export default getAccountByAccountIndex

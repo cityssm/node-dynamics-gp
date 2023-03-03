@@ -60,4 +60,8 @@ export async function getCustomerByCustomerNumber(
   return customer
 }
 
+export function clearCustomerCache() {
+  customerCache.flushAll()
+}
+
 export default getCustomerByCustomerNumber

@@ -20,10 +20,38 @@ describe('dynamics-gp', () => {
         assert.ok(customer);
         assert.strictEqual(config.customerNumber, customer.customerNumber);
     });
+    it('Retrieves Invoice Document Types', async () => {
+        gp.setMSSQLConfig(config.mssqlConfig);
+        const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
+        assert.ok(invoiceDocumentTypes);
+        assert.ok(invoiceDocumentTypes.length > 0);
+    });
     it('Retrieves an Invoice', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceDocumentType, config.invoiceNumber);
+        const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
         assert.ok(invoice);
         assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
+    });
+    it('Retrieves an Invoice without a Type', async () => {
+        gp.setMSSQLConfig(config.mssqlConfig);
+        const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+        assert.ok(invoice);
+        assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
+    });
+    it('Retrieves an Item', async () => {
+        gp.setMSSQLConfig(config.mssqlConfig);
+        const item = await gp.getItemByItemNumber(config.itemNumber);
+        assert.ok(item);
+        assert.strictEqual(config.itemNumber, item.itemNumber);
+    });
+    it('Retrieves a Vendor', async () => {
+        gp.setMSSQLConfig(config.mssqlConfig);
+        const vendor = await gp.getVendorByVendorId(config.vendorId);
+        assert.ok(vendor);
+        assert.strictEqual(config.vendorId, vendor.vendorId);
+    });
+    it('Clears caches without error', () => {
+        gp.clearCaches();
+        assert.ok(1);
     });
 });

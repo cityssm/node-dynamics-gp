@@ -50,4 +50,7 @@ export async function getAccountByAccountIndex(accountIndex) {
     debug(account);
     return account;
 }
+export function clearAccountCache() {
+    accountCache.flushAll();
+}
 export default getAccountByAccountIndex;

@@ -48,4 +48,7 @@ export async function getCustomerByCustomerNumber(customerNumber) {
     debug(customer);
     return customer;
 }
+export function clearCustomerCache() {
+    customerCache.flushAll();
+}
 export default getCustomerByCustomerNumber;
