@@ -10,5 +10,7 @@ test
 .eslintrc.json
 .gitignore
 .npmignore
+.prettierignore
+.prettierrc.json
 .snyk
 tsconfig.json
