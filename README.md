@@ -40,7 +40,8 @@ _Tested with Microsoft Dynamics GP 2018._
 - ❌ Reporting on all of the inventory items at a specific location.
   _Use a SmartList instead._
 
-- ❌ Modifying Dynamics GP data. _Use Dynamics GP._
+- ❌ Modifying Dynamics GP data.
+  _Use Dynamics GP._
 
 ## Installation
 
