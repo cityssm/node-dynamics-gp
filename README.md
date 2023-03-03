@@ -1,10 +1,17 @@
 # Node Dynamics GP
 
+[![npm (scoped)](https://img.shields.io/npm/v/@cityssm/dynamics-gp)](https://www.npmjs.com/package/@cityssm/dynamics-gp)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fecbabce22b24576b5eafc6716796a2b)](https://www.codacy.com/gh/cityssm/node-dynamics-gp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cityssm/node-dynamics-gp&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b850568e64485c966d4a/maintainability)](https://codeclimate.com/github/cityssm/node-dynamics-gp/maintainability)
+[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/node-dynamics-gp)](https://app.snyk.io/org/cityssm/project/8c481db2-2a7c-45a6-98a7-1a0105af103e)
+
 _Read only inquiries into Microsoft Dynamics GP._
 
-The purpose of this project to make it easy to incorporate Dynamics GP data
+The purpose of this project to make it easy to incorporate on prem Dynamics GP data
 into custom business applications. It connects to the underlying SQL Server directly,
 and returns data in easy-to-use Javascript objects.
+
+_Tested with Microsoft Dynamics GP 2018._
 
 ## Features
 
@@ -20,12 +27,12 @@ and returns data in easy-to-use Javascript objects.
   - `PHNUMBR2` becomes `phoneNumber2`
   - `PHONE3` becomes `phoneNumber3`
 
-## Good Use Cases
+### Good Use Cases
 
 - ✔️ Validating a corresponding receipt number was properly entered.
 - ✔️ Displaying the status of an outstanding invoice in a business application.
 
-## Not So Good Use Cases
+### Not So Good Use Cases
 
 - ❌ Reporting on all of the inventory items at a specific location.
   _Use a SmartList instead._
@@ -66,3 +73,10 @@ diamond.setMSSQLConfig(mssqlConfig)
 
 const cashReceipt = await diamond.getCashReceiptByDocumentNumber('123456')
 ```
+
+## Contributions
+
+Is a field you need missing? An entire table?
+[Create an issue](https://github.com/cityssm/node-dynamics-gp/issues) with your request,
+or better yet, [submit a pull request](https://github.com/cityssm/node-dynamics-gp/pulls)
+implementing the feature you need!
