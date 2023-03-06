@@ -15,14 +15,13 @@ _Tested with Microsoft Dynamics GP 2018._
 
 ## Features
 
-- TypeScript types. Easy to get started.
+- **TypeScript types.** Easy to get started.
 
-- Temporary caching of lookup table data, like accounts, customers, and items
-  to reduce database hits and function return times.
+- **Temporary caching** to reduce database hits and function return times.
 
-- All whitespace trimmed from the end of the `char` data. Strings are ready to use!
+- **All whitespace trimmed** from the end of the `char` data. Strings are ready to use!
 
-- Consistent and clear field names. For example:
+- **Consistent and clear field names.** For example:
   - `PRIMVNDR` becomes `primaryVendorId`
   - `PHNUMBR2` becomes `phoneNumber2`
   - `PHONE3` becomes `phoneNumber3`
