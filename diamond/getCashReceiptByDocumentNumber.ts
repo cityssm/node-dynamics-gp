@@ -14,6 +14,11 @@ const receiptCache = new NodeCache({ stdTTL: documentCacheTTL })
 export async function getCashReceiptByDocumentNumber(
   documentNumber: number | string
 ): Promise<DiamondCashReceipt> {
+
+  if (typeof documentNumber === 'string' && Number.isNaN(Number.parseFloat(documentNumber))) {
+    return undefined
+  }
+
   let receipt: DiamondCashReceipt = receiptCache.get(documentNumber)
 
   if (receipt === undefined) {

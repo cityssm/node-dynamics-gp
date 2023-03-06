@@ -7,6 +7,9 @@ import NodeCache from 'node-cache';
 const receiptCache = new NodeCache({ stdTTL: documentCacheTTL });
 export async function getCashReceiptByDocumentNumber(documentNumber) {
     var _a, _b;
+    if (typeof documentNumber === 'string' && Number.isNaN(Number.parseFloat(documentNumber))) {
+        return undefined;
+    }
     let receipt = receiptCache.get(documentNumber);
     if (receipt === undefined) {
         try {
