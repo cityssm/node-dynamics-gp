@@ -1,4 +1,4 @@
-import { _mssqlConfig } from '../config.js'
+import { _mssqlConfig, cacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
 
 import type { GPInvoiceDocumentType } from './types'
@@ -6,27 +6,47 @@ import type { GPInvoiceDocumentType } from './types'
 import Debug from 'debug'
 const debug = Debug('dynamics-gp:gp:getInvoiceDocumentTypes')
 
+let documentTypesCache: GPInvoiceDocumentType[]
+let documentTypesCacheExpiryMillis = 0
+
 export async function getInvoiceDocumentTypes(): Promise<
   GPInvoiceDocumentType[]
 > {
-  let invoiceDocumentTypes: GPInvoiceDocumentType[]
+  let invoiceDocumentTypes: GPInvoiceDocumentType[] = documentTypesCache
 
-  try {
-    const pool = await sqlPool.connect(_mssqlConfig)
+  if (
+    invoiceDocumentTypes === undefined ||
+    documentTypesCacheExpiryMillis < Date.now()
+  ) {
+    try {
+      const pool = await sqlPool.connect(_mssqlConfig)
 
-    const result = await pool.request()
-      .query(`SELECT [DOCTYPE] as invoiceDocumentType,
+      const result = await pool.request()
+        .query(`SELECT [DOCTYPE] as invoiceDocumentType,
         rtrim([DOCTYABR]) as documentTypeAbbreviation,
         rtrim([DOCTYNAM]) as documentTypeName
         FROM [IVC40101]
         order by DEX_ROW_ID`)
 
-    invoiceDocumentTypes = result.recordset
-  } catch (error) {
-    debug(error)
+      invoiceDocumentTypes = result.recordset
+
+      documentTypesCache = invoiceDocumentTypes
+      documentTypesCacheExpiryMillis = Date.now() + cacheTTL * 1000
+    } catch (error) {
+      debug(error)
+    }
+  } else {
+    debug('Cache hit')
   }
 
   debug(invoiceDocumentTypes)
 
   return invoiceDocumentTypes
 }
+
+export function clearInvoiceDocumentTypesCache() {
+  documentTypesCache = undefined
+  documentTypesCacheExpiryMillis = 0
+}
+
+export default getInvoiceDocumentTypes

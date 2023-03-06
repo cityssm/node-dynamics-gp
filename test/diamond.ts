@@ -9,14 +9,26 @@ describe('dynamics-gp/diamond', () => {
   after(() => {
     sqlPool.releaseAll()
   })
+
   it('Retrieves a Cash Receipt', async () => {
     diamond.setMSSQLConfig(mssqlConfig)
 
-    const cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+    // Do twice to test cache retrieval
+
+    let cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+      cashReceiptDocumentNumber
+    )
+
+    cashReceipt = await diamond.getCashReceiptByDocumentNumber(
       cashReceiptDocumentNumber
     )
 
     assert.ok(cashReceipt)
     assert.strictEqual(cashReceiptDocumentNumber, cashReceipt.documentNumber)
+  })
+
+  it('Clears caches without error', () => {
+    diamond.clearCaches()
+    assert.ok(1)
   })
 })

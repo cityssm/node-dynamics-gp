@@ -11,12 +11,14 @@ export { getVendorByVendorId } from './gp/getVendorByVendorId.js'
 
 import { clearAccountCache } from './gp/getAccountByAccountIndex.js'
 import { clearCustomerCache } from './gp/getCustomerByCustomerNumber.js'
+import { clearInvoiceDocumentTypesCache } from './gp/getInvoiceDocumentTypes.js'
 import { clearItemCache } from './gp/getItemByItemNumber.js'
 import { clearVendorCache } from './gp/getVendorByVendorId.js'
 
 export function clearCaches() {
   clearAccountCache()
   clearCustomerCache()
+  clearInvoiceDocumentTypesCache()
   clearItemCache()
   clearVendorCache()
 }

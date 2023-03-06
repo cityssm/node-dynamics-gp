@@ -8,8 +8,13 @@ describe('dynamics-gp/diamond', () => {
     });
     it('Retrieves a Cash Receipt', async () => {
         diamond.setMSSQLConfig(mssqlConfig);
-        const cashReceipt = await diamond.getCashReceiptByDocumentNumber(cashReceiptDocumentNumber);
+        let cashReceipt = await diamond.getCashReceiptByDocumentNumber(cashReceiptDocumentNumber);
+        cashReceipt = await diamond.getCashReceiptByDocumentNumber(cashReceiptDocumentNumber);
         assert.ok(cashReceipt);
         assert.strictEqual(cashReceiptDocumentNumber, cashReceipt.documentNumber);
+    });
+    it('Clears caches without error', () => {
+        diamond.clearCaches();
+        assert.ok(1);
     });
 });

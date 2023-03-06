@@ -14,7 +14,6 @@ describe('dynamics-gp', () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
     // Do twice to test cache retrival
-
     let account = await gp.getAccountByAccountIndex(config.accountIndex)
     account = await gp.getAccountByAccountIndex(config.accountIndex)
 
@@ -26,7 +25,6 @@ describe('dynamics-gp', () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
     // Do twice to test cache retrival
-
     let customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
     customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
 
@@ -37,7 +35,9 @@ describe('dynamics-gp', () => {
   it('Retrieves Invoice Document Types', async () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
-    const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
+    // Do twice to test cache retrieval
+    let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
+    invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
 
     assert.ok(invoiceDocumentTypes)
     assert.ok(invoiceDocumentTypes.length > 0)
@@ -46,7 +46,9 @@ describe('dynamics-gp', () => {
   it('Retrieves an Invoice', async () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
-    const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType)
+    // Do twice to test cache retrieval
+    let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType)
+    invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType)
 
     assert.ok(invoice)
     assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
@@ -55,7 +57,9 @@ describe('dynamics-gp', () => {
   it('Retrieves an Invoice without a Type', async () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
-    const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+    // Do twice to test cache retrieval
+    let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+    invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
 
     assert.ok(invoice)
     assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
@@ -64,7 +68,9 @@ describe('dynamics-gp', () => {
   it('Retrieves an Item', async () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
-    const item = await gp.getItemByItemNumber(config.itemNumber)
+    // Do twice to test cache retrieval
+    let item = await gp.getItemByItemNumber(config.itemNumber)
+    item = await gp.getItemByItemNumber(config.itemNumber)
 
     assert.ok(item)
     assert.strictEqual(config.itemNumber, item.itemNumber)
@@ -73,7 +79,9 @@ describe('dynamics-gp', () => {
   it('Retrieves a Vendor', async () => {
     gp.setMSSQLConfig(config.mssqlConfig)
 
-    const vendor = await gp.getVendorByVendorId(config.vendorId)
+    // Do twice to test cache retrieval
+    let vendor = await gp.getVendorByVendorId(config.vendorId)
+    vendor = await gp.getVendorByVendorId(config.vendorId)
 
     assert.ok(vendor)
     assert.strictEqual(config.vendorId, vendor.vendorId)

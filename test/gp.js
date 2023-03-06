@@ -22,31 +22,36 @@ describe('dynamics-gp', () => {
     });
     it('Retrieves Invoice Document Types', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
+        let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
+        invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
         assert.ok(invoiceDocumentTypes);
         assert.ok(invoiceDocumentTypes.length > 0);
     });
     it('Retrieves an Invoice', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+        let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+        invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
         assert.ok(invoice);
         assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
     });
     it('Retrieves an Invoice without a Type', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+        let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+        invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
         assert.ok(invoice);
         assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
     });
     it('Retrieves an Item', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const item = await gp.getItemByItemNumber(config.itemNumber);
+        let item = await gp.getItemByItemNumber(config.itemNumber);
+        item = await gp.getItemByItemNumber(config.itemNumber);
         assert.ok(item);
         assert.strictEqual(config.itemNumber, item.itemNumber);
     });
     it('Retrieves a Vendor', async () => {
         gp.setMSSQLConfig(config.mssqlConfig);
-        const vendor = await gp.getVendorByVendorId(config.vendorId);
+        let vendor = await gp.getVendorByVendorId(config.vendorId);
+        vendor = await gp.getVendorByVendorId(config.vendorId);
         assert.ok(vendor);
         assert.strictEqual(config.vendorId, vendor.vendorId);
     });
