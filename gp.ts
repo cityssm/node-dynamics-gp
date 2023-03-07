@@ -1,6 +1,6 @@
 import * as config from './config.js'
 
-export const setMSSQLConfig = config.setMSSQLConfig
+import type { config as MSSQLConfig } from 'mssql'
 
 export { getAccountByAccountIndex } from './gp/getAccountByAccountIndex.js'
 export { getCustomerByCustomerNumber } from './gp/getCustomerByCustomerNumber.js'
@@ -23,4 +23,9 @@ export function clearCaches() {
   clearInvoiceDocumentTypesCache()
   clearItemCache()
   clearVendorCache()
+}
+
+export function setMSSQLConfig(mssqlConfig: MSSQLConfig) {
+  config.setMSSQLConfig(mssqlConfig)
+  clearCaches()
 }
