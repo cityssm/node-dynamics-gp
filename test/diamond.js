@@ -9,11 +9,21 @@ describe('dynamics-gp/diamond', () => {
     after(() => {
         sqlPool.releaseAll();
     });
-    it('Retrieves a Cash Receipt', async () => {
-        let cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
-        cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
-        assert.ok(cashReceipt);
-        assert.strictEqual(config.cashReceiptDocumentNumber, cashReceipt.documentNumber);
+    describe('Cash Receipts', () => {
+        it('Retrieves a Cash Receipt', async () => {
+            let cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
+            cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
+            assert.ok(cashReceipt);
+            assert.strictEqual(config.cashReceiptDocumentNumber, cashReceipt.documentNumber);
+        });
+        it('Returns undefined when document number is not a number', async () => {
+            const cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumberInvalid);
+            assert.strictEqual(cashReceipt, undefined);
+        });
+        it('Returns undefined when document number is not found', async () => {
+            const cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumberNotFound);
+            assert.strictEqual(cashReceipt, undefined);
+        });
     });
     it('Clears caches without error', () => {
         diamond.clearCaches();

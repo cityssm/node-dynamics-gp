@@ -41,28 +41,38 @@ describe('dynamics-gp', () => {
     assert.ok(invoiceDocumentTypes.length > 0)
   })
 
-  it('Retrieves an Invoice', async () => {
-    // Do twice to test cache retrieval
-    let invoice = await gp.getInvoiceByInvoiceNumber(
-      config.invoiceNumber,
-      config.invoiceDocumentType
-    )
-    invoice = await gp.getInvoiceByInvoiceNumber(
-      config.invoiceNumber,
-      config.invoiceDocumentType
-    )
+  describe('Invoices', () => {
+    it('Retrieves an Invoice', async () => {
+      // Do twice to test cache retrieval
+      let invoice = await gp.getInvoiceByInvoiceNumber(
+        config.invoiceNumber,
+        config.invoiceDocumentType
+      )
+      invoice = await gp.getInvoiceByInvoiceNumber(
+        config.invoiceNumber,
+        config.invoiceDocumentType
+      )
 
-    assert.ok(invoice)
-    assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
-  })
+      assert.ok(invoice)
+      assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
+    })
 
-  it('Retrieves an Invoice without a Type', async () => {
-    // Do twice to test cache retrieval
-    let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
-    invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+    it('Retrieves an Invoice without a Type', async () => {
+      // Do twice to test cache retrieval
+      let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+      invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
 
-    assert.ok(invoice)
-    assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
+      assert.ok(invoice)
+      assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
+    })
+
+    it('Returns undefined when invoice number is not found', async () => {
+      const invoice = await gp.getInvoiceByInvoiceNumber(
+        config.invoiceNumberNotFound
+      )
+
+      assert.strictEqual(invoice, undefined)
+    })
   })
 
   it('Retrieves an Item', async () => {

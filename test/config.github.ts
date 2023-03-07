@@ -21,6 +21,9 @@ export const config: Config = {
 
   invoiceDocumentType: 'IVC',
   invoiceNumber: 'IVC000001',
+  invoiceNumberNotFound: 'X',
 
-  cashReceiptDocumentNumber: 1
+  cashReceiptDocumentNumber: 1,
+  cashReceiptDocumentNumberInvalid: 'X',
+  cashReceiptDocumentNumberNotFound: 2
 }

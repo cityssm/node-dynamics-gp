@@ -7,5 +7,8 @@ export interface Config {
     vendorId: string;
     invoiceDocumentType: string;
     invoiceNumber: string;
+    invoiceNumberNotFound: string;
     cashReceiptDocumentNumber: number | string;
+    cashReceiptDocumentNumberInvalid: string;
+    cashReceiptDocumentNumberNotFound: number;
 }

@@ -27,17 +27,23 @@ describe('dynamics-gp', () => {
         assert.ok(invoiceDocumentTypes);
         assert.ok(invoiceDocumentTypes.length > 0);
     });
-    it('Retrieves an Invoice', async () => {
-        let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
-        invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
-        assert.ok(invoice);
-        assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
-    });
-    it('Retrieves an Invoice without a Type', async () => {
-        let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
-        invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
-        assert.ok(invoice);
-        assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
+    describe('Invoices', () => {
+        it('Retrieves an Invoice', async () => {
+            let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+            invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+            assert.ok(invoice);
+            assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
+        });
+        it('Retrieves an Invoice without a Type', async () => {
+            let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+            invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+            assert.ok(invoice);
+            assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
+        });
+        it('Returns undefined when invoice number is not found', async () => {
+            const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumberNotFound);
+            assert.strictEqual(invoice, undefined);
+        });
     });
     it('Retrieves an Item', async () => {
         let item = await gp.getItemByItemNumber(config.itemNumber);

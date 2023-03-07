@@ -14,5 +14,8 @@ export const config = {
     vendorId: 'VEND001',
     invoiceDocumentType: 'IVC',
     invoiceNumber: 'IVC000001',
-    cashReceiptDocumentNumber: 1
+    invoiceNumberNotFound: 'X',
+    cashReceiptDocumentNumber: 1,
+    cashReceiptDocumentNumberInvalid: 'X',
+    cashReceiptDocumentNumberNotFound: 2
 };

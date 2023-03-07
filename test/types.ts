@@ -10,6 +10,9 @@ export interface Config {
 
   invoiceDocumentType: string
   invoiceNumber: string
+  invoiceNumberNotFound: string
 
   cashReceiptDocumentNumber: number | string
+  cashReceiptDocumentNumberInvalid: string
+  cashReceiptDocumentNumberNotFound: number
 }

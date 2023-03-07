@@ -14,22 +14,40 @@ describe('dynamics-gp/diamond', () => {
     sqlPool.releaseAll()
   })
 
-  it('Retrieves a Cash Receipt', async () => {
-    // Do twice to test cache retrieval
+  describe('Cash Receipts', () => {
+    it('Retrieves a Cash Receipt', async () => {
+      // Do twice to test cache retrieval
 
-    let cashReceipt = await diamond.getCashReceiptByDocumentNumber(
-      config.cashReceiptDocumentNumber
-    )
+      let cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+        config.cashReceiptDocumentNumber
+      )
 
-    cashReceipt = await diamond.getCashReceiptByDocumentNumber(
-      config.cashReceiptDocumentNumber
-    )
+      cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+        config.cashReceiptDocumentNumber
+      )
 
-    assert.ok(cashReceipt)
-    assert.strictEqual(
-      config.cashReceiptDocumentNumber,
-      cashReceipt.documentNumber
-    )
+      assert.ok(cashReceipt)
+      assert.strictEqual(
+        config.cashReceiptDocumentNumber,
+        cashReceipt.documentNumber
+      )
+    })
+
+    it('Returns undefined when document number is not a number', async () => {
+      const cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+        config.cashReceiptDocumentNumberInvalid
+      )
+
+      assert.strictEqual(cashReceipt, undefined)
+    })
+
+    it('Returns undefined when document number is not found', async () => {
+      const cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+        config.cashReceiptDocumentNumberNotFound
+      )
+
+      assert.strictEqual(cashReceipt, undefined)
+    })
   })
 
   it('Clears caches without error', () => {
