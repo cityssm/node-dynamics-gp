@@ -767,4 +767,4 @@ CREATE TABLE [CR30103](
 ))
 GO
 
-insert into CR30103 (dDOCSUFFIX. dACCTINDEX) values (1, 1)
+insert into CR30103 (dDOCSUFFIX, dACCTINDEX) values (1, 1)
