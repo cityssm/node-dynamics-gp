@@ -23,6 +23,7 @@ export async function getCashReceiptByDocumentNumber(
 
   if (receipt === undefined) {
     try {
+
       const pool = await sqlPool.connect(_mssqlConfig)
 
       const receiptResult = await pool
@@ -105,7 +106,9 @@ export async function getCashReceiptByDocumentNumber(
 
       receiptCache.set(documentNumber, receipt)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${documentNumber}`)

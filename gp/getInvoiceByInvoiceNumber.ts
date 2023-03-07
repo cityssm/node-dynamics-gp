@@ -143,7 +143,9 @@ export async function getInvoiceByInvoiceNumber(
 
       invoiceCache.set(cacheKey, invoice)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${cacheKey}`)
@@ -153,3 +155,5 @@ export async function getInvoiceByInvoiceNumber(
 
   return invoice
 }
+
+export default getInvoiceByInvoiceNumber

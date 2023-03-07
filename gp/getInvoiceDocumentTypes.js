@@ -21,7 +21,9 @@ export async function getInvoiceDocumentTypes() {
             documentTypesCacheExpiryMillis = Date.now() + cacheTTL * 1000;
         }
         catch (error) {
+            debug('Query Error: Check your database credentials.');
             debug(error);
+            throw error;
         }
     }
     else {

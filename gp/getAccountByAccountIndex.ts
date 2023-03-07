@@ -53,7 +53,9 @@ export async function getAccountByAccountIndex(
 
       accountCache.set(accountIndex, account)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${accountIndex}`)

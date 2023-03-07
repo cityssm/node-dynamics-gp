@@ -112,7 +112,9 @@ export async function getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTy
             invoiceCache.set(cacheKey, invoice);
         }
         catch (error) {
+            debug('Query Error: Check your database credentials.');
             debug(error);
+            throw error;
         }
     }
     else {
@@ -121,3 +123,4 @@ export async function getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTy
     debug(invoice);
     return invoice;
 }
+export default getInvoiceByInvoiceNumber;

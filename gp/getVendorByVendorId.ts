@@ -52,7 +52,9 @@ export async function getVendorByVendorId(vendorId: string): Promise<GPVendor> {
 
       vendorCache.set(vendorId, vendor)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${vendorId}`)

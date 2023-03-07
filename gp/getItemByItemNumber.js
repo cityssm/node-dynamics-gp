@@ -59,7 +59,9 @@ export async function getItemByItemNumber(itemNumber) {
             itemCache.set(itemNumber, item);
         }
         catch (error) {
+            debug('Query Error: Check your database credentials.');
             debug(error);
+            throw error;
         }
     }
     else {

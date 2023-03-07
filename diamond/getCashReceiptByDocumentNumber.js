@@ -85,7 +85,9 @@ export async function getCashReceiptByDocumentNumber(documentNumber) {
             receiptCache.set(documentNumber, receipt);
         }
         catch (error) {
+            debug('Query Error: Check your database credentials.');
             debug(error);
+            throw error;
         }
     }
     else {

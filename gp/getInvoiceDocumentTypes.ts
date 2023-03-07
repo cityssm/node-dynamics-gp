@@ -33,7 +33,9 @@ export async function getInvoiceDocumentTypes(): Promise<
       documentTypesCache = invoiceDocumentTypes
       documentTypesCacheExpiryMillis = Date.now() + cacheTTL * 1000
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug('Cache hit')

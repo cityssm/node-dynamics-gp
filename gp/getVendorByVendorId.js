@@ -39,7 +39,9 @@ export async function getVendorByVendorId(vendorId) {
             vendorCache.set(vendorId, vendor);
         }
         catch (error) {
+            debug('Query Error: Check your database credentials.');
             debug(error);
+            throw error;
         }
     }
     else {

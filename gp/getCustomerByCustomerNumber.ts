@@ -49,7 +49,9 @@ export async function getCustomerByCustomerNumber(
 
       customerCache.set(customerNumber, customer)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${customerNumber}`)

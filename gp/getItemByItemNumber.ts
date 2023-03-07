@@ -74,7 +74,9 @@ export async function getItemByItemNumber(itemNumber: string): Promise<GPItem> {
 
       itemCache.set(itemNumber, item)
     } catch (error) {
+      debug('Query Error: Check your database credentials.')
       debug(error)
+      throw error
     }
   } else {
     debug(`Cache hit: ${itemNumber}`)
