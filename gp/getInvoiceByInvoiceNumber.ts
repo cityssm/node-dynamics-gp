@@ -156,4 +156,8 @@ export async function getInvoiceByInvoiceNumber(
   return invoice
 }
 
+export function clearInvoiceCache() {
+  invoiceCache.flushAll()
+}
+
 export default getInvoiceByInvoiceNumber

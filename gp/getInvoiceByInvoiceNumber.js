@@ -123,4 +123,7 @@ export async function getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTy
     debug(invoice);
     return invoice;
 }
+export function clearInvoiceCache() {
+    invoiceCache.flushAll();
+}
 export default getInvoiceByInvoiceNumber;
