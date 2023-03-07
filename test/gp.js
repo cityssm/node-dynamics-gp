@@ -1,55 +1,51 @@
 import assert from 'node:assert';
 import * as gp from '../gp.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
-import * as config from './config.test.js';
+import { config } from './config.js';
 describe('dynamics-gp', () => {
+    before(() => {
+        gp.setMSSQLConfig(config.mssql);
+    });
     after(() => {
         sqlPool.releaseAll();
     });
     it('Retrieves an Account', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let account = await gp.getAccountByAccountIndex(config.accountIndex);
         account = await gp.getAccountByAccountIndex(config.accountIndex);
         assert.ok(account);
         assert.strictEqual(config.accountIndex, account.accountIndex);
     });
     it('Retrieves a Customer', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
         customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
         assert.ok(customer);
         assert.strictEqual(config.customerNumber, customer.customerNumber);
     });
     it('Retrieves Invoice Document Types', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
         invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
         assert.ok(invoiceDocumentTypes);
         assert.ok(invoiceDocumentTypes.length > 0);
     });
     it('Retrieves an Invoice', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
         invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
         assert.ok(invoice);
         assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
     });
     it('Retrieves an Invoice without a Type', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
         invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
         assert.ok(invoice);
         assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
     });
     it('Retrieves an Item', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let item = await gp.getItemByItemNumber(config.itemNumber);
         item = await gp.getItemByItemNumber(config.itemNumber);
         assert.ok(item);
         assert.strictEqual(config.itemNumber, item.itemNumber);
     });
     it('Retrieves a Vendor', async () => {
-        gp.setMSSQLConfig(config.mssqlConfig);
         let vendor = await gp.getVendorByVendorId(config.vendorId);
         vendor = await gp.getVendorByVendorId(config.vendorId);
         assert.ok(vendor);

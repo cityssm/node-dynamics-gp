@@ -2,4 +2,7 @@
 coverage/
 node_modules/
 sandworm/
-test/config.test.*
+
+test/config.d.ts
+test/config.js
+test/config.ts

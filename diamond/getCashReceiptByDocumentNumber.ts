@@ -62,18 +62,18 @@ export async function getCashReceiptByDocumentNumber(
         const detailsResult = await pool
           .request()
           .input('documentNumber', documentNumber).query(`SELECT
-          [dSEQNMBR] as sequenceNumber,
-          rtrim([dCRACCT]) as accountCode,
-          [dAMOUNTOUTSTANDING] as outstandingAmount,
-          [dNMBRITEMS] as quantity,
-          [dLINEAMOUNT] as lineAmount,
-          [dDISCAMOUNT] as discountAmount,
-          [dTXAMOUNT] as taxAmount,
-          [dAMOUNTPAID] as paidAmount,
-          [dPOSTAMOUNT] as postAmount,
-          rtrim([dCRDTLDESC]) as description
-          FROM [CR30102]
-          where dDOCSUFFIX = @documentNumber
+            [dSEQNMBR] as sequenceNumber,
+            rtrim([dCRACCT]) as accountCode,
+            [dAMOUNTOUTSTANDING] as outstandingAmount,
+            [dNMBRITEMS] as quantity,
+            [dLINEAMOUNT] as lineAmount,
+            [dDISCAMOUNT] as discountAmount,
+            [dTXAMOUNT] as taxAmount,
+            [dAMOUNTPAID] as paidAmount,
+            [dPOSTAMOUNT] as postAmount,
+            rtrim([dCRDTLDESC]) as description
+            FROM [CR30102]
+            where dDOCSUFFIX = @documentNumber
             order by dSEQNMBR`)
 
         receipt.details = detailsResult.recordset ?? []
@@ -81,12 +81,12 @@ export async function getCashReceiptByDocumentNumber(
         const distributionResult = await pool
           .request()
           .input('documentNumber', documentNumber).query(`SELECT
-          [dACCTINDEX] as accountIndex,
-          rtrim([dQUICKCD]) as accountCode,
-          rtrim([dTXDTLID]) as taxDetailCode,
-          [dAMOUNTPAID] as paidAmount
-          FROM [CR30103]
-          where dDOCSUFFIX = @documentNumber
+            [dACCTINDEX] as accountIndex,
+            rtrim([dQUICKCD]) as accountCode,
+            rtrim([dTXDTLID]) as taxDetailCode,
+            [dAMOUNTPAID] as paidAmount
+            FROM [CR30103]
+            where dDOCSUFFIX = @documentNumber
             order by dACCTINDEX, dQUICKCD, dTXDTLID`)
 
         receipt.distributions = distributionResult.recordset ?? []

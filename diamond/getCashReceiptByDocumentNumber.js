@@ -49,29 +49,29 @@ export async function getCashReceiptByDocumentNumber(documentNumber) {
                 const detailsResult = await pool
                     .request()
                     .input('documentNumber', documentNumber).query(`SELECT
-          [dSEQNMBR] as sequenceNumber,
-          rtrim([dCRACCT]) as accountCode,
-          [dAMOUNTOUTSTANDING] as outstandingAmount,
-          [dNMBRITEMS] as quantity,
-          [dLINEAMOUNT] as lineAmount,
-          [dDISCAMOUNT] as discountAmount,
-          [dTXAMOUNT] as taxAmount,
-          [dAMOUNTPAID] as paidAmount,
-          [dPOSTAMOUNT] as postAmount,
-          rtrim([dCRDTLDESC]) as description
-          FROM [CR30102]
-          where dDOCSUFFIX = @documentNumber
+            [dSEQNMBR] as sequenceNumber,
+            rtrim([dCRACCT]) as accountCode,
+            [dAMOUNTOUTSTANDING] as outstandingAmount,
+            [dNMBRITEMS] as quantity,
+            [dLINEAMOUNT] as lineAmount,
+            [dDISCAMOUNT] as discountAmount,
+            [dTXAMOUNT] as taxAmount,
+            [dAMOUNTPAID] as paidAmount,
+            [dPOSTAMOUNT] as postAmount,
+            rtrim([dCRDTLDESC]) as description
+            FROM [CR30102]
+            where dDOCSUFFIX = @documentNumber
             order by dSEQNMBR`);
                 receipt.details = (_a = detailsResult.recordset) !== null && _a !== void 0 ? _a : [];
                 const distributionResult = await pool
                     .request()
                     .input('documentNumber', documentNumber).query(`SELECT
-          [dACCTINDEX] as accountIndex,
-          rtrim([dQUICKCD]) as accountCode,
-          rtrim([dTXDTLID]) as taxDetailCode,
-          [dAMOUNTPAID] as paidAmount
-          FROM [CR30103]
-          where dDOCSUFFIX = @documentNumber
+            [dACCTINDEX] as accountIndex,
+            rtrim([dQUICKCD]) as accountCode,
+            rtrim([dTXDTLID]) as taxDetailCode,
+            [dAMOUNTPAID] as paidAmount
+            FROM [CR30103]
+            where dDOCSUFFIX = @documentNumber
             order by dACCTINDEX, dQUICKCD, dTXDTLID`);
                 receipt.distributions = (_b = distributionResult.recordset) !== null && _b !== void 0 ? _b : [];
                 for (const distribution of receipt.distributions) {

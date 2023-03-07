@@ -3,16 +3,18 @@ import * as gp from '../gp.js'
 
 import * as sqlPool from '@cityssm/mssql-multi-pool'
 
-import * as config from './config.test.js'
+import { config } from './config.js'
 
 describe('dynamics-gp', () => {
+  before(() => {
+    gp.setMSSQLConfig(config.mssql)
+  })
+
   after(() => {
     sqlPool.releaseAll()
   })
 
   it('Retrieves an Account', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrival
     let account = await gp.getAccountByAccountIndex(config.accountIndex)
     account = await gp.getAccountByAccountIndex(config.accountIndex)
@@ -22,8 +24,6 @@ describe('dynamics-gp', () => {
   })
 
   it('Retrieves a Customer', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrival
     let customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
     customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
@@ -33,8 +33,6 @@ describe('dynamics-gp', () => {
   })
 
   it('Retrieves Invoice Document Types', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrieval
     let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
     invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
@@ -44,41 +42,39 @@ describe('dynamics-gp', () => {
   })
 
   it('Retrieves an Invoice', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrieval
-    let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType)
-    invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType)
+    let invoice = await gp.getInvoiceByInvoiceNumber(
+      config.invoiceNumber,
+      config.invoiceDocumentType
+    )
+    invoice = await gp.getInvoiceByInvoiceNumber(
+      config.invoiceNumber,
+      config.invoiceDocumentType
+    )
 
     assert.ok(invoice)
     assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
   })
 
   it('Retrieves an Invoice without a Type', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrieval
     let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
     invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
 
     assert.ok(invoice)
     assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
-  }) 
-  
-  it('Retrieves an Item', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
+  })
 
+  it('Retrieves an Item', async () => {
     // Do twice to test cache retrieval
     let item = await gp.getItemByItemNumber(config.itemNumber)
     item = await gp.getItemByItemNumber(config.itemNumber)
 
     assert.ok(item)
     assert.strictEqual(config.itemNumber, item.itemNumber)
-  })  
+  })
 
   it('Retrieves a Vendor', async () => {
-    gp.setMSSQLConfig(config.mssqlConfig)
-
     // Do twice to test cache retrieval
     let vendor = await gp.getVendorByVendorId(config.vendorId)
     vendor = await gp.getVendorByVendorId(config.vendorId)
