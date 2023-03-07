@@ -8,7 +8,10 @@ export const config: Config = {
     server: 'localhost',
     user: 'sa',
     password: 'dbatools.I0',
-    database: 'Dynamics'
+    database: 'Dynamics',
+    options: {
+      encrypt: false
+    }
   },
 
   accountIndex: 1,

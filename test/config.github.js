@@ -3,7 +3,10 @@ export const config = {
         server: 'localhost',
         user: 'sa',
         password: 'dbatools.I0',
-        database: 'Dynamics'
+        database: 'Dynamics',
+        options: {
+            encrypt: false
+        }
     },
     accountIndex: 1,
     customerNumber: 'CUST001',
