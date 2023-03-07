@@ -3,6 +3,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@cityssm/dynamics-gp)](https://www.npmjs.com/package/@cityssm/dynamics-gp)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fecbabce22b24576b5eafc6716796a2b)](https://www.codacy.com/gh/cityssm/node-dynamics-gp/dashboard?utm_source=github.com&utm_medium=referral&utm_content=cityssm/node-dynamics-gp&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b850568e64485c966d4a/maintainability)](https://codeclimate.com/github/cityssm/node-dynamics-gp/maintainability)
+[![codecov](https://codecov.io/gh/cityssm/node-dynamics-gp/branch/main/graph/badge.svg?token=K2D0W6D1LN)](https://codecov.io/gh/cityssm/node-dynamics-gp)
 [![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/node-dynamics-gp)](https://app.snyk.io/org/cityssm/project/8c481db2-2a7c-45a6-98a7-1a0105af103e)
 
 _Read only inquiries into Microsoft Dynamics GP using a SQL Server connection._
