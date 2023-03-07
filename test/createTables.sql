@@ -48,7 +48,7 @@ GO
 
 -- Customers
 
-CREATE TABLE [RM00101](
+CREATE TABLE RM00101 (
 	[CUSTNMBR] [char](15) primary key,
 	[CUSTNAME] [char](65) NOT NULL default 'TEST CUSTOMER',
 	[CUSTCLAS] [char](15) NOT NULL default 'CLASS',
@@ -158,7 +158,7 @@ insert into RM00101 (CUSTNMBR) values ('CUST001')
 
 -- Invoices
 
-CREATE TABLE [IVC30101](
+CREATE TABLE IVC30101 (
 	[DOCTYPE] [smallint] NOT NULL,
 	[INVCNMBR] [char](21) NOT NULL,
 	[BACHNUMB] [char](15) NOT NULL default 'BATCH001',
@@ -265,7 +265,7 @@ insert into IVC30101 (DOCTYPE, INVCNMBR) values (1, 'IVC000001')
 
 -- Invoice Line Items
 
-CREATE TABLE [IVC30102](
+CREATE TABLE IVC30102 (
 	[DOCTYPE] [smallint] NOT NULL,
 	[INVCNMBR] [char](21) NOT NULL,
 	[LNITMSEQ] [int] NOT NULL,
@@ -330,7 +330,7 @@ values (1, 'IVC000001', 1, 1)
 
 -- Invoice Document Types
 
-CREATE TABLE [IVC40101](
+CREATE TABLE IVC40101 (
 	[DOCTYPE] [smallint] primary key,
 	[DOCTYABR] [char](3) NOT NULL,
 	[DOCTYNAM] [char](21) NOT NULL,
@@ -344,7 +344,7 @@ GO
 
 -- Items
 
-CREATE TABLE [IV00101](
+CREATE TABLE IV00101 (
 	[ITEMNMBR] [char](31) primary key,
 	[ITEMDESC] [char](101) NOT NULL default 'TEST ITEM',
 	[NOTEINDX] [numeric](19, 5) NOT NULL default 0,
@@ -441,7 +441,7 @@ insert into IV00101 (ITEMNMBR) values ('01-0001-00001')
 
 -- Item Quantities
 
-CREATE TABLE [IV00102](
+CREATE TABLE IV00102 (
 	[ITEMNMBR] [char](31) NOT NULL,
 	[LOCNCODE] [char](11) NOT NULL default '',
 	[BINNMBR] [char](21) NOT NULL default '',
@@ -534,7 +534,7 @@ GO
 
 -- Vendors
 
-CREATE TABLE [PM00200](
+CREATE TABLE PM00200 (
 	[VENDORID] [char](15) primary key,
 	[VENDNAME] [char](65) NOT NULL default 'TEST VENDOR',
 	[VNDCHKNM] [char](65) NOT NULL default 'TEST VENDOR',
@@ -651,7 +651,7 @@ GO
 
 -- Cash Receipts
 
-CREATE TABLE [CR30101](
+CREATE TABLE CR30101 (
 	[dTRXSRC] [char](13) NOT NULL default '',
 	[dDOCKEY] [smallint] NOT NULL default 0,
 	[dDOCSUFFIX] [numeric](19, 5) primary key,
@@ -700,7 +700,7 @@ GO
 
 -- Cash Receipt Details
 
-CREATE TABLE [CR30102](
+CREATE TABLE CR30102 (
 	[dDOCSUFFIX] [numeric](19, 5) NOT NULL,
 	[dSEQNMBR] [int] NOT NULL,
 	[dLINESEQRM] [int] NOT NULL default 0,
@@ -745,20 +745,14 @@ GO
 
 -- Cash Receipt Distributions
 
-CREATE TABLE [CR30103](
+CREATE TABLE CR30103 (
 	[dDOCSUFFIX] [numeric](19, 5) NOT NULL,
 	[dACCTINDEX] [int] NOT NULL,
 	[dQUICKCD] [char](5) NOT NULL default '',
 	[dTXDTLID] [char](15) NOT NULL default '',
 	[dAMOUNTPAID] [numeric](19, 5) NOT NULL default 10,
 	[DEX_ROW_ID] [int] IDENTITY(1,1) NOT NULL,
- CONSTRAINT [PKCR30103] PRIMARY KEY CLUSTERED 
-(
-	[dDOCSUFFIX] ASC,
-	[dACCTINDEX] ASC,
-	[dQUICKCD] ASC,
-	[dTXDTLID] ASC
-))
+ CONSTRAINT [PKCR30103] PRIMARY KEY CLUSTERED (dDOCSUFFIX, dACCTINDEX,	dQUICKCD, dTXDTLID))
 GO
 
 insert into CR30103 (dDOCSUFFIX, dACCTINDEX) values (1, 1)
