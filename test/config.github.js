@@ -9,9 +9,13 @@ export const config = {
         }
     },
     accountIndex: 1,
+    accountIndexNotFound: -1,
     customerNumber: 'CUST001',
+    customerNumberNotFound: 'X',
     itemNumber: '01-0001-00001',
+    itemNumberNotFound: 'X',
     vendorId: 'VEND001',
+    vendorIdNotFound: 'X',
     invoiceDocumentType: 'IVC',
     invoiceNumber: 'IVC000001',
     invoiceNumberNotFound: 'X',

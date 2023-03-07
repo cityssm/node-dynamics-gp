@@ -3,29 +3,82 @@ import * as gp from '../gp.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
 import { config } from './config.js';
 describe('dynamics-gp', () => {
-    before(() => {
+    beforeEach(() => {
         gp.setMSSQLConfig(config.mssql);
     });
     after(() => {
         sqlPool.releaseAll();
     });
-    it('Retrieves an Account', async () => {
-        let account = await gp.getAccountByAccountIndex(config.accountIndex);
-        account = await gp.getAccountByAccountIndex(config.accountIndex);
-        assert.ok(account);
-        assert.strictEqual(config.accountIndex, account.accountIndex);
+    describe('Accounts', () => {
+        it('Retrieves an Account', async () => {
+            let account = await gp.getAccountByAccountIndex(config.accountIndex);
+            account = await gp.getAccountByAccountIndex(config.accountIndex);
+            assert.ok(account);
+            assert.strictEqual(config.accountIndex, account.accountIndex);
+        });
+        it('Returns undefined when account index is not found', async () => {
+            const account = await gp.getAccountByAccountIndex(config.accountIndexNotFound);
+            assert.strictEqual(account, undefined);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getAccountByAccountIndex(config.accountIndex);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
-    it('Retrieves a Customer', async () => {
-        let customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
-        customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
-        assert.ok(customer);
-        assert.strictEqual(config.customerNumber, customer.customerNumber);
+    describe('Customers', () => {
+        it('Retrieves a Customer', async () => {
+            let customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
+            customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
+            assert.ok(customer);
+            assert.strictEqual(config.customerNumber, customer.customerNumber);
+        });
+        it('Returns undefined when customer number is not found', async () => {
+            const customer = await gp.getCustomerByCustomerNumber(config.customerNumberNotFound);
+            assert.strictEqual(customer, undefined);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getCustomerByCustomerNumber(config.customerNumber);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
-    it('Retrieves Invoice Document Types', async () => {
-        let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
-        invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
-        assert.ok(invoiceDocumentTypes);
-        assert.ok(invoiceDocumentTypes.length > 0);
+    describe('Invoice Document Types', () => {
+        it('Retrieves Invoice Document Types', async () => {
+            let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
+            invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
+            assert.ok(invoiceDocumentTypes);
+            assert.ok(invoiceDocumentTypes.length > 0);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getInvoiceDocumentTypes();
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
     describe('Invoices', () => {
         it('Retrieves an Invoice', async () => {
@@ -44,18 +97,69 @@ describe('dynamics-gp', () => {
             const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumberNotFound);
             assert.strictEqual(invoice, undefined);
         });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
-    it('Retrieves an Item', async () => {
-        let item = await gp.getItemByItemNumber(config.itemNumber);
-        item = await gp.getItemByItemNumber(config.itemNumber);
-        assert.ok(item);
-        assert.strictEqual(config.itemNumber, item.itemNumber);
+    describe('Items', () => {
+        it('Retrieves an Item', async () => {
+            let item = await gp.getItemByItemNumber(config.itemNumber);
+            item = await gp.getItemByItemNumber(config.itemNumber);
+            assert.ok(item);
+            assert.strictEqual(config.itemNumber, item.itemNumber);
+        });
+        it('Returns undefined when item number is not found', async () => {
+            const item = await gp.getItemByItemNumber(config.itemNumberNotFound);
+            assert.strictEqual(item, undefined);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getItemByItemNumber(config.itemNumber);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
-    it('Retrieves a Vendor', async () => {
-        let vendor = await gp.getVendorByVendorId(config.vendorId);
-        vendor = await gp.getVendorByVendorId(config.vendorId);
-        assert.ok(vendor);
-        assert.strictEqual(config.vendorId, vendor.vendorId);
+    describe('Vendors', () => {
+        it('Retrieves a Vendor', async () => {
+            let vendor = await gp.getVendorByVendorId(config.vendorId);
+            vendor = await gp.getVendorByVendorId(config.vendorId);
+            assert.ok(vendor);
+            assert.strictEqual(config.vendorId, vendor.vendorId);
+        });
+        it('Returns undefined when vendor id is not found', async () => {
+            const vendor = await gp.getVendorByVendorId(config.vendorIdNotFound);
+            assert.strictEqual(vendor, undefined);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            gp.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await gp.getVendorByVendorId(config.vendorId);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
     });
     it('Clears caches without error', () => {
         gp.clearCaches();

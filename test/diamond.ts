@@ -6,7 +6,7 @@ import * as sqlPool from '@cityssm/mssql-multi-pool'
 import { config } from './config.js'
 
 describe('dynamics-gp/diamond', () => {
-  before(() => {
+  beforeEach(() => {
     diamond.setMSSQLConfig(config.mssql)
   })
 
@@ -47,6 +47,21 @@ describe('dynamics-gp/diamond', () => {
       )
 
       assert.strictEqual(cashReceipt, undefined)
+    })
+
+    it('Throws an error when SQL is misconfigured', async() => {
+      diamond.setMSSQLConfig({
+        server: 'localhost'
+      })
+
+      try {
+        await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber)
+      } catch {
+        assert.ok(1)
+        return
+      }
+
+      assert.fail()
     })
   })
 

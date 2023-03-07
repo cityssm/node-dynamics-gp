@@ -3,7 +3,7 @@ import * as diamond from '../diamond.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
 import { config } from './config.js';
 describe('dynamics-gp/diamond', () => {
-    before(() => {
+    beforeEach(() => {
         diamond.setMSSQLConfig(config.mssql);
     });
     after(() => {
@@ -23,6 +23,19 @@ describe('dynamics-gp/diamond', () => {
         it('Returns undefined when document number is not found', async () => {
             const cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumberNotFound);
             assert.strictEqual(cashReceipt, undefined);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            diamond.setMSSQLConfig({
+                server: 'localhost'
+            });
+            try {
+                await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
+            }
+            catch (_a) {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
         });
     });
     it('Clears caches without error', () => {
