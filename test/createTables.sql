@@ -30,7 +30,7 @@ CREATE TABLE [GL00100](
 	[HSTRCLRT] [numeric](19, 7) NOT NULL default 0,
 	[NOTEINDX] [numeric](19, 5) NOT NULL default 0,
 	[CREATDDT] [datetime] NOT NULL default getdate(),
-	[MODIFDT] [datetime] NOT NULL default getdate,
+	[MODIFDT] [datetime] NOT NULL default getdate(),
 	[USERDEF1] [char](21) NOT NULL default '',
 	[USERDEF2] [char](21) NOT NULL default '',
 	[PostSlsIn] [smallint] NOT NULL default 0,
@@ -157,7 +157,7 @@ CREATE TABLE [RM00101](
 	[CBVAT] [tinyint] NOT NULL default 0,
 	[INCLUDEINDP] [tinyint] NOT NULL default 0,
 	[DEX_ROW_TS] [datetime] NOT NULL default getdate(),
-	[DEX_ROW_ID] [int] IDENTITY(1,1) NOT NULL default 0)
+	[DEX_ROW_ID] [int] IDENTITY(1,1) NOT NULL)
 GO
 
 insert into RM00101 (CUSTNMBR) values ('CUST001')
