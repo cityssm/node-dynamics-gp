@@ -418,7 +418,7 @@ CREATE TABLE IVC10101 (
 	BSIVCTTL tinyint NOT NULL default 0,
 	SLPRSNID char(15) NOT NULL default '',
 	SALSTERR char(15) NOT NULL default '',
-	DSCRIPTN char(31) NOT NULL default 'TEST ITEM'
+	DSCRIPTN char(31) NOT NULL default 'TEST ITEM',
 	ITEMDESC char(101) NOT NULL default 'TEST ITEM',
 	EXPTSHIP datetime NOT NULL default getdate(),
 	ACTLSHIP datetime NOT NULL default getdate(),
