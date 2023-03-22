@@ -31,6 +31,7 @@ describe('dynamics-gp/diamond', () => {
         config.cashReceiptDocumentNumber,
         cashReceipt.documentNumber
       )
+      assert.ok(cashReceipt.details.length > 0)
     })
 
     it('Returns undefined when document number is not a number', async () => {

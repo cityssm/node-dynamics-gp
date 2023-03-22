@@ -15,6 +15,7 @@ describe('dynamics-gp/diamond', () => {
             cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
             assert.ok(cashReceipt);
             assert.strictEqual(config.cashReceiptDocumentNumber, cashReceipt.documentNumber);
+            assert.ok(cashReceipt.details.length > 0);
         });
         it('Returns undefined when document number is not a number', async () => {
             const cashReceipt = await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumberInvalid);
