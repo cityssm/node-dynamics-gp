@@ -43,6 +43,7 @@ export interface GPInvoiceDocumentType {
 }
 
 export interface GPInvoice extends GPInvoiceDocumentType {
+  isHistorical: 0 | 1
   invoiceNumber: string
   batchNumber: string
   batchSource: string

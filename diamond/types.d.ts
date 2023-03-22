@@ -1,4 +1,5 @@
 export interface DiamondCashReceipt {
+    isHistorical: 0 | 1;
     transactionSource: string;
     documentNumber: number;
     batchNumber: string;
