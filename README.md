@@ -5,24 +5,28 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b850568e64485c966d4a/maintainability)](https://codeclimate.com/github/cityssm/node-dynamics-gp/maintainability)
 [![codecov](https://codecov.io/gh/cityssm/node-dynamics-gp/branch/main/graph/badge.svg?token=K2D0W6D1LN)](https://codecov.io/gh/cityssm/node-dynamics-gp)
 [![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/node-dynamics-gp)](https://app.snyk.io/org/cityssm/project/8c481db2-2a7c-45a6-98a7-1a0105af103e)
+[![Build Status](https://github.com/cityssm/node-dynamics-gp/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/node-dynamics-gp/actions/workflows/coverage.yml)
 
 _Read only inquiries into Microsoft Dynamics GP using a SQL Server connection._
 
-The purpose of this project to make it easy to incorporate on prem Dynamics GP data
+The purpose of this project to make it easy to incorporate **on prem** Dynamics GP data
 into custom business applications. It connects to the underlying SQL Server directly,
 and returns data in easy-to-use Javascript objects.
+
+Built to validate transactions linked from the City of Sault Ste. Marie's
+[Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system).
 
 _Tested with Microsoft Dynamics GP 2018._
 
 ## Features
 
-- **TypeScript types.** Easy to get started.
+- 🙌 **TypeScript types.** Easy to get started.
 
-- **Temporary caching** to reduce database hits and function return times.
+- 🙌 **Temporary caching** to reduce database hits and function return times.
 
-- **All whitespace trimmed** from the end of the `char` data. Strings are ready to use!
+- 🙌 **All whitespace trimmed** from the end of the `char` data. Strings are ready to use!
 
-- **Consistent and clear field names.** For example:
+- 🙌 **Consistent and clear field names.** For example:
   - `PRIMVNDR` becomes `primaryVendorId`
   - `PHNUMBR2` becomes `phoneNumber2`
   - `PHONE3` becomes `phoneNumber3`
