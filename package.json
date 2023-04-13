@@ -32,7 +32,7 @@
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^2.2.0",
+    "@cityssm/mssql-multi-pool": "^2.2.1",
     "debug": "^4.3.4",
     "mssql": "^9.1.1",
     "node-cache": "^5.1.2"
@@ -41,10 +41,10 @@
     "@types/debug": "^4.1.7",
     "@types/mocha": "^10.0.1",
     "@types/mssql": "^8.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
-    "@typescript-eslint/parser": "^5.56.0",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.36.0",
+    "eslint": "^8.38.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
