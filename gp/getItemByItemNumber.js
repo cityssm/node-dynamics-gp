@@ -5,8 +5,9 @@ const debug = Debug('dynamics-gp:gp:getItemByItemNumber');
 import NodeCache from 'node-cache';
 const itemCache = new NodeCache({ stdTTL: cacheTTL });
 export async function getItemByItemNumber(itemNumber) {
-    let item = itemCache.get(itemNumber);
-    if (item === undefined) {
+    var _a;
+    let item = (_a = itemCache.get(itemNumber)) !== null && _a !== void 0 ? _a : undefined;
+    if (item === undefined && !itemCache.has(itemNumber)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);
             const itemResult = await pool.request().input('itemNumber', itemNumber)

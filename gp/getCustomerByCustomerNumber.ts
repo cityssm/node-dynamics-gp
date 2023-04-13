@@ -11,10 +11,11 @@ const customerCache = new NodeCache({ stdTTL: cacheTTL })
 
 export async function getCustomerByCustomerNumber(
   customerNumber: string
-): Promise<GPCustomer> {
-  let customer: GPCustomer = customerCache.get(customerNumber)
+): Promise<GPCustomer | undefined> {
+  let customer: GPCustomer | undefined =
+    customerCache.get(customerNumber) ?? undefined
 
-  if (customer === undefined) {
+  if (customer === undefined && !customerCache.has(customerNumber)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 

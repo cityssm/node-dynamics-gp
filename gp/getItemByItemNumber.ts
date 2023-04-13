@@ -14,10 +14,12 @@ const itemCache = new NodeCache({ stdTTL: cacheTTL })
  * @param itemNumber
  * @returns
  */
-export async function getItemByItemNumber(itemNumber: string): Promise<GPItem> {
-  let item: GPItem = itemCache.get(itemNumber)
+export async function getItemByItemNumber(
+  itemNumber: string
+): Promise<GPItem | undefined> {
+  let item: GPItem | undefined = itemCache.get(itemNumber) ?? undefined
 
-  if (item === undefined) {
+  if (item === undefined && !itemCache.has(itemNumber)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 

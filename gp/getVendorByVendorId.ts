@@ -14,10 +14,12 @@ const vendorCache = new NodeCache({ stdTTL: cacheTTL })
  * @param vendorId
  * @returns
  */
-export async function getVendorByVendorId(vendorId: string): Promise<GPVendor> {
-  let vendor: GPVendor = vendorCache.get(vendorId)
+export async function getVendorByVendorId(
+  vendorId: string
+): Promise<GPVendor | undefined> {
+  let vendor: GPVendor | undefined = vendorCache.get(vendorId) ?? undefined
 
-  if (vendor === undefined) {
+  if (vendor === undefined && !vendorCache.has(vendorId)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 

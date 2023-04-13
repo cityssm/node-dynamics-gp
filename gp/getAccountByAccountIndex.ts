@@ -13,10 +13,11 @@ const accountCache = new NodeCache({ stdTTL: cacheTTL })
 
 export async function getAccountByAccountIndex(
   accountIndex: number | string
-): Promise<GPAccount> {
-  let account: GPAccount = accountCache.get(accountIndex)
+): Promise<GPAccount | undefined> {
+  let account: GPAccount | undefined =
+    accountCache.get(accountIndex) ?? undefined
 
-  if (account === undefined) {
+  if (account === undefined && !accountCache.has(accountIndex)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 

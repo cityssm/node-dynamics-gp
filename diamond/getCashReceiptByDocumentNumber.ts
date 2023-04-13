@@ -13,7 +13,7 @@ const receiptCache = new NodeCache({ stdTTL: documentCacheTTL })
 
 export async function getCashReceiptByDocumentNumber(
   documentNumber: number | string
-): Promise<DiamondCashReceipt> {
+): Promise<DiamondCashReceipt | undefined> {
   if (
     typeof documentNumber === 'string' &&
     Number.isNaN(Number.parseFloat(documentNumber))
@@ -21,9 +21,10 @@ export async function getCashReceiptByDocumentNumber(
     return undefined
   }
 
-  let receipt: DiamondCashReceipt = receiptCache.get(documentNumber)
+  let receipt: DiamondCashReceipt | undefined =
+    receiptCache.get(documentNumber) ?? undefined
 
-  if (receipt === undefined) {
+  if (receipt === undefined && !receiptCache.has(documentNumber)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
@@ -115,13 +116,13 @@ export async function getCashReceiptByDocumentNumber(
           const distributionResult = await pool
             .request()
             .input('documentNumber', documentNumber).query(`SELECT
-            [dACCTINDEX] as accountIndex,
-            rtrim([dQUICKCD]) as accountCode,
-            rtrim([dTXDTLID]) as taxDetailCode,
-            [dAMOUNTPAID] as paidAmount
-            FROM [CR30103]
-            where dDOCSUFFIX = @documentNumber
-            order by dACCTINDEX, dQUICKCD, dTXDTLID`)
+              [dACCTINDEX] as accountIndex,
+              rtrim([dQUICKCD]) as accountCode,
+              rtrim([dTXDTLID]) as taxDetailCode,
+              [dAMOUNTPAID] as paidAmount
+              FROM [CR30103]
+              where dDOCSUFFIX = @documentNumber
+              order by dACCTINDEX, dQUICKCD, dTXDTLID`)
 
           receipt.distributions = distributionResult.recordset ?? []
 

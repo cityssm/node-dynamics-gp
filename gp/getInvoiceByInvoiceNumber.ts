@@ -18,15 +18,15 @@ const invoiceCache = new NodeCache({ stdTTL: documentCacheTTL })
 export async function getInvoiceByInvoiceNumber(
   invoiceNumber: string,
   invoiceDocumentTypeOrAbbreviationOrName?: number | string
-): Promise<GPInvoice> {
+): Promise<GPInvoice | undefined> {
   const cacheKey =
     (invoiceDocumentTypeOrAbbreviationOrName ?? '').toString() +
     '::' +
     invoiceNumber
 
-  let invoice: GPInvoice = invoiceCache.get(cacheKey)
+  let invoice: GPInvoice | undefined = invoiceCache.get(cacheKey) ?? undefined
 
-  if (invoice === undefined) {
+  if (invoice === undefined && !invoiceCache.has(cacheKey)) {
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
