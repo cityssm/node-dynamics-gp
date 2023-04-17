@@ -80,6 +80,8 @@ import * as diamond from '@cityssm/dynamics-gp/diamond.js'
 diamond.setMSSQLConfig(mssqlConfig)
 
 const cashReceipt = await diamond.getCashReceiptByDocumentNumber('123456')
+
+const invoice = await diamond.getDiamondExtendedGPInvoice(invoiceNumber)
 ```
 
 ## Contributions
