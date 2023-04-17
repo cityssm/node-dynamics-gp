@@ -1021,3 +1021,27 @@ CREATE TABLE CR30103 (
 GO
 
 insert into CR30103 (dDOCSUFFIX, dACCTINDEX) values (1, 1)
+
+-- Trial Balance Codes
+
+CREATE TABLE SF120 (
+	RMDTYPAL smallint NOT NULL default 1,
+	DOCNUMBR char(21) NOT NULL,
+	dCUSTTBCODE char(5) NOT NULL,
+	DEX_ROW_ID int IDENTITY(1,1) NOT NULL default 1,
+ CONSTRAINT PKSF120 PRIMARY KEY CLUSTERED (RMDTYPAL, DOCNUMBR))
+
+insert into SF120 (DOCNUMBR, dCUSTTBCODE) values ('IVC00089251', '10000')
+GO
+
+CREATE TABLE SF023 (
+	dCUSTTBCODE char(5) NOT NULL primary key,
+	dDESC char(31) NOT NULL,
+	dCUSTTBSERIES smallint NOT NULL default 1,
+	dDEFAULT tinyint NOT NULL default 0,
+	NOTEINDX numeric(19, 5) NOT NULL default 1,
+	DEX_ROW_ID int IDENTITY(1,1) NOT NULL default 0)
+GO
+
+insert into SF023 (dCUSTTBCODE, dDESC) values ('10000', 'Test Trial Balance Code')
+GO
