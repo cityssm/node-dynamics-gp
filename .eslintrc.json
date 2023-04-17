@@ -25,7 +25,8 @@
     "unicorn/filename-case": [
       "error",
       {
-        "case": "camelCase"
+        "case": "camelCase",
+        "ignore": ["GP"]
       }
     ]
   }

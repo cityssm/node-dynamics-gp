@@ -25,6 +25,10 @@ export function clearCaches() {
   clearVendorCache()
 }
 
+export function hasMSSQLConfig(): boolean {
+  return config._mssqlConfig !== undefined
+}
+
 export function setMSSQLConfig(mssqlConfig: MSSQLConfig) {
   config.setMSSQLConfig(mssqlConfig)
   clearCaches()

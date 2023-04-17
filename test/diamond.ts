@@ -1,5 +1,7 @@
 import assert from 'node:assert'
+
 import * as diamond from '../diamond.js'
+import * as gp from '../gp.js'
 
 import * as sqlPool from '@cityssm/mssql-multi-pool'
 
@@ -50,19 +52,46 @@ describe('dynamics-gp/diamond', () => {
       assert.strictEqual(cashReceipt, undefined)
     })
 
-    it('Throws an error when SQL is misconfigured', async() => {
+    it('Throws an error when SQL is misconfigured', async () => {
       diamond.setMSSQLConfig({
         server: 'localhost'
       })
 
       try {
-        await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber)
+        await diamond.getCashReceiptByDocumentNumber(
+          config.cashReceiptDocumentNumber
+        )
       } catch {
         assert.ok(1)
         return
       }
 
       assert.fail()
+    })
+  })
+
+  describe('Extend GP Invoices', () => {
+    it('Adds additional fields to an existing GPInvoice', async () => {
+      gp.setMSSQLConfig(config.mssql)
+
+      const gpInvoice = await gp.getInvoiceByInvoiceNumber(
+        config.invoiceNumber,
+        config.invoiceDocumentType
+      )
+
+      const gpInvoiceKeyCount = Object.keys(gpInvoice).length
+
+      const diamondInvoice = await diamond.extendGPInvoice(gpInvoice)
+
+      assert.ok(gpInvoiceKeyCount < Object.keys(diamondInvoice).length)
+    })
+
+    it('Gets a fully extended GPInvoice', async () => {
+      const diamondInvoice = await diamond.getDiamondExtendedGPInvoice(
+        config.invoiceNumber
+      )
+
+      assert.ok(diamondInvoice.trialBalanceCode !== undefined)
     })
   })
 

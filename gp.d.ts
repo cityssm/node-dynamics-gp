@@ -6,4 +6,5 @@ export { getInvoiceDocumentTypes } from './gp/getInvoiceDocumentTypes.js';
 export { getItemByItemNumber } from './gp/getItemByItemNumber.js';
 export { getVendorByVendorId } from './gp/getVendorByVendorId.js';
 export declare function clearCaches(): void;
+export declare function hasMSSQLConfig(): boolean;
 export declare function setMSSQLConfig(mssqlConfig: MSSQLConfig): void;

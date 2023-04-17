@@ -1,3 +1,5 @@
+import type * as gp from '../gp/types'
+
 export interface DiamondCashReceipt {
   isHistorical: 0 | 1
   transactionSource: string
@@ -48,3 +50,10 @@ interface DiamondCashReceiptDistribution {
   taxDetailCode: string
   paidAmount: number
 }
+
+export interface DiamondTrialBalanceCode {
+  trialBalanceCode?: string
+  trialBalanceCodeDescription?: string
+}
+
+export type DiamondExtendedGPInvoice = gp.GPInvoice & DiamondTrialBalanceCode
