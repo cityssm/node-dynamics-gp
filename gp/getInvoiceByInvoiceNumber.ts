@@ -37,7 +37,7 @@ export async function getInvoiceByInvoiceNumber(
       let sql = `select
         rtrim(t.[DOCTYABR]) as documentTypeAbbreviation,
         rtrim(t.[DOCTYNAM]) as documentTypeName,
-        * from (
+        i.* from (
           SELECT 
           0 as isHistorical,
           i.[DOCTYPE] as invoiceDocumentType,
