@@ -20,4 +20,7 @@ export const cacheTTL = 3 * 60
  */
 export const documentCacheTTL = 60
 
+/**
+ * Message displayed when a query error occurs
+ */
 export const queryErrorMessage = 'Query Error: Check your database credentials.'
