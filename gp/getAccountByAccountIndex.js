@@ -1,4 +1,4 @@
-import { _mssqlConfig, cacheTTL } from '../config.js';
+import { _mssqlConfig, cacheTTL, queryErrorMessage } from '../config.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
 import { buildAccountNumberFromSegments } from './utilities.js';
 import Debug from 'debug';
@@ -41,8 +41,7 @@ export async function getAccountByAccountIndex(accountIndex) {
             accountCache.set(accountIndex, account);
         }
         catch (error) {
-            debug('Query Error: Check your database credentials.');
-            debug(error);
+            debug(queryErrorMessage);
             throw error;
         }
     }

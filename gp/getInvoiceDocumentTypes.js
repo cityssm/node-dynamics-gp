@@ -1,4 +1,4 @@
-import { _mssqlConfig, cacheTTL } from '../config.js';
+import { _mssqlConfig, cacheTTL, queryErrorMessage } from '../config.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
 import Debug from 'debug';
 const debug = Debug('dynamics-gp:gp:getInvoiceDocumentTypes');
@@ -21,8 +21,7 @@ export async function getInvoiceDocumentTypes() {
             documentTypesCacheExpiryMillis = Date.now() + cacheTTL * 1000;
         }
         catch (error) {
-            debug('Query Error: Check your database credentials.');
-            debug(error);
+            debug(queryErrorMessage);
             throw error;
         }
     }

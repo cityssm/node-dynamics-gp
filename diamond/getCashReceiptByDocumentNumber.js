@@ -1,4 +1,4 @@
-import { _mssqlConfig, documentCacheTTL } from '../config.js';
+import { _mssqlConfig, documentCacheTTL, queryErrorMessage } from '../config.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
 import { getAccountByAccountIndex } from '../gp/getAccountByAccountIndex.js';
 import Debug from 'debug';
@@ -121,8 +121,7 @@ export async function getCashReceiptByDocumentNumber(documentNumber) {
             receiptCache.set(documentNumber, receipt);
         }
         catch (error) {
-            debug('Query Error: Check your database credentials.');
-            debug(error);
+            debug(queryErrorMessage);
             throw error;
         }
     }
