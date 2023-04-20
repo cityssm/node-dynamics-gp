@@ -10,6 +10,7 @@ import { config } from './config.js'
 describe('dynamics-gp/diamond', () => {
   beforeEach(() => {
     diamond.setMSSQLConfig(config.mssql)
+    assert(diamond.hasMSSQLConfig())
   })
 
   after(() => {

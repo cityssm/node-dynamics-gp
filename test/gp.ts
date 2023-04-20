@@ -8,6 +8,7 @@ import { config } from './config.js'
 describe('dynamics-gp', () => {
   beforeEach(() => {
     gp.setMSSQLConfig(config.mssql)
+    assert(gp.hasMSSQLConfig())
   })
 
   after(() => {
