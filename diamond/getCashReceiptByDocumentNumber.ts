@@ -31,7 +31,7 @@ export async function getCashReceiptByDocumentNumber(
 
       const receiptResult: IResult<DiamondCashReceipt> = await pool
         .request()
-        .input('documentNumber', documentNumber).query(`SELECT
+        .input('documentNumber', documentNumber).query(`SELECT top 1
           0 as isHistorical,
           '' as transactionSource,
           [dDOCSUFFIX] as documentNumber,
@@ -59,7 +59,7 @@ export async function getCashReceiptByDocumentNumber(
           FROM [CR10101]
           where dDOCSUFFIX = @documentNumber
         
-          union SELECT
+          union SELECT top 1
           1 as isHistorical,
           rtrim([dTRXSRC]) as transactionSource,
           [dDOCSUFFIX] as documentNumber,
@@ -97,17 +97,17 @@ export async function getCashReceiptByDocumentNumber(
         const detailsResult = await pool
           .request()
           .input('documentNumber', documentNumber).query(`SELECT
-            [dSEQNMBR] as sequenceNumber,
-            rtrim([dCRACCT]) as accountCode,
-            [dAMOUNTOUTSTANDING] as outstandingAmount,
-            [dNMBRITEMS] as quantity,
-            [dLINEAMOUNT] as lineAmount,
-            [dDISCAMOUNT] as discountAmount,
-            [dTXAMOUNT] as taxAmount,
-            [dAMOUNTPAID] as paidAmount,
-            [dPOSTAMOUNT] as postAmount,
-            rtrim([dCRDTLDESC]) as description
-            FROM ${receipt.isHistorical ? '[CR30102]' : '[CR10102]'}
+            dSEQNMBR as sequenceNumber,
+            rtrim(dCRACCT) as accountCode,
+            dAMOUNTOUTSTANDING as outstandingAmount,
+            dNMBRITEMS as quantity,
+            dLINEAMOUNT as lineAmount,
+            dDISCAMOUNT as discountAmount,
+            dTXAMOUNT as taxAmount,
+            dAMOUNTPAID as paidAmount,
+            dPOSTAMOUNT as postAmount,
+            rtrim(dCRDTLDESC) as description
+            FROM ${receipt.isHistorical ? 'CR30102' : 'CR10102'}
             where dDOCSUFFIX = @documentNumber
             order by dSEQNMBR`)
 
@@ -117,11 +117,11 @@ export async function getCashReceiptByDocumentNumber(
           const distributionResult = await pool
             .request()
             .input('documentNumber', documentNumber).query(`SELECT
-              [dACCTINDEX] as accountIndex,
-              rtrim([dQUICKCD]) as accountCode,
-              rtrim([dTXDTLID]) as taxDetailCode,
+              dACCTINDEX as accountIndex,
+              rtrim(dQUICKCD) as accountCode,
+              rtrim(dTXDTLID) as taxDetailCode,
               [dAMOUNTPAID] as paidAmount
-              FROM [CR30103]
+              FROM CR30103
               where dDOCSUFFIX = @documentNumber
               order by dACCTINDEX, dQUICKCD, dTXDTLID`)
 

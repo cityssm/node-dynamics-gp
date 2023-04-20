@@ -24,7 +24,7 @@ export async function getAccountByAccountIndex(
 
       const accountResult: IResult<GPAccount> = await pool
         .request()
-        .input('accountIndex', accountIndex).query(`SELECT
+        .input('accountIndex', accountIndex).query(`SELECT top 1
           [ACTINDX] as accountIndex,
           rtrim([ACTNUMBR_1]) as accountNumberSegment1,
           rtrim([ACTNUMBR_2]) as accountNumberSegment2,

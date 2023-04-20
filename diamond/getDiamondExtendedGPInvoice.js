@@ -14,10 +14,10 @@ export async function extendGPInvoice(gpInvoice) {
             const pool = await sqlPool.connect(_mssqlConfig);
             const tbcResult = await pool
                 .request()
-                .input('invoiceNumber', gpInvoice.invoiceNumber).query(`SELECT
+                .input('invoiceNumber', gpInvoice.invoiceNumber).query(`SELECT top 1
           t.dCUSTTBCODE as trialBalanceCode,
           t.dDESC as trialBalanceCodeDescription
-          FROM [SF120] i
+          FROM SF120 i
           inner join SF023 t on i.dcusttbcode = t.dcusttbcode
           where docnumbr = @invoiceNumber`);
             if (tbcResult.recordset && tbcResult.recordset.length > 0) {
