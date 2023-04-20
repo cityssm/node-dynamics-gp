@@ -49,7 +49,9 @@ _Tested with Microsoft Dynamics GP 2018._
 
 ## Installation
 
-    npm install @cityssm/dynamics-gp
+```sh
+npm install @cityssm/dynamics-gp
+```
 
 ## Dynamics GP Functions
 
