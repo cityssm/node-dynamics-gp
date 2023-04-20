@@ -4,7 +4,10 @@ import * as sqlPool from '@cityssm/mssql-multi-pool'
 import * as gp from '../gp.js'
 
 import type { GPInvoice } from '../gp/types.js'
-import type { DiamondExtendedGPInvoice, DiamondTrialBalanceCode } from './types.js'
+import type {
+  DiamondExtendedGPInvoice,
+  DiamondTrialBalanceCode
+} from './types.js'
 
 import Debug from 'debug'
 const debug = Debug('dynamics-gp:diamond:getTrialBalanceCodeByInvoiceNumber')
@@ -63,23 +66,27 @@ export async function extendGPInvoice(
   return diamondInvoice
 }
 
-export async function getDiamondExtendedGPInvoice(invoiceNumber: string,
-  invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined> {
-
-    if (!gp.hasMSSQLConfig()) {
-      gp.setMSSQLConfig(_mssqlConfig)
-    }
-
-    const gpInvoice = await gp.getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName)
-
-    let diamondInvoice = gpInvoice as DiamondExtendedGPInvoice
-
-    if (diamondInvoice) {
-      diamondInvoice = await extendGPInvoice(gpInvoice)
-    }
-
-    return diamondInvoice
+export async function getDiamondExtendedGPInvoice(
+  invoiceNumber: string,
+  invoiceDocumentTypeOrAbbreviationOrName?: number | string
+): Promise<DiamondExtendedGPInvoice | undefined> {
+  if (!gp.hasMSSQLConfig()) {
+    gp.setMSSQLConfig(_mssqlConfig)
   }
+
+  const gpInvoice = await gp.getInvoiceByInvoiceNumber(
+    invoiceNumber,
+    invoiceDocumentTypeOrAbbreviationOrName
+  )
+
+  if (!gpInvoice) {
+    return undefined
+  }
+
+  const diamondInvoice = await extendGPInvoice(gpInvoice)
+
+  return diamondInvoice
+}
 
 export function clearCaches() {
   trialBalanceCodeCache.flushAll()

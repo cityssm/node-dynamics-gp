@@ -27,7 +27,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getAccountByAccountIndex(config.accountIndex);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }
@@ -52,7 +52,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getCustomerByCustomerNumber(config.customerNumber);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }
@@ -73,7 +73,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getInvoiceDocumentTypes();
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }
@@ -104,7 +104,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }
@@ -129,7 +129,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getItemByItemNumber(config.itemNumber);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }
@@ -154,7 +154,7 @@ describe('dynamics-gp', () => {
             try {
                 await gp.getVendorByVendorId(config.vendorId);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }

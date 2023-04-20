@@ -6,12 +6,11 @@ const debug = Debug('dynamics-gp:diamond:getCashReceiptByDocumentNumber');
 import NodeCache from 'node-cache';
 const receiptCache = new NodeCache({ stdTTL: documentCacheTTL });
 export async function getCashReceiptByDocumentNumber(documentNumber) {
-    var _a, _b, _c;
     if (typeof documentNumber === 'string' &&
         Number.isNaN(Number.parseFloat(documentNumber))) {
         return undefined;
     }
-    let receipt = (_a = receiptCache.get(documentNumber)) !== null && _a !== void 0 ? _a : undefined;
+    let receipt = receiptCache.get(documentNumber) ?? undefined;
     if (receipt === undefined && !receiptCache.has(documentNumber)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);
@@ -94,7 +93,7 @@ export async function getCashReceiptByDocumentNumber(documentNumber) {
             FROM ${receipt.isHistorical ? '[CR30102]' : '[CR10102]'}
             where dDOCSUFFIX = @documentNumber
             order by dSEQNMBR`);
-                receipt.details = (_b = detailsResult.recordset) !== null && _b !== void 0 ? _b : [];
+                receipt.details = detailsResult.recordset ?? [];
                 if (receipt.isHistorical) {
                     const distributionResult = await pool
                         .request()
@@ -106,7 +105,7 @@ export async function getCashReceiptByDocumentNumber(documentNumber) {
               FROM [CR30103]
               where dDOCSUFFIX = @documentNumber
               order by dACCTINDEX, dQUICKCD, dTXDTLID`);
-                    receipt.distributions = (_c = distributionResult.recordset) !== null && _c !== void 0 ? _c : [];
+                    receipt.distributions = distributionResult.recordset ?? [];
                     for (const distribution of receipt.distributions) {
                         const account = await getAccountByAccountIndex(distribution.accountIndex);
                         if (account !== undefined) {

@@ -33,7 +33,7 @@ describe('dynamics-gp/diamond', () => {
             try {
                 await diamond.getCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
             }
-            catch (_a) {
+            catch {
                 assert.ok(1);
                 return;
             }

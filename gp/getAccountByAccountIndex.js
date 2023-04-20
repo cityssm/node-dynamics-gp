@@ -6,8 +6,7 @@ const debug = Debug('dynamics-gp:gp:getAccountByAccountIndex');
 import NodeCache from 'node-cache';
 const accountCache = new NodeCache({ stdTTL: cacheTTL });
 export async function getAccountByAccountIndex(accountIndex) {
-    var _a;
-    let account = (_a = accountCache.get(accountIndex)) !== null && _a !== void 0 ? _a : undefined;
+    let account = accountCache.get(accountIndex) ?? undefined;
     if (account === undefined && !accountCache.has(accountIndex)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);

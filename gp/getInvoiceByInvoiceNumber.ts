@@ -1,5 +1,6 @@
 import { _mssqlConfig, documentCacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import type { GPInvoice } from './types'
 
@@ -153,10 +154,10 @@ export async function getInvoiceByInvoiceNumber(
       }
       sql += ' order by t.DEX_ROW_ID'
 
-      const invoiceResult = await invoiceRequest.query(sql)
+      const invoiceResult: IResult<GPInvoice> = await invoiceRequest.query(sql)
 
       if (invoiceResult.recordset && invoiceResult.recordset.length > 0) {
-        invoice = invoiceResult.recordset[0]
+        invoice = invoiceResult.recordset[0] as GPInvoice
       }
 
       if (invoice !== undefined) {

@@ -5,13 +5,13 @@ const debug = Debug('dynamics-gp:gp:getVendorByVendorId');
 import NodeCache from 'node-cache';
 const vendorCache = new NodeCache({ stdTTL: cacheTTL });
 export async function getVendorByVendorId(vendorId) {
-    var _a;
-    let vendor = (_a = vendorCache.get(vendorId)) !== null && _a !== void 0 ? _a : undefined;
+    let vendor = vendorCache.get(vendorId) ?? undefined;
     if (vendor === undefined && !vendorCache.has(vendorId)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);
-            const vendorResult = await pool.request().input('vendorId', vendorId)
-                .query(`SELECT 
+            const vendorResult = await pool
+                .request()
+                .input('vendorId', vendorId).query(`SELECT 
           rtrim([VENDORID]) as vendorId,
           rtrim([VENDNAME]) as vendorName,
           rtrim([VNDCHKNM]) as vendorCheckName,

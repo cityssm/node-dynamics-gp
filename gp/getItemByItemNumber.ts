@@ -1,5 +1,6 @@
 import { _mssqlConfig, cacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import type { GPItem } from './types'
 
@@ -23,8 +24,9 @@ export async function getItemByItemNumber(
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
-      const itemResult = await pool.request().input('itemNumber', itemNumber)
-        .query(`SELECT
+      const itemResult: IResult<GPItem> = await pool
+        .request()
+        .input('itemNumber', itemNumber).query(`SELECT
           rtrim([ITEMNMBR]) as itemNumber,
           rtrim([ITEMDESC]) as itemDescription,
           rtrim([ITMSHNAM]) as itemShortName,

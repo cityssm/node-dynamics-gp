@@ -5,11 +5,10 @@ const debug = Debug('dynamics-gp:gp:getInvoiceByInvoiceNumber');
 import NodeCache from 'node-cache';
 const invoiceCache = new NodeCache({ stdTTL: documentCacheTTL });
 export async function getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
-    var _a, _b;
-    const cacheKey = (invoiceDocumentTypeOrAbbreviationOrName !== null && invoiceDocumentTypeOrAbbreviationOrName !== void 0 ? invoiceDocumentTypeOrAbbreviationOrName : '').toString() +
+    const cacheKey = (invoiceDocumentTypeOrAbbreviationOrName ?? '').toString() +
         '::' +
         invoiceNumber;
-    let invoice = (_a = invoiceCache.get(cacheKey)) !== null && _a !== void 0 ? _a : undefined;
+    let invoice = invoiceCache.get(cacheKey) ?? undefined;
     if (invoice === undefined && !invoiceCache.has(cacheKey)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);
@@ -159,7 +158,7 @@ export async function getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTy
             where INVCNMBR = @invoiceNumber
             and DOCTYPE = @invoiceDocumentType
             order by LNITMSEQ`);
-                invoice.lineItems = (_b = itemResults.recordset) !== null && _b !== void 0 ? _b : [];
+                invoice.lineItems = itemResults.recordset ?? [];
             }
             invoiceCache.set(cacheKey, invoice);
         }

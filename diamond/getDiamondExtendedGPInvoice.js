@@ -6,9 +6,8 @@ const debug = Debug('dynamics-gp:diamond:getTrialBalanceCodeByInvoiceNumber');
 import NodeCache from 'node-cache';
 const trialBalanceCodeCache = new NodeCache({ stdTTL: cacheTTL });
 export async function extendGPInvoice(gpInvoice) {
-    var _a;
     const diamondInvoice = gpInvoice;
-    let trialBalanceCode = (_a = trialBalanceCodeCache.get(diamondInvoice.invoiceNumber)) !== null && _a !== void 0 ? _a : undefined;
+    let trialBalanceCode = trialBalanceCodeCache.get(diamondInvoice.invoiceNumber) ?? undefined;
     if (trialBalanceCode === undefined &&
         !trialBalanceCodeCache.has(diamondInvoice.invoiceNumber)) {
         try {
@@ -48,10 +47,10 @@ export async function getDiamondExtendedGPInvoice(invoiceNumber, invoiceDocument
         gp.setMSSQLConfig(_mssqlConfig);
     }
     const gpInvoice = await gp.getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
-    let diamondInvoice = gpInvoice;
-    if (diamondInvoice) {
-        diamondInvoice = await extendGPInvoice(gpInvoice);
+    if (!gpInvoice) {
+        return undefined;
     }
+    const diamondInvoice = await extendGPInvoice(gpInvoice);
     return diamondInvoice;
 }
 export function clearCaches() {

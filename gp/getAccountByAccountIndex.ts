@@ -1,5 +1,6 @@
 import { _mssqlConfig, cacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import { buildAccountNumberFromSegments } from './utilities.js'
 
@@ -21,7 +22,7 @@ export async function getAccountByAccountIndex(
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
-      const accountResult = await pool
+      const accountResult: IResult<GPAccount> = await pool
         .request()
         .input('accountIndex', accountIndex).query(`SELECT
           [ACTINDX] as accountIndex,

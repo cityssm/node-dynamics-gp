@@ -5,8 +5,7 @@ const debug = Debug('dynamics-gp:gp:getCustomerByCustomerNumber');
 import NodeCache from 'node-cache';
 const customerCache = new NodeCache({ stdTTL: cacheTTL });
 export async function getCustomerByCustomerNumber(customerNumber) {
-    var _a;
-    let customer = (_a = customerCache.get(customerNumber)) !== null && _a !== void 0 ? _a : undefined;
+    let customer = customerCache.get(customerNumber) ?? undefined;
     if (customer === undefined && !customerCache.has(customerNumber)) {
         try {
             const pool = await sqlPool.connect(_mssqlConfig);

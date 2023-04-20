@@ -1,5 +1,6 @@
 import { _mssqlConfig, cacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import type { GPVendor } from './types'
 
@@ -23,8 +24,9 @@ export async function getVendorByVendorId(
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
-      const vendorResult = await pool.request().input('vendorId', vendorId)
-        .query(`SELECT 
+      const vendorResult: IResult<GPVendor> = await pool
+        .request()
+        .input('vendorId', vendorId).query(`SELECT 
           rtrim([VENDORID]) as vendorId,
           rtrim([VENDNAME]) as vendorName,
           rtrim([VNDCHKNM]) as vendorCheckName,

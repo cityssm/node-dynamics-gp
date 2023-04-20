@@ -1,5 +1,6 @@
 import { _mssqlConfig, documentCacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import { getAccountByAccountIndex } from '../gp/getAccountByAccountIndex.js'
 
@@ -28,7 +29,7 @@ export async function getCashReceiptByDocumentNumber(
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
-      const receiptResult = await pool
+      const receiptResult: IResult<DiamondCashReceipt> = await pool
         .request()
         .input('documentNumber', documentNumber).query(`SELECT
           0 as isHistorical,

@@ -1,5 +1,6 @@
 import { _mssqlConfig, cacheTTL } from '../config.js'
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+import type { IResult } from 'mssql'
 
 import type { GPCustomer } from './types'
 
@@ -19,7 +20,7 @@ export async function getCustomerByCustomerNumber(
     try {
       const pool = await sqlPool.connect(_mssqlConfig)
 
-      const customerResult = await pool
+      const customerResult: IResult<GPCustomer> = await pool
         .request()
         .input('customerNumber', customerNumber).query(`SELECT
           rtrim([CUSTNMBR]) as customerNumber,
