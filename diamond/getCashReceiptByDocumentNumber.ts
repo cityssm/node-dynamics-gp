@@ -104,6 +104,8 @@ export async function _getCashReceiptByDocumentNumber(
 
     receipt.details = detailsResult.recordset ?? []
 
+    receipt.distributions = []
+
     if (receipt.isHistorical === 1) {
       const distributionResult = await pool
         .request()
@@ -129,8 +131,6 @@ export async function _getCashReceiptByDocumentNumber(
           distribution.accountDescription = account.accountDescription
         }
       }
-    } else {
-      receipt.distributions = []
     }
   }
 

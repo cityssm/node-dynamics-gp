@@ -87,6 +87,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         where dDOCSUFFIX = @documentNumber
         order by dSEQNMBR`);
         receipt.details = detailsResult.recordset ?? [];
+        receipt.distributions = [];
         if (receipt.isHistorical === 1) {
             const distributionResult = await pool
                 .request()
@@ -106,9 +107,6 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
                     distribution.accountDescription = account.accountDescription;
                 }
             }
-        }
-        else {
-            receipt.distributions = [];
         }
     }
     return receipt;
