@@ -1,18 +1,14 @@
 import assert from 'node:assert';
-import * as sqlPool from '@cityssm/mssql-multi-pool';
+import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { DynamicsGP } from '../dynamicsGp.js';
 import { config } from './config.js';
 describe('dynamics-gp/diamond', () => {
-    let gp;
-    let gpMisconfigured;
-    before(() => {
-        gp = new DynamicsGP(config.mssql);
-        gpMisconfigured = new DynamicsGP({
-            server: 'localhost'
-        });
+    const gp = new DynamicsGP(config.mssql);
+    const gpMisconfigured = new DynamicsGP({
+        server: 'localhost'
     });
     after(() => {
-        sqlPool.releaseAll();
+        releaseAll();
     });
     describe('Cash Receipts', () => {
         it('Retrieves a Cash Receipt', async () => {

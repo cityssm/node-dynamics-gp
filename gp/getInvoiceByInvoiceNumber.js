@@ -112,10 +112,7 @@ export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, inv
     }
     sql += ' order by t.DEX_ROW_ID';
     const invoiceResult = await invoiceRequest.query(sql);
-    let invoice;
-    if (invoiceResult.recordset.length > 0) {
-        invoice = invoiceResult.recordset[0];
-    }
+    const invoice = invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined;
     if (invoice !== undefined) {
         const itemResults = await pool
             .request()

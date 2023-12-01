@@ -15,10 +15,7 @@ export async function _getItemByItemNumber(mssqlConfig, itemNumber) {
       MODIFDT as dateModified
       FROM IV00101
       where ITEMNMBR = @itemNumber`);
-    let item;
-    if (itemResult.recordset.length > 0) {
-        item = itemResult.recordset[0];
-    }
+    const item = itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined;
     if (item !== undefined) {
         const quantityResults = await pool.request().input('itemNumber', itemNumber)
             .query(`SELECT

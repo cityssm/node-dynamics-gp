@@ -28,11 +28,10 @@ export async function _getAccountByAccountIndex(
       FROM [GL00100]
       where ACTINDX = @accountIndex`)
 
-  let account: GPAccount | undefined
+  const account: GPAccount | undefined =
+    accountResult.recordset.length > 0 ? accountResult.recordset[0] : undefined
 
-  if (accountResult.recordset.length > 0) {
-    account = accountResult.recordset[0]
-
+  if (account !== undefined) {
     account.accountNumber = buildAccountNumberFromSegments([
       account.accountNumberSegment1,
       account.accountNumberSegment2,

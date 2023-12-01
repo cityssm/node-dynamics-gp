@@ -29,11 +29,8 @@ export async function _getItemByItemNumber(
       FROM IV00101
       where ITEMNMBR = @itemNumber`)
 
-  let item: GPItem | undefined
-
-  if (itemResult.recordset.length > 0) {
-    item = itemResult.recordset[0]
-  }
+  const item: GPItem | undefined =
+    itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined
 
   if (item !== undefined) {
     const quantityResults = await pool.request().input('itemNumber', itemNumber)

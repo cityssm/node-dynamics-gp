@@ -1,4 +1,4 @@
-import type * as gp from '../gp/types';
+import type { GPInvoice } from '../gp/types.js';
 export interface DiamondCashReceipt {
     isHistorical: 0 | 1;
     transactionSource: string;
@@ -51,5 +51,5 @@ export interface DiamondTrialBalanceCode {
     trialBalanceCode?: string;
     trialBalanceCodeDescription?: string;
 }
-export type DiamondExtendedGPInvoice = gp.GPInvoice & DiamondTrialBalanceCode;
+export type DiamondExtendedGPInvoice = GPInvoice & DiamondTrialBalanceCode;
 export {};

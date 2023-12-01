@@ -19,9 +19,8 @@ export async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
       [MODIFDT] as dateModified
       FROM [GL00100]
       where ACTINDX = @accountIndex`);
-    let account;
-    if (accountResult.recordset.length > 0) {
-        account = accountResult.recordset[0];
+    const account = accountResult.recordset.length > 0 ? accountResult.recordset[0] : undefined;
+    if (account !== undefined) {
         account.accountNumber = buildAccountNumberFromSegments([
             account.accountNumberSegment1,
             account.accountNumberSegment2,

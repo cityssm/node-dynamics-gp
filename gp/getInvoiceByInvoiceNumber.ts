@@ -139,11 +139,8 @@ export async function _getInvoiceByInvoiceNumber(
 
   const invoiceResult: IResult<GPInvoice> = await invoiceRequest.query(sql)
 
-  let invoice: GPInvoice | undefined
-
-  if (invoiceResult.recordset.length > 0) {
-    invoice = invoiceResult.recordset[0]
-  }
+  const invoice: GPInvoice | undefined =
+    invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined
 
   if (invoice !== undefined) {
     const itemResults = await pool
