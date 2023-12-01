@@ -55,9 +55,9 @@ npm install @cityssm/dynamics-gp
 ## Dynamics GP Functions
 
 ```javascript
-import * as gp from '@cityssm/dynamics-gp'
+import { DynamicsGP } from '@cityssm/dynamics-gp'
 
-gp.setMSSQLConfig(mssqlConfig)
+const gp = new DynamicsGP(mssqlConfig)
 
 const account = await gp.getAccountByAccountIndex(123)
 
@@ -76,13 +76,9 @@ The functions below query Dynamics GP tables with extensions from
 [Diamond Municipal Solutions](https://diamondmunicipal.com/).
 
 ```javascript
-import * as diamond from '@cityssm/dynamics-gp/diamond.js'
+const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber('123456')
 
-diamond.setMSSQLConfig(mssqlConfig)
-
-const cashReceipt = await diamond.getCashReceiptByDocumentNumber('123456')
-
-const invoice = await diamond.getDiamondExtendedGPInvoice(invoiceNumber)
+const invoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber)
 ```
 
 ## Contributions
