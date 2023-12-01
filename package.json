@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/dynamics-gp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Read only inquiries into Microsoft Dynamics GP using a SQL Server connection.",
   "keywords": [
     "cash-receipts",
@@ -22,10 +22,7 @@
   "license": "MIT",
   "author": "The Corporation of the City of Sault Ste. Marie",
   "type": "module",
-  "exports": {
-    ".": "./dynamicsGp.js",
-    "./dynamicsGp.js": "./dynamicsGp.js"
-  },
+  "exports": "./dynamicsGp.js",
   "scripts": {
     "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* mocha --timeout 10000",
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
