@@ -18,3 +18,5 @@ export declare class DynamicsGP {
     getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
     getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;
 }
+export type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItem, GPVendor } from './gp/types.js';
+export type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';

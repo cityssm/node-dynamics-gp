@@ -251,3 +251,17 @@ export class DynamicsGP {
     return diamondInvoice
   }
 }
+
+export type {
+  GPAccount,
+  GPCustomer,
+  GPInvoice,
+  GPInvoiceDocumentType,
+  GPItem,
+  GPVendor
+} from './gp/types.js'
+
+export type {
+  DiamondCashReceipt,
+  DiamondExtendedGPInvoice
+} from './diamond/types.js'
