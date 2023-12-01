@@ -168,7 +168,7 @@ export async function _getInvoiceByInvoiceNumber(
         [EXPTSHIP] as shipDateExpected,
         [ACTLSHIP] as shipDateActual,
         [ReqShipDate] as shipDateRequested
-        FROM ${invoice.isHistorical ? '[IVC30102]' : '[IVC10101]'}
+        FROM ${invoice.isHistorical === 1 ? '[IVC30102]' : '[IVC10101]'}
         where INVCNMBR = @invoiceNumber
         and DOCTYPE = @invoiceDocumentType
         order by LNITMSEQ`)
