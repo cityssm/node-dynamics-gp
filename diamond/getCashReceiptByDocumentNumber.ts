@@ -16,8 +16,6 @@ export async function _getCashReceiptByDocumentNumber(
     return undefined
   }
 
-  let receipt: DiamondCashReceipt | undefined
-
   const pool = await connect(mssqlConfig)
 
   const receiptResult: IResult<DiamondCashReceipt> = await pool
@@ -79,6 +77,8 @@ export async function _getCashReceiptByDocumentNumber(
       where dDOCSUFFIX = @documentNumber
       
       order by isHistorical`)
+
+  let receipt: DiamondCashReceipt | undefined
 
   if (receiptResult.recordset.length > 0) {
     receipt = receiptResult.recordset[0]

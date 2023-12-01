@@ -1,6 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) {
-    let customer;
     const pool = await connect(mssqlConfig);
     const customerResult = await pool
         .request()
@@ -26,9 +25,8 @@ export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) 
       MODIFDT as dateModified
       FROM RM00101
       where CUSTNMBR = @customerNumber`);
-    if (customerResult.recordset.length > 0) {
-        customer = customerResult.recordset[0];
-    }
-    return customer;
+    return customerResult.recordset.length > 0
+        ? customerResult.recordset[0]
+        : undefined;
 }
 export default _getCustomerByCustomerNumber;

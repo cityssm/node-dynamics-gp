@@ -1,6 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export async function _getVendorByVendorId(mssqlConfig, vendorId) {
-    let vendor;
     const pool = await connect(mssqlConfig);
     const vendorResult = await pool
         .request()
@@ -27,9 +26,8 @@ export async function _getVendorByVendorId(mssqlConfig, vendorId) {
       MODIFDT as dateModified
       FROM PM00200
       where VENDORID = @vendorId`);
-    if (vendorResult.recordset.length > 0) {
-        vendor = vendorResult.recordset[0];
-    }
-    return vendor;
+    return vendorResult.recordset.length > 0
+        ? vendorResult.recordset[0]
+        : undefined;
 }
 export default _getVendorByVendorId;

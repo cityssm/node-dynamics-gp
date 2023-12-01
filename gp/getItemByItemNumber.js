@@ -1,6 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export async function _getItemByItemNumber(mssqlConfig, itemNumber) {
-    let item;
     const pool = await connect(mssqlConfig);
     const itemResult = await pool
         .request()
@@ -16,6 +15,7 @@ export async function _getItemByItemNumber(mssqlConfig, itemNumber) {
       MODIFDT as dateModified
       FROM IV00101
       where ITEMNMBR = @itemNumber`);
+    let item;
     if (itemResult.recordset.length > 0) {
         item = itemResult.recordset[0];
     }

@@ -7,8 +7,6 @@ export async function _getCustomerByCustomerNumber(
   mssqlConfig: MSSQLConfig,
   customerNumber: string
 ): Promise<GPCustomer | undefined> {
-  let customer: GPCustomer | undefined
-
   const pool = await connect(mssqlConfig)
 
   const customerResult: IResult<GPCustomer> = await pool
@@ -36,11 +34,9 @@ export async function _getCustomerByCustomerNumber(
       FROM RM00101
       where CUSTNMBR = @customerNumber`)
 
-  if (customerResult.recordset.length > 0) {
-    customer = customerResult.recordset[0]
-  }
-
-  return customer
+  return customerResult.recordset.length > 0
+    ? customerResult.recordset[0]
+    : undefined
 }
 
 export default _getCustomerByCustomerNumber

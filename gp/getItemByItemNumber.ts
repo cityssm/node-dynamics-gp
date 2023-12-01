@@ -12,8 +12,6 @@ export async function _getItemByItemNumber(
   mssqlConfig: MSSQLConfig,
   itemNumber: string
 ): Promise<GPItem | undefined> {
-  let item: GPItem | undefined
-
   const pool = await connect(mssqlConfig)
 
   const itemResult: IResult<GPItem> = await pool
@@ -30,6 +28,8 @@ export async function _getItemByItemNumber(
       MODIFDT as dateModified
       FROM IV00101
       where ITEMNMBR = @itemNumber`)
+
+  let item: GPItem | undefined
 
   if (itemResult.recordset.length > 0) {
     item = itemResult.recordset[0]

@@ -8,8 +8,6 @@ export async function _getAccountByAccountIndex(
   mssqlConfig: MSSQLConfig,
   accountIndex: number | string
 ): Promise<GPAccount | undefined> {
-  let account: GPAccount | undefined
-
   const pool = await connect(mssqlConfig)
 
   const accountResult: IResult<GPAccount> = await pool
@@ -29,6 +27,8 @@ export async function _getAccountByAccountIndex(
       [MODIFDT] as dateModified
       FROM [GL00100]
       where ACTINDX = @accountIndex`)
+
+  let account: GPAccount | undefined
 
   if (accountResult.recordset.length > 0) {
     account = accountResult.recordset[0]

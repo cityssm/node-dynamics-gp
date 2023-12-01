@@ -1,7 +1,6 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 import { buildAccountNumberFromSegments } from './utilities.js';
 export async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
-    let account;
     const pool = await connect(mssqlConfig);
     const accountResult = await pool
         .request()
@@ -20,6 +19,7 @@ export async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
       [MODIFDT] as dateModified
       FROM [GL00100]
       where ACTINDX = @accountIndex`);
+    let account;
     if (accountResult.recordset.length > 0) {
         account = accountResult.recordset[0];
         account.accountNumber = buildAccountNumberFromSegments([

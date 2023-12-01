@@ -5,7 +5,6 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         Number.isNaN(Number.parseFloat(documentNumber))) {
         return undefined;
     }
-    let receipt;
     const pool = await connect(mssqlConfig);
     const receiptResult = await pool
         .request()
@@ -66,6 +65,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
       where dDOCSUFFIX = @documentNumber
       
       order by isHistorical`);
+    let receipt;
     if (receiptResult.recordset.length > 0) {
         receipt = receiptResult.recordset[0];
     }

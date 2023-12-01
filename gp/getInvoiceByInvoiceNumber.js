@@ -1,6 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
-    let invoice;
     const pool = await connect(mssqlConfig);
     const invoiceRequest = pool.request().input('invoiceNumber', invoiceNumber);
     let sql = `select top 1
@@ -104,15 +103,16 @@ export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, inv
     if (invoiceDocumentTypeOrAbbreviationOrName !== undefined) {
         invoiceRequest.input('invoiceDocumentType', invoiceDocumentTypeOrAbbreviationOrName.toString());
         sql += ` where (
-            t.DOCTYABR = @invoiceDocumentType
-            or t.DOCTYNAM = @invoiceDocumentType
-            ${typeof invoiceDocumentTypeOrAbbreviationOrName === 'string' &&
+      t.DOCTYABR = @invoiceDocumentType
+      or t.DOCTYNAM = @invoiceDocumentType
+      ${typeof invoiceDocumentTypeOrAbbreviationOrName === 'string' &&
             Number.isNaN(Number.parseInt(invoiceDocumentTypeOrAbbreviationOrName, 10))
             ? ''
             : ' or t.DOCTYPE = @invoiceDocumentType'})`;
     }
     sql += ' order by t.DEX_ROW_ID';
     const invoiceResult = await invoiceRequest.query(sql);
+    let invoice;
     if (invoiceResult.recordset.length > 0) {
         invoice = invoiceResult.recordset[0];
     }
@@ -121,31 +121,31 @@ export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, inv
             .request()
             .input('invoiceDocumentType', invoice.invoiceDocumentType)
             .input('invoiceNumber', invoice.invoiceNumber).query(`SELECT
-            [LNITMSEQ] as lineItemNumber,
-            rtrim([ITEMNMBR]) as itemNumber,
-            [QUANTITY] as quantity,
-            [QTYINSVC] as quantityInService,
-            [QTYINUSE] as quantityInUse,
-            [QTYDMGED] as quantityDamaged,
-            [QTYRTRND] as quantityReturned,
-            [QTYONHND] as quantityOnHand,
-            [EXTQTYSEL] as existingQuantitySelected,
-            rtrim([UOFM]) as unitOfMeasurement,
-            [UNITCOST] as unitCost,
-            [EXTDCOST] as extendedCost,
-            [ATYALLOC] as quantityAllocated,
-            rtrim([LOCNCODE]) as locationCode,
-            [XTNDPRCE] as extendedPrice,
-            [UNITPRCE] as unitPrice,
-            [TAXAMNT] as taxAmount,
-            rtrim([ITEMDESC]) as itemDescription,
-            [EXPTSHIP] as shipDateExpected,
-            [ACTLSHIP] as shipDateActual,
-            [ReqShipDate] as shipDateRequested
-            FROM ${invoice.isHistorical ? '[IVC30102]' : '[IVC10101]'}
-            where INVCNMBR = @invoiceNumber
-            and DOCTYPE = @invoiceDocumentType
-            order by LNITMSEQ`);
+        [LNITMSEQ] as lineItemNumber,
+        rtrim([ITEMNMBR]) as itemNumber,
+        [QUANTITY] as quantity,
+        [QTYINSVC] as quantityInService,
+        [QTYINUSE] as quantityInUse,
+        [QTYDMGED] as quantityDamaged,
+        [QTYRTRND] as quantityReturned,
+        [QTYONHND] as quantityOnHand,
+        [EXTQTYSEL] as existingQuantitySelected,
+        rtrim([UOFM]) as unitOfMeasurement,
+        [UNITCOST] as unitCost,
+        [EXTDCOST] as extendedCost,
+        [ATYALLOC] as quantityAllocated,
+        rtrim([LOCNCODE]) as locationCode,
+        [XTNDPRCE] as extendedPrice,
+        [UNITPRCE] as unitPrice,
+        [TAXAMNT] as taxAmount,
+        rtrim([ITEMDESC]) as itemDescription,
+        [EXPTSHIP] as shipDateExpected,
+        [ACTLSHIP] as shipDateActual,
+        [ReqShipDate] as shipDateRequested
+        FROM ${invoice.isHistorical ? '[IVC30102]' : '[IVC10101]'}
+        where INVCNMBR = @invoiceNumber
+        and DOCTYPE = @invoiceDocumentType
+        order by LNITMSEQ`);
         invoice.lineItems = itemResults.recordset ?? [];
     }
     return invoice;

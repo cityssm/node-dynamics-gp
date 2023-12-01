@@ -12,8 +12,6 @@ export async function _getVendorByVendorId(
   mssqlConfig: MSSQLConfig,
   vendorId: string
 ): Promise<GPVendor | undefined> {
-  let vendor: GPVendor | undefined
-
   const pool = await connect(mssqlConfig)
 
   const vendorResult: IResult<GPVendor> = await pool
@@ -42,11 +40,9 @@ export async function _getVendorByVendorId(
       FROM PM00200
       where VENDORID = @vendorId`)
 
-  if (vendorResult.recordset.length > 0) {
-    vendor = vendorResult.recordset[0]
-  }
-
-  return vendor
+  return vendorResult.recordset.length > 0
+    ? vendorResult.recordset[0]
+    : undefined
 }
 
 export default _getVendorByVendorId
