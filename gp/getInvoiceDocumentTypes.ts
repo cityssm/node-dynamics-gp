@@ -1,54 +1,21 @@
-import { _mssqlConfig, cacheTTL, queryErrorMessage } from '../config.js'
-import * as sqlPool from '@cityssm/mssql-multi-pool'
-import type { IResult } from 'mssql'
+import { connect } from '@cityssm/mssql-multi-pool'
+import type { config as MSSQLConfig, IResult } from 'mssql'
 
-import type { GPInvoiceDocumentType } from './types'
+import type { GPInvoiceDocumentType } from './types.js'
 
-import Debug from 'debug'
-const debug = Debug('dynamics-gp:gp:getInvoiceDocumentTypes')
+export async function _getInvoiceDocumentTypes(
+  mssqlConfig: MSSQLConfig
+): Promise<GPInvoiceDocumentType[]> {
+  const pool = await connect(mssqlConfig)
 
-let documentTypesCache: GPInvoiceDocumentType[]
-let documentTypesCacheExpiryMillis = 0
+  const result: IResult<GPInvoiceDocumentType> = await pool.request()
+    .query(`SELECT DOCTYPE as invoiceDocumentType,
+      rtrim(DOCTYABR) as documentTypeAbbreviation,
+      rtrim(DOCTYNAM) as documentTypeName
+      FROM IVC40101
+      order by DEX_ROW_ID`)
 
-export async function getInvoiceDocumentTypes(): Promise<
-  GPInvoiceDocumentType[]
-> {
-  let invoiceDocumentTypes: GPInvoiceDocumentType[] = documentTypesCache
-
-  if (
-    invoiceDocumentTypes === undefined ||
-    documentTypesCacheExpiryMillis < Date.now()
-  ) {
-    try {
-      const pool = await sqlPool.connect(_mssqlConfig)
-
-      const result: IResult<GPInvoiceDocumentType> = await pool.request()
-        .query(`SELECT DOCTYPE as invoiceDocumentType,
-          rtrim(DOCTYABR) as documentTypeAbbreviation,
-          rtrim(DOCTYNAM) as documentTypeName
-          FROM IVC40101
-          order by DEX_ROW_ID`)
-
-      invoiceDocumentTypes = result.recordset
-
-      documentTypesCache = invoiceDocumentTypes
-      documentTypesCacheExpiryMillis = Date.now() + cacheTTL * 1000
-    } catch (error) {
-      debug(queryErrorMessage)
-      throw error
-    }
-  } else {
-    debug('Cache hit')
-  }
-
-  debug(invoiceDocumentTypes)
-
-  return invoiceDocumentTypes
+  return result.recordset
 }
 
-export function clearInvoiceDocumentTypesCache() {
-  documentTypesCache = undefined
-  documentTypesCacheExpiryMillis = 0
-}
-
-export default getInvoiceDocumentTypes
+export default _getInvoiceDocumentTypes

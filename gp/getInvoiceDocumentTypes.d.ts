@@ -1,4 +1,4 @@
-import type { GPInvoiceDocumentType } from './types';
-export declare function getInvoiceDocumentTypes(): Promise<GPInvoiceDocumentType[]>;
-export declare function clearInvoiceDocumentTypesCache(): void;
-export default getInvoiceDocumentTypes;
+import type { config as MSSQLConfig } from 'mssql';
+import type { GPInvoiceDocumentType } from './types.js';
+export declare function _getInvoiceDocumentTypes(mssqlConfig: MSSQLConfig): Promise<GPInvoiceDocumentType[]>;
+export default _getInvoiceDocumentTypes;

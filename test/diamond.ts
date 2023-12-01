@@ -1,18 +1,21 @@
 import assert from 'node:assert'
 
-import * as diamond from '../diamond.js'
-import * as gp from '../gp.js'
-
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+
+import { DynamicsGP } from '../dynamicsGp.js'
 
 import { config } from './config.js'
 
 describe('dynamics-gp/diamond', () => {
-  beforeEach(() => {
-    diamond.setMSSQLConfig(config.mssql)
-    assert(diamond.hasMSSQLConfig())
-  })
+  let gp: DynamicsGP
+  let gpMisconfigured: DynamicsGP
 
+  before(() => {
+    gp = new DynamicsGP(config.mssql)
+    gpMisconfigured = new DynamicsGP({
+      server: 'localhost'
+    })
+  })
   after(() => {
     sqlPool.releaseAll()
   })
@@ -21,11 +24,11 @@ describe('dynamics-gp/diamond', () => {
     it('Retrieves a Cash Receipt', async () => {
       // Do twice to test cache retrieval
 
-      let cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+      let cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumber
       )
 
-      cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+      cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumber
       )
 
@@ -38,7 +41,7 @@ describe('dynamics-gp/diamond', () => {
     })
 
     it('Returns undefined when document number is not a number', async () => {
-      const cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+      const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumberInvalid
       )
 
@@ -46,7 +49,7 @@ describe('dynamics-gp/diamond', () => {
     })
 
     it('Returns undefined when document number is not found', async () => {
-      const cashReceipt = await diamond.getCashReceiptByDocumentNumber(
+      const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumberNotFound
       )
 
@@ -54,12 +57,8 @@ describe('dynamics-gp/diamond', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      diamond.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await diamond.getCashReceiptByDocumentNumber(
+        await gpMisconfigured.getDiamondCashReceiptByDocumentNumber(
           config.cashReceiptDocumentNumber
         )
       } catch {
@@ -72,32 +71,13 @@ describe('dynamics-gp/diamond', () => {
   })
 
   describe('Extend GP Invoices', () => {
-    it('Adds additional fields to an existing GPInvoice', async () => {
-      gp.setMSSQLConfig(config.mssql)
-
-      const gpInvoice = await gp.getInvoiceByInvoiceNumber(
-        config.invoiceNumber,
-        config.invoiceDocumentType
-      )
-
-      const gpInvoiceKeyCount = Object.keys(gpInvoice).length
-
-      const diamondInvoice = await diamond.extendGPInvoice(gpInvoice)
-
-      assert.ok(gpInvoiceKeyCount < Object.keys(diamondInvoice).length)
-    })
-
     it('Gets a fully extended GPInvoice', async () => {
-      const diamondInvoice = await diamond.getDiamondExtendedGPInvoice(
+      const diamondInvoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(
         config.invoiceNumber
       )
 
+      assert.ok(diamondInvoice)
       assert.ok(diamondInvoice.trialBalanceCode !== undefined)
     })
-  })
-
-  it('Clears caches without error', () => {
-    diamond.clearCaches()
-    assert.ok(1)
   })
 })

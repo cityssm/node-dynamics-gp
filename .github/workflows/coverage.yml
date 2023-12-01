@@ -10,11 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [ 14, 16, 18 ]
+        node: [ 18, 20, 21 ]
     env:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v3
@@ -33,10 +33,6 @@ jobs:
         run: |
           sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "create database Dynamics"
           sqlcmd -S localhost -U sa -P dbatools.I0 -d Dynamics -i test/createTables.sql -I
-      
-      - name: Update NPM (Node 14)
-        if: ${{ matrix.node == 14 }}
-        run: npm install -g npm@7
 
       - name: Install Package
         run: |
@@ -47,7 +43,7 @@ jobs:
         run: cp ./test/config.github.js ./test/config.js
         
       - name: Code Climate (Before)
-        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}
+        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 20 }}
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
           chmod +x codeclimate-test-reporter
@@ -57,17 +53,22 @@ jobs:
         run: cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
 
       - name: Code Climate (After)
-        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}
+        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 20 }}
         run: |
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
           
-      - name: Codacy
-        if: ${{ github.event_name != 'pull_request' && env.CODACY_PROJECT_TOKEN != '' && matrix.node == 16 }}
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
-
       - name: Codecov
-        if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 16 }}
+        if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 20 }}
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
+
+      - name: DeepSource
+        if: ${{ github.event_name != 'pull_request' && env.DEEPSOURCE_DSN != '' && matrix.node == 20 }}
+        run: |
+          # Install deepsource CLI
+          curl https://deepsource.io/cli | sh
+    
+          # From the root directory, run the report coverage command
+          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info

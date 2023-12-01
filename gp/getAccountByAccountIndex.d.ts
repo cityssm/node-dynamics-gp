@@ -1,4 +1,4 @@
-import type { GPAccount } from './types';
-export declare function getAccountByAccountIndex(accountIndex: number | string): Promise<GPAccount | undefined>;
-export declare function clearAccountCache(): void;
-export default getAccountByAccountIndex;
+import { type config as MSSQLConfig } from 'mssql';
+import type { GPAccount } from './types.js';
+export declare function _getAccountByAccountIndex(mssqlConfig: MSSQLConfig, accountIndex: number | string): Promise<GPAccount | undefined>;
+export default _getAccountByAccountIndex;

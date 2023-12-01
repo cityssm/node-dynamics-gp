@@ -1,7 +1,7 @@
-import type * as mssql from 'mssql'
+import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {
-  mssql: mssql.config
+  mssql: MSSQLConfig
 
   accountIndex: number
   accountIndexNotFound: number

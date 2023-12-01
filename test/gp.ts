@@ -1,14 +1,20 @@
 import assert from 'node:assert'
-import * as gp from '../gp.js'
 
 import * as sqlPool from '@cityssm/mssql-multi-pool'
+
+import { DynamicsGP } from '../dynamicsGp.js'
 
 import { config } from './config.js'
 
 describe('dynamics-gp', () => {
-  beforeEach(() => {
-    gp.setMSSQLConfig(config.mssql)
-    assert(gp.hasMSSQLConfig())
+  let gp: DynamicsGP
+  let gpMisconfigured: DynamicsGP
+
+  before(() => {
+    gp = new DynamicsGP(config.mssql)
+    gpMisconfigured = new DynamicsGP({
+      server: 'localhost'
+    })
   })
 
   after(() => {
@@ -16,12 +22,11 @@ describe('dynamics-gp', () => {
   })
 
   describe('Accounts', () => {
-
     it('Retrieves an Account', async () => {
       // Do twice to test cache retrival
       let account = await gp.getAccountByAccountIndex(config.accountIndex)
       account = await gp.getAccountByAccountIndex(config.accountIndex)
-  
+
       assert.ok(account)
       assert.strictEqual(config.accountIndex, account.accountIndex)
     })
@@ -35,12 +40,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getAccountByAccountIndex(config.accountIndex)
+        await gpMisconfigured.getAccountByAccountIndex(config.accountIndex)
       } catch {
         assert.ok(1)
         return
@@ -69,12 +70,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getCustomerByCustomerNumber(config.customerNumber)
+        await gpMisconfigured.getCustomerByCustomerNumber(config.customerNumber)
       } catch {
         assert.ok(1)
         return
@@ -95,12 +92,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getInvoiceDocumentTypes()
+        await gpMisconfigured.getInvoiceDocumentTypes()
       } catch {
         assert.ok(1)
         return
@@ -144,12 +137,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+        await gpMisconfigured.getInvoiceByInvoiceNumber(config.invoiceNumber)
       } catch {
         assert.ok(1)
         return
@@ -176,12 +165,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getItemByItemNumber(config.itemNumber)
+        await gpMisconfigured.getItemByItemNumber(config.itemNumber)
       } catch {
         assert.ok(1)
         return
@@ -208,12 +193,8 @@ describe('dynamics-gp', () => {
     })
 
     it('Throws an error when SQL is misconfigured', async () => {
-      gp.setMSSQLConfig({
-        server: 'localhost'
-      })
-
       try {
-        await gp.getVendorByVendorId(config.vendorId)
+        await gpMisconfigured.getVendorByVendorId(config.vendorId)
       } catch {
         assert.ok(1)
         return

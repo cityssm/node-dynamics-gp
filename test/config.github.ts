@@ -1,4 +1,4 @@
-import type { Config } from './types'
+import type { Config } from './types.js'
 
 // Secrets OK
 // https://github.com/potatoqualitee/mssqlsuite

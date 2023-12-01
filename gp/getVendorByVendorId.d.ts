@@ -1,4 +1,4 @@
-import type { GPVendor } from './types';
-export declare function getVendorByVendorId(vendorId: string): Promise<GPVendor | undefined>;
-export declare function clearVendorCache(): void;
-export default getVendorByVendorId;
+import type { config as MSSQLConfig } from 'mssql';
+import type { GPVendor } from './types.js';
+export declare function _getVendorByVendorId(mssqlConfig: MSSQLConfig, vendorId: string): Promise<GPVendor | undefined>;
+export default _getVendorByVendorId;

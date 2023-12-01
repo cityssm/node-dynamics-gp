@@ -1,11 +1,15 @@
 import assert from 'node:assert';
-import * as gp from '../gp.js';
 import * as sqlPool from '@cityssm/mssql-multi-pool';
+import { DynamicsGP } from '../dynamicsGp.js';
 import { config } from './config.js';
 describe('dynamics-gp', () => {
-    beforeEach(() => {
-        gp.setMSSQLConfig(config.mssql);
-        assert(gp.hasMSSQLConfig());
+    let gp;
+    let gpMisconfigured;
+    before(() => {
+        gp = new DynamicsGP(config.mssql);
+        gpMisconfigured = new DynamicsGP({
+            server: 'localhost'
+        });
     });
     after(() => {
         sqlPool.releaseAll();
@@ -22,11 +26,8 @@ describe('dynamics-gp', () => {
             assert.strictEqual(account, undefined);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getAccountByAccountIndex(config.accountIndex);
+                await gpMisconfigured.getAccountByAccountIndex(config.accountIndex);
             }
             catch {
                 assert.ok(1);
@@ -47,11 +48,8 @@ describe('dynamics-gp', () => {
             assert.strictEqual(customer, undefined);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getCustomerByCustomerNumber(config.customerNumber);
+                await gpMisconfigured.getCustomerByCustomerNumber(config.customerNumber);
             }
             catch {
                 assert.ok(1);
@@ -68,11 +66,8 @@ describe('dynamics-gp', () => {
             assert.ok(invoiceDocumentTypes.length > 0);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getInvoiceDocumentTypes();
+                await gpMisconfigured.getInvoiceDocumentTypes();
             }
             catch {
                 assert.ok(1);
@@ -99,11 +94,8 @@ describe('dynamics-gp', () => {
             assert.strictEqual(invoice, undefined);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+                await gpMisconfigured.getInvoiceByInvoiceNumber(config.invoiceNumber);
             }
             catch {
                 assert.ok(1);
@@ -124,11 +116,8 @@ describe('dynamics-gp', () => {
             assert.strictEqual(item, undefined);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getItemByItemNumber(config.itemNumber);
+                await gpMisconfigured.getItemByItemNumber(config.itemNumber);
             }
             catch {
                 assert.ok(1);
@@ -149,11 +138,8 @@ describe('dynamics-gp', () => {
             assert.strictEqual(vendor, undefined);
         });
         it('Throws an error when SQL is misconfigured', async () => {
-            gp.setMSSQLConfig({
-                server: 'localhost'
-            });
             try {
-                await gp.getVendorByVendorId(config.vendorId);
+                await gpMisconfigured.getVendorByVendorId(config.vendorId);
             }
             catch {
                 assert.ok(1);

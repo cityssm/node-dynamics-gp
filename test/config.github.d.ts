@@ -1,2 +1,2 @@
-import type { Config } from './types';
+import type { Config } from './types.js';
 export declare const config: Config;

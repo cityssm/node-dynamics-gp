@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/dynamics-gp",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "Read only inquiries into Microsoft Dynamics GP using a SQL Server connection.",
   "keywords": [
     "cash-receipts",
@@ -23,34 +23,25 @@
   "author": "The Corporation of the City of Sault Ste. Marie",
   "type": "module",
   "exports": {
-    ".": "./gp.js",
-    "./gp.js": "./gp.js",
-    "./diamond.js": "./diamond.js"
+    ".": "./dynamicsGp.js",
+    "./dynamicsGp.js": "./dynamicsGp.js"
   },
   "scripts": {
     "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* mocha --timeout 10000",
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^2.2.1",
-    "debug": "^4.3.4",
-    "mssql": "^9.1.1",
+    "@cityssm/mssql-multi-pool": "^3.0.0",
+    "mssql": "^10.0.1",
     "node-cache": "^5.1.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.7",
-    "@types/mocha": "^10.0.1",
-    "@types/mssql": "^8.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.59.0",
-    "@typescript-eslint/parser": "^5.59.0",
+    "@types/mocha": "^10.0.6",
+    "@types/mssql": "^9.1.4",
     "cross-env": "^7.0.3",
-    "eslint": "^8.38.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-unicorn": "^46.0.0"
+    "eslint-config-cityssm": "^1.1.1"
   },
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=18.0.0"
   }
 }

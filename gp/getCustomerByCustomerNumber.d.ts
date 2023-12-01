@@ -1,4 +1,4 @@
-import type { GPCustomer } from './types';
-export declare function getCustomerByCustomerNumber(customerNumber: string): Promise<GPCustomer | undefined>;
-export declare function clearCustomerCache(): void;
-export default getCustomerByCustomerNumber;
+import { type config as MSSQLConfig } from 'mssql';
+import type { GPCustomer } from './types.js';
+export declare function _getCustomerByCustomerNumber(mssqlConfig: MSSQLConfig, customerNumber: string): Promise<GPCustomer | undefined>;
+export default _getCustomerByCustomerNumber;
