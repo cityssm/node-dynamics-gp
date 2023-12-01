@@ -78,11 +78,8 @@ export async function _getCashReceiptByDocumentNumber(
       
       order by isHistorical`)
 
-  let receipt: DiamondCashReceipt | undefined
-
-  if (receiptResult.recordset.length > 0) {
-    receipt = receiptResult.recordset[0]
-  }
+  const receipt =
+    receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined
 
   if (receipt !== undefined) {
     const detailsResult = await pool

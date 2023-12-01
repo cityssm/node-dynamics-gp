@@ -1,5 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool'
-import type { config as MSSQLConfig } from 'mssql'
+import type { IResult, config as MSSQLConfig } from 'mssql'
 
 import type { GPInvoice } from '../gp/types.js'
 
@@ -16,11 +16,9 @@ export async function _extendGpInvoice(
 
   // Trial Balance Code
 
-  let trialBalanceCode: DiamondTrialBalanceCode | undefined
-
   const pool = await connect(mssqlConfig)
 
-  const tbcResult = await pool
+  const tbcResult: IResult<DiamondTrialBalanceCode> = await pool
     .request()
     .input('invoiceNumber', gpInvoice.invoiceNumber).query(`SELECT top 1
       t.dCUSTTBCODE as trialBalanceCode,
@@ -29,9 +27,8 @@ export async function _extendGpInvoice(
       inner join SF023 t on i.dcusttbcode = t.dcusttbcode
       where docnumbr = @invoiceNumber`)
 
-  if (tbcResult.recordset.length > 0) {
-    trialBalanceCode = tbcResult.recordset[0]
-  }
+  const trialBalanceCode =
+    tbcResult.recordset.length > 0 ? tbcResult.recordset[0] : undefined
 
   if (trialBalanceCode !== undefined) {
     diamondInvoice.trialBalanceCode = trialBalanceCode.trialBalanceCode
