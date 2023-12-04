@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/dynamics-gp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Read only inquiries into Microsoft Dynamics GP using a SQL Server connection.",
   "keywords": [
     "cash-receipts",
