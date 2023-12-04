@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
-import { DynamicsGP } from '../dynamicsGp.js';
+import { DynamicsGP } from '../index.js';
 import { config } from './config.js';
 describe('dynamics-gp/diamond', () => {
     const gp = new DynamicsGP(config.mssql);

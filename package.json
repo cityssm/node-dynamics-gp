@@ -22,7 +22,7 @@
   "license": "MIT",
   "author": "The Corporation of the City of Sault Ste. Marie",
   "type": "module",
-  "exports": "./dynamicsGp.js",
+  "exports": "./index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* mocha --timeout 10000",
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
