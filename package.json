@@ -24,19 +24,19 @@
   "type": "module",
   "exports": "./index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* mocha --timeout 10000",
-    "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000"
+    "test": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* node --test",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^3.0.0",
-    "mssql": "^10.0.1",
+    "@cityssm/mssql-multi-pool": "^3.1.5",
+    "mssql": "^11.0.1",
     "node-cache": "^5.1.2"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/mssql": "^9.1.4",
+    "@types/mssql": "^9.1.5",
     "cross-env": "^7.0.3",
-    "eslint-config-cityssm": "^1.1.1"
+    "eslint-config-cityssm": "^5.0.2",
+    "prettier-config-cityssm": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

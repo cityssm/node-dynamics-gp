@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { DynamicsGP } from '../index.js';
 import { config } from './config.js';
