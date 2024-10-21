@@ -28,7 +28,7 @@
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^3.1.5",
+    "@cityssm/mssql-multi-pool": "^4.0.0",
     "mssql": "^11.0.1",
     "node-cache": "^5.1.2"
   },
