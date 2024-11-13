@@ -39,7 +39,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getAccountByAccountIndex(config.accountIndex)
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -69,7 +69,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getCustomerByCustomerNumber(config.customerNumber)
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -90,7 +90,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getInvoiceDocumentTypes()
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -136,7 +136,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getInvoiceByInvoiceNumber(config.invoiceNumber)
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -164,7 +164,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getItemByItemNumber(config.itemNumber)
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -183,7 +183,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getItemsByLocationCodes()
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -211,7 +211,7 @@ describe('dynamics-gp', () => {
       try {
         await gpMisconfigured.getVendorByVendorId(config.vendorId)
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
@@ -221,6 +221,6 @@ describe('dynamics-gp', () => {
 
   it('Clears caches without error', () => {
     gp.clearCaches()
-    assert.ok(1)
+    assert.ok(true)
   })
 })

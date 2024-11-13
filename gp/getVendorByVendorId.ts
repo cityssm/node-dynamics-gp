@@ -4,6 +4,7 @@ import type { GPVendor } from './types.js'
 
 /**
  * Inquiry > Purchasing > Vendor
+ * @param mssqlConfig
  * @param vendorId
  * @returns
  */
