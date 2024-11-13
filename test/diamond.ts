@@ -14,22 +14,22 @@ describe('dynamics-gp/diamond', () => {
   })
 
   after(() => {
-    releaseAll()
+    void releaseAll()
   })
 
   describe('Cash Receipts', () => {
     it('Retrieves a Cash Receipt', async () => {
       // Do twice to test cache retrieval
 
-      let cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
+      await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumber
       )
 
-      cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
+      const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumber
       )
 
-      assert.ok(cashReceipt)
+      assert.ok(cashReceipt !== undefined)
       assert.strictEqual(
         config.cashReceiptDocumentNumber,
         cashReceipt.documentNumber
@@ -73,7 +73,7 @@ describe('dynamics-gp/diamond', () => {
         config.invoiceNumber
       )
 
-      assert.ok(diamondInvoice)
+      assert.ok(diamondInvoice !== undefined)
       assert.ok(diamondInvoice.trialBalanceCode !== undefined)
     })
   })

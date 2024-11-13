@@ -1,5 +1,4 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { config as MSSQLConfig, IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { GPVendor } from './types.js'
 
@@ -8,13 +7,13 @@ import type { GPVendor } from './types.js'
  * @param vendorId
  * @returns
  */
-export async function _getVendorByVendorId(
-  mssqlConfig: MSSQLConfig,
+export default async function _getVendorByVendorId(
+  mssqlConfig: mssqlTypes.config,
   vendorId: string
 ): Promise<GPVendor | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const vendorResult: IResult<GPVendor> = await pool
+  const vendorResult = await pool
     .request()
     .input('vendorId', vendorId).query(`SELECT top 1
       rtrim(VENDORID) as vendorId,
@@ -38,11 +37,10 @@ export async function _getVendorByVendorId(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM PM00200
-      where VENDORID = @vendorId`)
+      where VENDORID = @vendorId`) as mssqlTypes.IResult<GPVendor>
 
   return vendorResult.recordset.length > 0
     ? vendorResult.recordset[0]
     : undefined
 }
 
-export default _getVendorByVendorId

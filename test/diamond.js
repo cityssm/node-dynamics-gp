@@ -9,13 +9,13 @@ describe('dynamics-gp/diamond', () => {
         server: 'localhost'
     });
     after(() => {
-        releaseAll();
+        void releaseAll();
     });
     describe('Cash Receipts', () => {
         it('Retrieves a Cash Receipt', async () => {
-            let cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
-            cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
-            assert.ok(cashReceipt);
+            await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
+            const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
+            assert.ok(cashReceipt !== undefined);
             assert.strictEqual(config.cashReceiptDocumentNumber, cashReceipt.documentNumber);
             assert.ok(cashReceipt.details.length > 0);
         });
@@ -41,7 +41,7 @@ describe('dynamics-gp/diamond', () => {
     describe('Extend GP Invoices', () => {
         it('Gets a fully extended GPInvoice', async () => {
             const diamondInvoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(config.invoiceNumber);
-            assert.ok(diamondInvoice);
+            assert.ok(diamondInvoice !== undefined);
             assert.ok(diamondInvoice.trialBalanceCode !== undefined);
         });
     });

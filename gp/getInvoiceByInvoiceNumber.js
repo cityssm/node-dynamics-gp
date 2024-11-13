@@ -1,5 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
-export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
+export default async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
     const pool = await connect(mssqlConfig);
     const invoiceRequest = pool.request().input('invoiceNumber', invoiceNumber);
     let sql = `select top 1
@@ -111,7 +111,7 @@ export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, inv
             : ' or t.DOCTYPE = @invoiceDocumentType'})`;
     }
     sql += ' order by t.DEX_ROW_ID';
-    const invoiceResult = await invoiceRequest.query(sql);
+    const invoiceResult = (await invoiceRequest.query(sql));
     const invoice = invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined;
     if (invoice !== undefined) {
         const itemResults = await pool
@@ -143,8 +143,7 @@ export async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNumber, inv
         where INVCNMBR = @invoiceNumber
         and DOCTYPE = @invoiceDocumentType
         order by LNITMSEQ`);
-        invoice.lineItems = itemResults.recordset ?? [];
+        invoice.lineItems = itemResults.recordset;
     }
     return invoice;
 }
-export default _getInvoiceByInvoiceNumber;

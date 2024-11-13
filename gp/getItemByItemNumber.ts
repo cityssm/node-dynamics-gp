@@ -1,22 +1,21 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { config as MSSQLConfig, IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
-import type { GPItem } from './types.js'
+import type { GPItemWithQuantities } from './types.js'
 
 /**
  * Inquiry > Inventory > Item
+ * @param mssqlConfig
  * @param itemNumber
  * @returns
  */
-export async function _getItemByItemNumber(
-  mssqlConfig: MSSQLConfig,
+export default async function _getItemByItemNumber(
+  mssqlConfig: mssqlTypes.config,
   itemNumber: string
-): Promise<GPItem | undefined> {
+): Promise<GPItemWithQuantities | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const itemResult: IResult<GPItem> = await pool
-    .request()
-    .input('itemNumber', itemNumber).query(`SELECT top 1
+  const itemResult = (await pool.request().input('itemNumber', itemNumber)
+    .query(`SELECT top 1
       rtrim(ITEMNMBR) as itemNumber,
       rtrim(ITEMDESC) as itemDescription,
       rtrim(ITMSHNAM) as itemShortName,
@@ -27,9 +26,9 @@ export async function _getItemByItemNumber(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM IV00101
-      where ITEMNMBR = @itemNumber`)
+      where ITEMNMBR = @itemNumber`)) as mssqlTypes.IResult<GPItemWithQuantities>
 
-  const item: GPItem | undefined =
+  const item =
     itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined
 
   if (item !== undefined) {
@@ -66,5 +65,3 @@ export async function _getItemByItemNumber(
 
   return item
 }
-
-export default _getItemByItemNumber

@@ -9,13 +9,13 @@ describe('dynamics-gp', () => {
         server: 'localhost'
     });
     after(() => {
-        releaseAll();
+        void releaseAll();
     });
     describe('Accounts', () => {
         it('Retrieves an Account', async () => {
-            let account = await gp.getAccountByAccountIndex(config.accountIndex);
-            account = await gp.getAccountByAccountIndex(config.accountIndex);
-            assert.ok(account);
+            await gp.getAccountByAccountIndex(config.accountIndex);
+            const account = await gp.getAccountByAccountIndex(config.accountIndex);
+            assert.ok(account !== undefined);
             assert.strictEqual(config.accountIndex, account.accountIndex);
         });
         it('Returns undefined when account index is not found', async () => {
@@ -35,9 +35,9 @@ describe('dynamics-gp', () => {
     });
     describe('Customers', () => {
         it('Retrieves a Customer', async () => {
-            let customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
-            customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
-            assert.ok(customer);
+            await gp.getCustomerByCustomerNumber(config.customerNumber);
+            const customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
+            assert.ok(customer !== undefined);
             assert.strictEqual(config.customerNumber, customer.customerNumber);
         });
         it('Returns undefined when customer number is not found', async () => {
@@ -57,9 +57,8 @@ describe('dynamics-gp', () => {
     });
     describe('Invoice Document Types', () => {
         it('Retrieves Invoice Document Types', async () => {
-            let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
-            invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
-            assert.ok(invoiceDocumentTypes);
+            await gp.getInvoiceDocumentTypes();
+            const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
             assert.ok(invoiceDocumentTypes.length > 0);
         });
         it('Throws an error when SQL is misconfigured', async () => {
@@ -75,15 +74,15 @@ describe('dynamics-gp', () => {
     });
     describe('Invoices', () => {
         it('Retrieves an Invoice', async () => {
-            let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
-            invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
-            assert.ok(invoice);
+            await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+            const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
+            assert.ok(invoice !== undefined);
             assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
         });
         it('Retrieves an Invoice without a Type', async () => {
-            let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
-            invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
-            assert.ok(invoice);
+            await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+            const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber);
+            assert.ok(invoice !== undefined);
             assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber);
         });
         it('Returns undefined when invoice number is not found', async () => {
@@ -101,11 +100,11 @@ describe('dynamics-gp', () => {
             assert.fail();
         });
     });
-    describe('Items', () => {
+    describe('Single Items', () => {
         it('Retrieves an Item', async () => {
-            let item = await gp.getItemByItemNumber(config.itemNumber);
-            item = await gp.getItemByItemNumber(config.itemNumber);
-            assert.ok(item);
+            await gp.getItemByItemNumber(config.itemNumber);
+            const item = await gp.getItemByItemNumber(config.itemNumber);
+            assert.ok(item !== undefined);
             assert.strictEqual(config.itemNumber, item.itemNumber);
         });
         it('Returns undefined when item number is not found', async () => {
@@ -123,11 +122,27 @@ describe('dynamics-gp', () => {
             assert.fail();
         });
     });
+    describe('Multiple Items', () => {
+        it('Retrieves Items', async () => {
+            const items = await gp.getItemsByLocationCodes(config.locationCodes);
+            assert.ok(items.length > 0);
+        });
+        it('Throws an error when SQL is misconfigured', async () => {
+            try {
+                await gpMisconfigured.getItemsByLocationCodes();
+            }
+            catch {
+                assert.ok(1);
+                return;
+            }
+            assert.fail();
+        });
+    });
     describe('Vendors', () => {
         it('Retrieves a Vendor', async () => {
-            let vendor = await gp.getVendorByVendorId(config.vendorId);
-            vendor = await gp.getVendorByVendorId(config.vendorId);
-            assert.ok(vendor);
+            await gp.getVendorByVendorId(config.vendorId);
+            const vendor = await gp.getVendorByVendorId(config.vendorId);
+            assert.ok(vendor !== undefined);
             assert.strictEqual(config.vendorId, vendor.vendorId);
         });
         it('Returns undefined when vendor id is not found', async () => {

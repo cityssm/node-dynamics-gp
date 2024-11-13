@@ -1,12 +1,12 @@
 import { connect } from '@cityssm/mssql-multi-pool';
-import { _getAccountByAccountIndex } from '../gp/getAccountByAccountIndex.js';
+import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js';
 export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumber) {
     if (typeof documentNumber === 'string' &&
         Number.isNaN(Number.parseFloat(documentNumber))) {
         return undefined;
     }
     const pool = await connect(mssqlConfig);
-    const receiptResult = await pool
+    const receiptResult = (await pool
         .request()
         .input('documentNumber', documentNumber).query(`SELECT top 1
       0 as isHistorical,
@@ -64,7 +64,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
       FROM [CR30101]
       where dDOCSUFFIX = @documentNumber
       
-      order by isHistorical`);
+      order by isHistorical`));
     const receipt = receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined;
     if (receipt !== undefined) {
         const detailsResult = await pool
@@ -83,7 +83,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         FROM ${receipt.isHistorical === 1 ? 'CR30102' : 'CR10102'}
         where dDOCSUFFIX = @documentNumber
         order by dSEQNMBR`);
-        receipt.details = detailsResult.recordset ?? [];
+        receipt.details = detailsResult.recordset;
         receipt.distributions = [];
         if (receipt.isHistorical === 1) {
             const distributionResult = await pool
@@ -96,7 +96,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
           FROM CR30103
           where dDOCSUFFIX = @documentNumber
           order by dACCTINDEX, dQUICKCD, dTXDTLID`);
-            receipt.distributions = distributionResult.recordset ?? [];
+            receipt.distributions = distributionResult.recordset;
             for (const distribution of receipt.distributions) {
                 const account = await _getAccountByAccountIndex(mssqlConfig, distribution.accountIndex);
                 if (account !== undefined) {

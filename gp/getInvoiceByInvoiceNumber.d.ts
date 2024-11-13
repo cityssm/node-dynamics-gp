@@ -1,4 +1,3 @@
-import type { config as MSSQLConfig } from 'mssql';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { GPInvoice } from './types.js';
-export declare function _getInvoiceByInvoiceNumber(mssqlConfig: MSSQLConfig, invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice | undefined>;
-export default _getInvoiceByInvoiceNumber;
+export default function _getInvoiceByInvoiceNumber(mssqlConfig: mssqlTypes.config, invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice | undefined>;

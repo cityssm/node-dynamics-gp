@@ -28,14 +28,13 @@
     "coverage": "cross-env NODE_ENV=dev DEBUG=dynamics-gp:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^3.1.5",
-    "mssql": "^11.0.1",
+    "@cityssm/mssql-multi-pool": "^4.0.0",
+    "@cityssm/to-millis": "^0.2.0",
     "node-cache": "^5.1.2"
   },
   "devDependencies": {
-    "@types/mssql": "^9.1.5",
     "cross-env": "^7.0.3",
-    "eslint-config-cityssm": "^5.0.2",
+    "eslint-config-cityssm": "^15.1.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "engines": {

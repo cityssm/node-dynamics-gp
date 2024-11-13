@@ -12,6 +12,8 @@ export interface Config {
   itemNumber: string
   itemNumberNotFound: string
 
+  locationCodes: string[]
+
   vendorId: string
   vendorIdNotFound: string
 

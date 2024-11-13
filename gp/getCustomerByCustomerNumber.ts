@@ -1,15 +1,14 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import { type config as MSSQLConfig, type IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { GPCustomer } from './types.js'
 
 export async function _getCustomerByCustomerNumber(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   customerNumber: string
 ): Promise<GPCustomer | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const customerResult: IResult<GPCustomer> = await pool
+  const customerResult = (await pool
     .request()
     .input('customerNumber', customerNumber).query(`SELECT top 1
       rtrim(CUSTNMBR) as customerNumber,
@@ -32,7 +31,7 @@ export async function _getCustomerByCustomerNumber(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM RM00101
-      where CUSTNMBR = @customerNumber`)
+      where CUSTNMBR = @customerNumber`)) as mssqlTypes.IResult<GPCustomer>
 
   return customerResult.recordset.length > 0
     ? customerResult.recordset[0]

@@ -1,16 +1,15 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import { type config as MSSQLConfig, type IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { GPAccount } from './types.js'
 import { buildAccountNumberFromSegments } from './utilities.js'
 
-export async function _getAccountByAccountIndex(
-  mssqlConfig: MSSQLConfig,
+export default async function _getAccountByAccountIndex(
+  mssqlConfig: mssqlTypes.config,
   accountIndex: number | string
 ): Promise<GPAccount | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const accountResult: IResult<GPAccount> = await pool
+  const accountResult = await pool
     .request()
     .input('accountIndex', accountIndex).query(`SELECT top 1
       [ACTINDX] as accountIndex,
@@ -26,7 +25,7 @@ export async function _getAccountByAccountIndex(
       [CREATDDT] as dateCreated,
       [MODIFDT] as dateModified
       FROM [GL00100]
-      where ACTINDX = @accountIndex`)
+      where ACTINDX = @accountIndex`) as mssqlTypes.IResult<GPAccount>
 
   const account: GPAccount | undefined =
     accountResult.recordset.length > 0 ? accountResult.recordset[0] : undefined
@@ -45,4 +44,3 @@ export async function _getAccountByAccountIndex(
   return account
 }
 
-export default _getAccountByAccountIndex

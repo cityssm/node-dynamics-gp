@@ -1,24 +1,27 @@
+import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 import NodeCache from 'node-cache'
 
-import { _extendGpInvoice } from './diamond/extendGpInvoice.js'
-import { _getCashReceiptByDocumentNumber } from './diamond/getCashReceiptByDocumentNumber.js'
+import _extendGpInvoice from './diamond/extendGpInvoice.js'
+import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js'
 import type {
   DiamondCashReceipt,
   DiamondExtendedGPInvoice
 } from './diamond/types.js'
-import { _getAccountByAccountIndex } from './gp/getAccountByAccountIndex.js'
-import { _getCustomerByCustomerNumber } from './gp/getCustomerByCustomerNumber.js'
-import { _getInvoiceByInvoiceNumber } from './gp/getInvoiceByInvoiceNumber.js'
-import { _getInvoiceDocumentTypes } from './gp/getInvoiceDocumentTypes.js'
-import { _getItemByItemNumber } from './gp/getItemByItemNumber.js'
-import { _getVendorByVendorId } from './gp/getVendorByVendorId.js'
+import _getAccountByAccountIndex from './gp/getAccountByAccountIndex.js'
+import _getCustomerByCustomerNumber from './gp/getCustomerByCustomerNumber.js'
+import _getInvoiceByInvoiceNumber from './gp/getInvoiceByInvoiceNumber.js'
+import _getInvoiceDocumentTypes from './gp/getInvoiceDocumentTypes.js'
+import _getItemByItemNumber from './gp/getItemByItemNumber.js'
+import _getItemsByLocationCodes from './gp/getItemsByLocationCodes.js'
+import _getVendorByVendorId from './gp/getVendorByVendorId.js'
 import type {
   GPAccount,
   GPCustomer,
   GPInvoice,
   GPInvoiceDocumentType,
-  GPItem,
+  GPItemWithQuantities,
+  GPItemWithQuantity,
   GPVendor
 } from './gp/types.js'
 
@@ -35,8 +38,8 @@ export interface DynamicsGPOptions {
 }
 
 const defaultOptions: DynamicsGPOptions = {
-  cacheTTL: 3 * 60,
-  documentCacheTTL: 60
+  cacheTTL: minutesToSeconds(3),
+  documentCacheTTL: minutesToSeconds(1)
 }
 
 function getInvoiceCacheKey(
@@ -66,7 +69,7 @@ export class DynamicsGP {
 
   constructor(mssqlConfig: MSSQLConfig, options?: Partial<DynamicsGPOptions>) {
     this.#mssqlConfig = mssqlConfig
-    this.#options = Object.assign({}, defaultOptions, options)
+    this.#options = { ...defaultOptions, ...options }
 
     this.#accountCache = new NodeCache({ stdTTL: this.#options.cacheTTL })
     this.#customerCache = new NodeCache({ stdTTL: this.#options.cacheTTL })
@@ -177,14 +180,17 @@ export class DynamicsGP {
         this.#mssqlConfig
       )
       this.#invoiceDocumentTypesCacheExpiryMillis =
-        Date.now() + this.#options.cacheTTL * 1000
+        Date.now() + secondsToMillis(this.#options.cacheTTL)
     }
 
     return this.#invoiceDocumentTypesCache
   }
 
-  async getItemByItemNumber(itemNumber: string): Promise<GPItem | undefined> {
-    let item: GPItem | undefined = this.#itemCache.get(itemNumber) ?? undefined
+  async getItemByItemNumber(
+    itemNumber: string
+  ): Promise<GPItemWithQuantities | undefined> {
+    let item: GPItemWithQuantities | undefined =
+      this.#itemCache.get(itemNumber) ?? undefined
 
     if (item === undefined) {
       item = await _getItemByItemNumber(this.#mssqlConfig, itemNumber)
@@ -192,6 +198,12 @@ export class DynamicsGP {
     }
 
     return item
+  }
+
+  async getItemsByLocationCodes(
+    locationCodes: string[] = ['']
+  ): Promise<GPItemWithQuantity[]> {
+    return await _getItemsByLocationCodes(this.#mssqlConfig, locationCodes)
   }
 
   async getVendorByVendorId(vendorId: string): Promise<GPVendor | undefined> {
@@ -257,7 +269,8 @@ export type {
   GPCustomer,
   GPInvoice,
   GPInvoiceDocumentType,
-  GPItem,
+  GPItemWithQuantities,
+  GPItemWithQuantity,
   GPVendor
 } from './gp/types.js'
 

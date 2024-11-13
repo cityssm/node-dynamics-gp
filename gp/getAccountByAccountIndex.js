@@ -1,6 +1,6 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 import { buildAccountNumberFromSegments } from './utilities.js';
-export async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
+export default async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
     const pool = await connect(mssqlConfig);
     const accountResult = await pool
         .request()
@@ -32,4 +32,3 @@ export async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
     }
     return account;
 }
-export default _getAccountByAccountIndex;

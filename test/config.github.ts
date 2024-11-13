@@ -7,6 +7,7 @@ export const config: Config = {
   mssql: {
     server: 'localhost',
     user: 'sa',
+    // eslint-disable-next-line sonarjs/no-hardcoded-credentials
     password: 'dbatools.I0',
     database: 'Dynamics',
     options: {
@@ -22,6 +23,8 @@ export const config: Config = {
 
   itemNumber: '01-0001-00001',
   itemNumberNotFound: 'X',
+
+  locationCodes: [''],
 
   vendorId: 'VEND001',
   vendorIdNotFound: 'X',

@@ -1,4 +1,3 @@
-import { type config as MSSQLConfig } from 'mssql';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { GPAccount } from './types.js';
-export declare function _getAccountByAccountIndex(mssqlConfig: MSSQLConfig, accountIndex: number | string): Promise<GPAccount | undefined>;
-export default _getAccountByAccountIndex;
+export default function _getAccountByAccountIndex(mssqlConfig: mssqlTypes.config, accountIndex: number | string): Promise<GPAccount | undefined>;

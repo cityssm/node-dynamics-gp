@@ -8,7 +8,7 @@ import type {
   DiamondTrialBalanceCode
 } from './types.js'
 
-export async function _extendGpInvoice(
+export default async function _extendGpInvoice(
   mssqlConfig: MSSQLConfig,
   gpInvoice: GPInvoice
 ): Promise<DiamondExtendedGPInvoice> {
@@ -18,14 +18,14 @@ export async function _extendGpInvoice(
 
   const pool = await connect(mssqlConfig)
 
-  const tbcResult: IResult<DiamondTrialBalanceCode> = await pool
+  const tbcResult = (await pool
     .request()
     .input('invoiceNumber', gpInvoice.invoiceNumber).query(`SELECT top 1
       t.dCUSTTBCODE as trialBalanceCode,
       t.dDESC as trialBalanceCodeDescription
       FROM SF120 i
       inner join SF023 t on i.dcusttbcode = t.dcusttbcode
-      where docnumbr = @invoiceNumber`)
+      where docnumbr = @invoiceNumber`)) as IResult<DiamondTrialBalanceCode>
 
   const trialBalanceCode =
     tbcResult.recordset.length > 0 ? tbcResult.recordset[0] : undefined
@@ -38,5 +38,3 @@ export async function _extendGpInvoice(
 
   return diamondInvoice
 }
-
-export default _extendGpInvoice

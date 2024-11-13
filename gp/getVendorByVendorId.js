@@ -1,5 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
-export async function _getVendorByVendorId(mssqlConfig, vendorId) {
+export default async function _getVendorByVendorId(mssqlConfig, vendorId) {
     const pool = await connect(mssqlConfig);
     const vendorResult = await pool
         .request()
@@ -30,4 +30,3 @@ export async function _getVendorByVendorId(mssqlConfig, vendorId) {
         ? vendorResult.recordset[0]
         : undefined;
 }
-export default _getVendorByVendorId;

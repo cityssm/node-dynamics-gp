@@ -1,4 +1,3 @@
-import type { config as MSSQLConfig } from 'mssql';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { GPVendor } from './types.js';
-export declare function _getVendorByVendorId(mssqlConfig: MSSQLConfig, vendorId: string): Promise<GPVendor | undefined>;
-export default _getVendorByVendorId;
+export default function _getVendorByVendorId(mssqlConfig: mssqlTypes.config, vendorId: string): Promise<GPVendor | undefined>;

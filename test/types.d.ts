@@ -7,6 +7,7 @@ export interface Config {
     customerNumberNotFound: string;
     itemNumber: string;
     itemNumberNotFound: string;
+    locationCodes: string[];
     vendorId: string;
     vendorIdNotFound: string;
     invoiceDocumentType: string;

@@ -1,12 +1,11 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { config as MSSQLConfig, IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
-import { _getAccountByAccountIndex } from '../gp/getAccountByAccountIndex.js'
+import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js'
 
 import type { DiamondCashReceipt } from './types.js'
 
 export async function _getCashReceiptByDocumentNumber(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   documentNumber: number | string
 ): Promise<DiamondCashReceipt | undefined> {
   if (
@@ -18,7 +17,7 @@ export async function _getCashReceiptByDocumentNumber(
 
   const pool = await connect(mssqlConfig)
 
-  const receiptResult: IResult<DiamondCashReceipt> = await pool
+  const receiptResult = (await pool
     .request()
     .input('documentNumber', documentNumber).query(`SELECT top 1
       0 as isHistorical,
@@ -76,7 +75,7 @@ export async function _getCashReceiptByDocumentNumber(
       FROM [CR30101]
       where dDOCSUFFIX = @documentNumber
       
-      order by isHistorical`)
+      order by isHistorical`)) as mssqlTypes.IResult<DiamondCashReceipt>
 
   const receipt =
     receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined
@@ -99,7 +98,7 @@ export async function _getCashReceiptByDocumentNumber(
         where dDOCSUFFIX = @documentNumber
         order by dSEQNMBR`)
 
-    receipt.details = detailsResult.recordset ?? []
+    receipt.details = detailsResult.recordset
 
     receipt.distributions = []
 
@@ -115,7 +114,7 @@ export async function _getCashReceiptByDocumentNumber(
           where dDOCSUFFIX = @documentNumber
           order by dACCTINDEX, dQUICKCD, dTXDTLID`)
 
-      receipt.distributions = distributionResult.recordset ?? []
+      receipt.distributions = distributionResult.recordset
 
       for (const distribution of receipt.distributions) {
         const account = await _getAccountByAccountIndex(

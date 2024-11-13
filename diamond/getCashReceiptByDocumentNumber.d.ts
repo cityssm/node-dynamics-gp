@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from 'mssql';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { DiamondCashReceipt } from './types.js';
-export declare function _getCashReceiptByDocumentNumber(mssqlConfig: MSSQLConfig, documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
+export declare function _getCashReceiptByDocumentNumber(mssqlConfig: mssqlTypes.config, documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
 export default _getCashReceiptByDocumentNumber;

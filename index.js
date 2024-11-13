@@ -1,15 +1,17 @@
+import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis';
 import NodeCache from 'node-cache';
-import { _extendGpInvoice } from './diamond/extendGpInvoice.js';
-import { _getCashReceiptByDocumentNumber } from './diamond/getCashReceiptByDocumentNumber.js';
-import { _getAccountByAccountIndex } from './gp/getAccountByAccountIndex.js';
-import { _getCustomerByCustomerNumber } from './gp/getCustomerByCustomerNumber.js';
-import { _getInvoiceByInvoiceNumber } from './gp/getInvoiceByInvoiceNumber.js';
-import { _getInvoiceDocumentTypes } from './gp/getInvoiceDocumentTypes.js';
-import { _getItemByItemNumber } from './gp/getItemByItemNumber.js';
-import { _getVendorByVendorId } from './gp/getVendorByVendorId.js';
+import _extendGpInvoice from './diamond/extendGpInvoice.js';
+import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js';
+import _getAccountByAccountIndex from './gp/getAccountByAccountIndex.js';
+import _getCustomerByCustomerNumber from './gp/getCustomerByCustomerNumber.js';
+import _getInvoiceByInvoiceNumber from './gp/getInvoiceByInvoiceNumber.js';
+import _getInvoiceDocumentTypes from './gp/getInvoiceDocumentTypes.js';
+import _getItemByItemNumber from './gp/getItemByItemNumber.js';
+import _getItemsByLocationCodes from './gp/getItemsByLocationCodes.js';
+import _getVendorByVendorId from './gp/getVendorByVendorId.js';
 const defaultOptions = {
-    cacheTTL: 3 * 60,
-    documentCacheTTL: 60
+    cacheTTL: minutesToSeconds(3),
+    documentCacheTTL: minutesToSeconds(1)
 };
 function getInvoiceCacheKey(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
     return `${(invoiceDocumentTypeOrAbbreviationOrName ?? '').toString()}::${invoiceNumber}`;
@@ -28,7 +30,7 @@ export class DynamicsGP {
     #diamondInvoiceCache;
     constructor(mssqlConfig, options) {
         this.#mssqlConfig = mssqlConfig;
-        this.#options = Object.assign({}, defaultOptions, options);
+        this.#options = { ...defaultOptions, ...options };
         this.#accountCache = new NodeCache({ stdTTL: this.#options.cacheTTL });
         this.#customerCache = new NodeCache({ stdTTL: this.#options.cacheTTL });
         this.#itemCache = new NodeCache({ stdTTL: this.#options.cacheTTL });
@@ -89,7 +91,7 @@ export class DynamicsGP {
         if (this.#invoiceDocumentTypesCacheExpiryMillis < Date.now()) {
             this.#invoiceDocumentTypesCache = await _getInvoiceDocumentTypes(this.#mssqlConfig);
             this.#invoiceDocumentTypesCacheExpiryMillis =
-                Date.now() + this.#options.cacheTTL * 1000;
+                Date.now() + secondsToMillis(this.#options.cacheTTL);
         }
         return this.#invoiceDocumentTypesCache;
     }
@@ -100,6 +102,9 @@ export class DynamicsGP {
             this.#itemCache.set(itemNumber, item);
         }
         return item;
+    }
+    async getItemsByLocationCodes(locationCodes = ['']) {
+        return await _getItemsByLocationCodes(this.#mssqlConfig, locationCodes);
     }
     async getVendorByVendorId(vendorId) {
         let vendor = this.#vendorCache.get(vendorId) ?? undefined;

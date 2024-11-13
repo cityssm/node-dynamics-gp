@@ -105,7 +105,7 @@ interface GPInvoiceLineItem {
     shipDateActual: Date;
     shipDateRequested: Date;
 }
-export interface GPItem {
+interface GPItem {
     itemNumber: string;
     itemDescription: string;
     itemShortName: string;
@@ -113,7 +113,6 @@ export interface GPItem {
     itemGenericDescription: string;
     standardCost: number;
     currentCost: number;
-    quantities: GPItemQuantity[];
     dateCreated: Date;
     dateModified: Date;
 }
@@ -141,6 +140,10 @@ interface GPItemQuantity {
     quantitySold: number;
     lastCountDateTime: Date;
     nextCountDateTime: Date;
+}
+export type GPItemWithQuantity = GPItem & GPItemQuantity;
+export interface GPItemWithQuantities extends GPItem {
+    quantities: GPItemQuantity[];
 }
 export interface GPVendor {
     vendorId: string;

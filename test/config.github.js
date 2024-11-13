@@ -14,6 +14,7 @@ export const config = {
     customerNumberNotFound: 'X',
     itemNumber: '01-0001-00001',
     itemNumberNotFound: 'X',
+    locationCodes: [''],
     vendorId: 'VEND001',
     vendorIdNotFound: 'X',
     invoiceDocumentType: 'IVC',

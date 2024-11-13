@@ -1,16 +1,16 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { config as MSSQLConfig, IResult } from 'mssql'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { GPInvoice } from './types.js'
 
 /**
  * Inquiry > Sales > Invoice
+ * @param mssqlConfig
  * @param invoiceNumber
  * @param invoiceDocumentTypeOrAbbreviationOrName
  * @returns
  */
-export async function _getInvoiceByInvoiceNumber(
-  mssqlConfig: MSSQLConfig,
+export default async function _getInvoiceByInvoiceNumber(
+  mssqlConfig: mssqlTypes.config,
   invoiceNumber: string,
   invoiceDocumentTypeOrAbbreviationOrName?: number | string
 ): Promise<GPInvoice | undefined> {
@@ -137,7 +137,9 @@ export async function _getInvoiceByInvoiceNumber(
   }
   sql += ' order by t.DEX_ROW_ID'
 
-  const invoiceResult: IResult<GPInvoice> = await invoiceRequest.query(sql)
+  const invoiceResult = (await invoiceRequest.query(
+    sql
+  )) as mssqlTypes.IResult<GPInvoice>
 
   const invoice: GPInvoice | undefined =
     invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined
@@ -173,10 +175,8 @@ export async function _getInvoiceByInvoiceNumber(
         and DOCTYPE = @invoiceDocumentType
         order by LNITMSEQ`)
 
-    invoice.lineItems = itemResults.recordset ?? []
+    invoice.lineItems = itemResults.recordset
   }
 
   return invoice
 }
-
-export default _getInvoiceByInvoiceNumber

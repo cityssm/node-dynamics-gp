@@ -14,16 +14,16 @@ describe('dynamics-gp', () => {
   })
 
   after(() => {
-    releaseAll()
+    void releaseAll()
   })
 
   describe('Accounts', () => {
     it('Retrieves an Account', async () => {
-      // Do twice to test cache retrival
-      let account = await gp.getAccountByAccountIndex(config.accountIndex)
-      account = await gp.getAccountByAccountIndex(config.accountIndex)
+      // Do twice to test cache retrieval
+      await gp.getAccountByAccountIndex(config.accountIndex)
+      const account = await gp.getAccountByAccountIndex(config.accountIndex)
 
-      assert.ok(account)
+      assert.ok(account !== undefined)
       assert.strictEqual(config.accountIndex, account.accountIndex)
     })
 
@@ -49,11 +49,11 @@ describe('dynamics-gp', () => {
 
   describe('Customers', () => {
     it('Retrieves a Customer', async () => {
-      // Do twice to test cache retrival
-      let customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
-      customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
+      // Do twice to test cache retrieval
+      await gp.getCustomerByCustomerNumber(config.customerNumber)
+      const customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
 
-      assert.ok(customer)
+      assert.ok(customer !== undefined)
       assert.strictEqual(config.customerNumber, customer.customerNumber)
     })
 
@@ -80,10 +80,9 @@ describe('dynamics-gp', () => {
   describe('Invoice Document Types', () => {
     it('Retrieves Invoice Document Types', async () => {
       // Do twice to test cache retrieval
-      let invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
-      invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
+      await gp.getInvoiceDocumentTypes()
+      const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes()
 
-      assert.ok(invoiceDocumentTypes)
       assert.ok(invoiceDocumentTypes.length > 0)
     })
 
@@ -102,25 +101,26 @@ describe('dynamics-gp', () => {
   describe('Invoices', () => {
     it('Retrieves an Invoice', async () => {
       // Do twice to test cache retrieval
-      let invoice = await gp.getInvoiceByInvoiceNumber(
-        config.invoiceNumber,
-        config.invoiceDocumentType
-      )
-      invoice = await gp.getInvoiceByInvoiceNumber(
+      await gp.getInvoiceByInvoiceNumber(
         config.invoiceNumber,
         config.invoiceDocumentType
       )
 
-      assert.ok(invoice)
+      const invoice = await gp.getInvoiceByInvoiceNumber(
+        config.invoiceNumber,
+        config.invoiceDocumentType
+      )
+
+      assert.ok(invoice !== undefined)
       assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
     })
 
     it('Retrieves an Invoice without a Type', async () => {
       // Do twice to test cache retrieval
-      let invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
-      invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+      await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
+      const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber)
 
-      assert.ok(invoice)
+      assert.ok(invoice !== undefined)
       assert.strictEqual(config.invoiceNumber, invoice.invoiceNumber)
     })
 
@@ -144,13 +144,13 @@ describe('dynamics-gp', () => {
     })
   })
 
-  describe('Items', () => {
+  describe('Single Items', () => {
     it('Retrieves an Item', async () => {
       // Do twice to test cache retrieval
-      let item = await gp.getItemByItemNumber(config.itemNumber)
-      item = await gp.getItemByItemNumber(config.itemNumber)
+      await gp.getItemByItemNumber(config.itemNumber)
+      const item = await gp.getItemByItemNumber(config.itemNumber)
 
-      assert.ok(item)
+      assert.ok(item !== undefined)
       assert.strictEqual(config.itemNumber, item.itemNumber)
     })
 
@@ -172,13 +172,32 @@ describe('dynamics-gp', () => {
     })
   })
 
+  describe('Multiple Items', () => {
+    it('Retrieves Items', async () => {
+      const items = await gp.getItemsByLocationCodes(config.locationCodes)
+
+      assert.ok(items.length > 0)
+    })
+
+    it('Throws an error when SQL is misconfigured', async () => {
+      try {
+        await gpMisconfigured.getItemsByLocationCodes()
+      } catch {
+        assert.ok(1)
+        return
+      }
+
+      assert.fail()
+    })
+  })
+
   describe('Vendors', () => {
     it('Retrieves a Vendor', async () => {
       // Do twice to test cache retrieval
-      let vendor = await gp.getVendorByVendorId(config.vendorId)
-      vendor = await gp.getVendorByVendorId(config.vendorId)
+      await gp.getVendorByVendorId(config.vendorId)
+      const vendor = await gp.getVendorByVendorId(config.vendorId)
 
-      assert.ok(vendor)
+      assert.ok(vendor !== undefined)
       assert.strictEqual(config.vendorId, vendor.vendorId)
     })
 
