@@ -31,8 +31,8 @@ jobs:
 
       - name: Create Mock Dynamics GP Database
         run: |
-          sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "create database Dynamics"
-          sqlcmd -S localhost -U sa -P dbatools.I0 -d Dynamics -i test/createTables.sql -I
+          sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "create database Dynamics" -C
+          sqlcmd -S localhost -U sa -P dbatools.I0 -d Dynamics -i test/createTables.sql -C
 
       - name: Install Package
         run: |
