@@ -1,4 +1,4 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import type { GPItemWithQuantity } from './types.js'
 
@@ -9,7 +9,7 @@ import type { GPItemWithQuantity } from './types.js'
  * @returns
  */
 export default async function _getItemsByLocationCodes(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   locationCodes: string[] = ['']
 ): Promise<GPItemWithQuantity[]> {
   if (locationCodes.length === 0) {
@@ -70,7 +70,7 @@ export default async function _getItemsByLocationCodes(
         
       FROM IV00101 i
       inner join IV00102 q on i.ITEMNMBR = q.ITEMNMBR
-      where (${locationCodeWhere})`)) as mssqlTypes.IResult<GPItemWithQuantity>
+      where (${locationCodeWhere})`)) as mssql.IResult<GPItemWithQuantity>
 
   return itemResult.recordset
 }

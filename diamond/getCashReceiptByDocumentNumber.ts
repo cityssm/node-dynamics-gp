@@ -1,11 +1,11 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js'
 
 import type { DiamondCashReceipt } from './types.js'
 
 export async function _getCashReceiptByDocumentNumber(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   documentNumber: number | string
 ): Promise<DiamondCashReceipt | undefined> {
   if (
@@ -75,7 +75,7 @@ export async function _getCashReceiptByDocumentNumber(
       FROM [CR30101]
       where dDOCSUFFIX = @documentNumber
       
-      order by isHistorical`)) as mssqlTypes.IResult<DiamondCashReceipt>
+      order by isHistorical`)) as mssql.IResult<DiamondCashReceipt>
 
   const receipt =
     receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined

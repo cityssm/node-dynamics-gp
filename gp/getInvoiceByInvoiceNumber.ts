@@ -1,4 +1,4 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import type { GPInvoice } from './types.js'
 
@@ -10,7 +10,7 @@ import type { GPInvoice } from './types.js'
  * @returns
  */
 export default async function _getInvoiceByInvoiceNumber(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   invoiceNumber: string,
   invoiceDocumentTypeOrAbbreviationOrName?: number | string
 ): Promise<GPInvoice | undefined> {
@@ -139,7 +139,7 @@ export default async function _getInvoiceByInvoiceNumber(
 
   const invoiceResult = (await invoiceRequest.query(
     sql
-  )) as mssqlTypes.IResult<GPInvoice>
+  )) as mssql.IResult<GPInvoice>
 
   const invoice: GPInvoice | undefined =
     invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined

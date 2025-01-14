@@ -1,3 +1,3 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { GPItemWithQuantities } from './types.js';
-export default function _getItemByItemNumber(mssqlConfig: mssqlTypes.config, itemNumber: string): Promise<GPItemWithQuantities | undefined>;
+export default function _getItemByItemNumber(mssqlConfig: mssql.config, itemNumber: string): Promise<GPItemWithQuantities | undefined>;

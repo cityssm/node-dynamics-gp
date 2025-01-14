@@ -1,9 +1,9 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import type { GPCustomer } from './types.js'
 
 export async function _getCustomerByCustomerNumber(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   customerNumber: string
 ): Promise<GPCustomer | undefined> {
   const pool = await connect(mssqlConfig)
@@ -31,7 +31,7 @@ export async function _getCustomerByCustomerNumber(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM RM00101
-      where CUSTNMBR = @customerNumber`)) as mssqlTypes.IResult<GPCustomer>
+      where CUSTNMBR = @customerNumber`)) as mssql.IResult<GPCustomer>
 
   return customerResult.recordset.length > 0
     ? customerResult.recordset[0]

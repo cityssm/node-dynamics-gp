@@ -2,10 +2,14 @@ import assert from 'node:assert'
 import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
+import Debug from 'debug'
 
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js'
 import { DynamicsGP } from '../index.js'
 
 import { config } from './config.js'
+
+Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
 describe('dynamics-gp/diamond', () => {
   const gp = new DynamicsGP(config.mssql)

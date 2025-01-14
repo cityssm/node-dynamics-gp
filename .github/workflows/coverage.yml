@@ -37,7 +37,7 @@ jobs:
       - name: Install Package
         run: |
           npm ci
-          npm install -g cross-env mocha c8
+          npm install -g c8
 
       - name: Copy Test Config
         run: cp ./test/config.github.js ./test/config.js

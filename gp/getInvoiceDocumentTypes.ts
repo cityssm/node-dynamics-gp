@@ -1,9 +1,9 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import type { GPInvoiceDocumentType } from './types.js'
 
 export async function _getInvoiceDocumentTypes(
-  mssqlConfig: mssqlTypes.config
+  mssqlConfig: mssql.config
 ): Promise<GPInvoiceDocumentType[]> {
   const pool = await connect(mssqlConfig)
 
@@ -12,7 +12,7 @@ export async function _getInvoiceDocumentTypes(
       rtrim(DOCTYABR) as documentTypeAbbreviation,
       rtrim(DOCTYNAM) as documentTypeName
       FROM IVC40101
-      order by DEX_ROW_ID`)) as mssqlTypes.IResult<GPInvoiceDocumentType>
+      order by DEX_ROW_ID`)) as mssql.IResult<GPInvoiceDocumentType>
 
   return result.recordset
 }

@@ -1,4 +1,4 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import type { GPItemWithQuantities } from './types.js'
 
@@ -9,7 +9,7 @@ import type { GPItemWithQuantities } from './types.js'
  * @returns
  */
 export default async function _getItemByItemNumber(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   itemNumber: string
 ): Promise<GPItemWithQuantities | undefined> {
   const pool = await connect(mssqlConfig)
@@ -26,7 +26,7 @@ export default async function _getItemByItemNumber(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM IV00101
-      where ITEMNMBR = @itemNumber`)) as mssqlTypes.IResult<GPItemWithQuantities>
+      where ITEMNMBR = @itemNumber`)) as mssql.IResult<GPItemWithQuantities>
 
   const item =
     itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined

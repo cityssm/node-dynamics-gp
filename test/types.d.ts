@@ -1,6 +1,6 @@
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool';
+import type { mssql } from '@cityssm/mssql-multi-pool';
 export interface Config {
-    mssql: mssqlTypes.config;
+    mssql: mssql.config;
     accountIndex: number;
     accountIndexNotFound: number;
     customerNumber: string;

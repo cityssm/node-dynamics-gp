@@ -2,10 +2,14 @@ import assert from 'node:assert'
 import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
+import Debug from 'debug'
 
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js'
 import { DynamicsGP } from '../index.js'
 
 import { config } from './config.js'
+
+Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
 describe('dynamics-gp', () => {
   const gp = new DynamicsGP(config.mssql)
@@ -51,7 +55,9 @@ describe('dynamics-gp', () => {
     it('Retrieves a Customer', async () => {
       // Do twice to test cache retrieval
       await gp.getCustomerByCustomerNumber(config.customerNumber)
-      const customer = await gp.getCustomerByCustomerNumber(config.customerNumber)
+      const customer = await gp.getCustomerByCustomerNumber(
+        config.customerNumber
+      )
 
       assert.ok(customer !== undefined)
       assert.strictEqual(config.customerNumber, customer.customerNumber)
