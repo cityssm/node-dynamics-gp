@@ -1,13 +1,14 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
-import type { GPInvoice } from './types.js'
+import type { GPInvoice, GPInvoiceLineItem } from './types.js'
 
+// eslint-disable-next-line no-secrets/no-secrets
 /**
  * Inquiry > Sales > Invoice
- * @param mssqlConfig
- * @param invoiceNumber
- * @param invoiceDocumentTypeOrAbbreviationOrName
- * @returns
+ * @param mssqlConfig - The mssql configuration object.
+ * @param invoiceNumber - The invoice number to look up.
+ * @param invoiceDocumentTypeOrAbbreviationOrName - The invoice document type, abbreviation, or name to filter by (optional).
+ * @returns The invoice information or undefined if not found.
  */
 export default async function _getInvoiceByInvoiceNumber(
   mssqlConfig: mssql.config,
@@ -137,9 +138,7 @@ export default async function _getInvoiceByInvoiceNumber(
   }
   sql += ' order by t.DEX_ROW_ID'
 
-  const invoiceResult = (await invoiceRequest.query(
-    sql
-  )) as mssql.IResult<GPInvoice>
+  const invoiceResult = await invoiceRequest.query<GPInvoice>(sql)
 
   const invoice: GPInvoice | undefined =
     invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined
@@ -148,7 +147,8 @@ export default async function _getInvoiceByInvoiceNumber(
     const itemResults = await pool
       .request()
       .input('invoiceDocumentType', invoice.invoiceDocumentType)
-      .input('invoiceNumber', invoice.invoiceNumber).query(`SELECT
+      .input('invoiceNumber', invoice.invoiceNumber)
+      .query<GPInvoiceLineItem>(`SELECT
         [LNITMSEQ] as lineItemNumber,
         rtrim([ITEMNMBR]) as itemNumber,
         [QUANTITY] as quantity,

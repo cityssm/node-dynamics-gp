@@ -1,16 +1,22 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { GPCustomer } from './types.js'
 
+/**
+ * Retrieves a GP customer by their customer number.
+ * @param mssqlConfig - The configuration for the SQL Server connection.
+ * @param customerNumber - The customer number to look up.
+ * @returns A promise that resolves to the GP customer, or undefined if not found.
+ */
 export async function _getCustomerByCustomerNumber(
   mssqlConfig: mssql.config,
   customerNumber: string
 ): Promise<GPCustomer | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const customerResult = (await pool
+  const customerResult = await pool
     .request()
-    .input('customerNumber', customerNumber).query(`SELECT top 1
+    .input('customerNumber', customerNumber).query<GPCustomer>(`SELECT top 1
       rtrim(CUSTNMBR) as customerNumber,
       rtrim(CUSTNAME) as customerName,
       rtrim(CUSTCLAS) as customerClass,
@@ -31,7 +37,7 @@ export async function _getCustomerByCustomerNumber(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM RM00101
-      where CUSTNMBR = @customerNumber`)) as mssql.IResult<GPCustomer>
+      where CUSTNMBR = @customerNumber`)
 
   return customerResult.recordset.length > 0
     ? customerResult.recordset[0]

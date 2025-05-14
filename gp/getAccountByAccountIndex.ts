@@ -1,17 +1,22 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { GPAccount } from './types.js'
 import { buildAccountNumberFromSegments } from './utilities.js'
 
+/**
+ * Retrieves a GP account by its account index.
+ * @param mssqlConfig - The configuration for the SQL Server connection.
+ * @param accountIndex - The account index to look up.
+ * @returns A promise that resolves to the GP account, or undefined if not found.
+ */
 export default async function _getAccountByAccountIndex(
   mssqlConfig: mssql.config,
   accountIndex: number | string
 ): Promise<GPAccount | undefined> {
   const pool = await connect(mssqlConfig)
 
-  const accountResult = await pool
-    .request()
-    .input('accountIndex', accountIndex).query(`SELECT top 1
+  const accountResult = await pool.request().input('accountIndex', accountIndex)
+    .query<GPAccount>(`SELECT top 1
       [ACTINDX] as accountIndex,
       rtrim([ACTNUMBR_1]) as accountNumberSegment1,
       rtrim([ACTNUMBR_2]) as accountNumberSegment2,
@@ -25,7 +30,7 @@ export default async function _getAccountByAccountIndex(
       [CREATDDT] as dateCreated,
       [MODIFDT] as dateModified
       FROM [GL00100]
-      where ACTINDX = @accountIndex`) as mssql.IResult<GPAccount>
+      where ACTINDX = @accountIndex`)
 
   const account: GPAccount | undefined =
     accountResult.recordset.length > 0 ? accountResult.recordset[0] : undefined
@@ -43,4 +48,3 @@ export default async function _getAccountByAccountIndex(
 
   return account
 }
-

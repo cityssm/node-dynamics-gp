@@ -1,12 +1,12 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { GPVendor } from './types.js'
 
 /**
  * Inquiry > Purchasing > Vendor
- * @param mssqlConfig
- * @param vendorId
- * @returns
+ * @param mssqlConfig - The mssql configuration object.
+ * @param vendorId - The vendor ID to look up.
+ * @returns The vendor information or undefined if not found.
  */
 export default async function _getVendorByVendorId(
   mssqlConfig: mssql.config,
@@ -16,7 +16,8 @@ export default async function _getVendorByVendorId(
 
   const vendorResult = await pool
     .request()
-    .input('vendorId', vendorId).query(`SELECT top 1
+    .input('vendorId', vendorId)
+    .query<GPVendor>(`SELECT top 1
       rtrim(VENDORID) as vendorId,
       rtrim(VENDNAME) as vendorName,
       rtrim(VNDCHKNM) as vendorCheckName,
@@ -38,7 +39,7 @@ export default async function _getVendorByVendorId(
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM PM00200
-      where VENDORID = @vendorId`) as mssql.IResult<GPVendor>
+      where VENDORID = @vendorId`)
 
   return vendorResult.recordset.length > 0
     ? vendorResult.recordset[0]

@@ -1,12 +1,12 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { GPItemWithQuantity } from './types.js'
 
 /**
  * Inquiry > Inventory > Item
- * @param mssqlConfig
- * @param locationCodes
- * @returns
+ * @param mssqlConfig - The mssql configuration object.
+ * @param locationCodes - The location codes to look up.
+ * @returns The item information or an empty array if not found.
  */
 export default async function _getItemsByLocationCodes(
   mssqlConfig: mssql.config,
@@ -33,7 +33,7 @@ export default async function _getItemsByLocationCodes(
     itemRequest = itemRequest.input(parameterName, locationCode)
   }
 
-  const itemResult = (await itemRequest.query(`SELECT
+  const itemResult = await itemRequest.query<GPItemWithQuantity>(`SELECT
       rtrim(i.ITEMNMBR) as itemNumber,
       rtrim(i.ITEMDESC) as itemDescription,
       rtrim(i.ITMSHNAM) as itemShortName,
@@ -70,7 +70,7 @@ export default async function _getItemsByLocationCodes(
         
       FROM IV00101 i
       inner join IV00102 q on i.ITEMNMBR = q.ITEMNMBR
-      where (${locationCodeWhere})`)) as mssql.IResult<GPItemWithQuantity>
+      where (${locationCodeWhere})`)
 
   return itemResult.recordset
 }

@@ -3,7 +3,8 @@ export default async function _getVendorByVendorId(mssqlConfig, vendorId) {
     const pool = await connect(mssqlConfig);
     const vendorResult = await pool
         .request()
-        .input('vendorId', vendorId).query(`SELECT top 1
+        .input('vendorId', vendorId)
+        .query(`SELECT top 1
       rtrim(VENDORID) as vendorId,
       rtrim(VENDNAME) as vendorName,
       rtrim(VNDCHKNM) as vendorCheckName,

@@ -7,9 +7,11 @@ export interface GPAccount {
   accountNumberSegment4: string
   accountNumberSegment5: string
   accountNumberSegment6: string
+
   accountAlias: string
   accountDescription: string
   active: boolean
+
   dateCreated: Date
   dateModified: Date
 }
@@ -21,6 +23,7 @@ export interface GPCustomer {
   contactPerson: string
   statementName: string
   shortName: string
+
   address1: string
   address2: string
   address3: string
@@ -28,10 +31,13 @@ export interface GPCustomer {
   state: string
   country: string
   zipCode: string
+
   phoneNumber1: string
   phoneNumber2: string
   phoneNumber3: string
+
   faxNumber: string
+
   dateCreated: Date
   dateModified: Date
 }
@@ -67,6 +73,7 @@ export interface GPInvoice extends GPInvoiceDocumentType {
   paymentReceived: number
   codAmount: number
   contactPerson: string
+
   address1: string
   address2: string
   address3: string
@@ -74,19 +81,23 @@ export interface GPInvoice extends GPInvoiceDocumentType {
   state: string
   country: string
   zipCode: string
+
   phoneNumber1: string
   phoneNumber2: string
   phoneNumber3: string
+
   faxNumber: string
+
   comment1: string
   comment2: string
   comment3: string
   comment4: string
+
   dateCreated: Date
   dateModified: Date
 }
 
-interface GPInvoiceLineItem {
+export interface GPInvoiceLineItem {
   lineItemNumber: number
   itemNumber: string
   quantity: number
@@ -160,6 +171,7 @@ export interface GPVendor {
   vendorCheckName: string
   shortName: string
   contactPerson: string
+  
   address1: string
   address2: string
   address3: string
@@ -167,12 +179,16 @@ export interface GPVendor {
   state: string
   country: string
   zipCode: string
+
   phoneNumber1: string
   phoneNumber2: string
   phoneNumber3: string
+
   faxNumber: string
+
   comment1: string
   comment2: string
+
   dateCreated: Date
   dateModified: Date
 }

@@ -1,9 +1,15 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js'
 
 import type { DiamondCashReceipt } from './types.js'
 
+/**
+ * Retrieves a cash receipt from the Diamond database by its document number.
+ * @param mssqlConfig - The configuration for the SQL Server connection.
+ * @param documentNumber - The document number of the cash receipt to retrieve.
+ * @returns A promise that resolves to the cash receipt, or undefined if not found.
+ */
 export async function _getCashReceiptByDocumentNumber(
   mssqlConfig: mssql.config,
   documentNumber: number | string
@@ -17,9 +23,10 @@ export async function _getCashReceiptByDocumentNumber(
 
   const pool = await connect(mssqlConfig)
 
-  const receiptResult = (await pool
+  const receiptResult = await pool
     .request()
-    .input('documentNumber', documentNumber).query(`SELECT top 1
+    .input('documentNumber', documentNumber)
+    .query<DiamondCashReceipt>(`SELECT top 1
       0 as isHistorical,
       '' as transactionSource,
       [dDOCSUFFIX] as documentNumber,
@@ -75,7 +82,7 @@ export async function _getCashReceiptByDocumentNumber(
       FROM [CR30101]
       where dDOCSUFFIX = @documentNumber
       
-      order by isHistorical`)) as mssql.IResult<DiamondCashReceipt>
+      order by isHistorical`)
 
   const receipt =
     receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined

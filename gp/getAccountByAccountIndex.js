@@ -2,9 +2,8 @@ import { connect } from '@cityssm/mssql-multi-pool';
 import { buildAccountNumberFromSegments } from './utilities.js';
 export default async function _getAccountByAccountIndex(mssqlConfig, accountIndex) {
     const pool = await connect(mssqlConfig);
-    const accountResult = await pool
-        .request()
-        .input('accountIndex', accountIndex).query(`SELECT top 1
+    const accountResult = await pool.request().input('accountIndex', accountIndex)
+        .query(`SELECT top 1
       [ACTINDX] as accountIndex,
       rtrim([ACTNUMBR_1]) as accountNumberSegment1,
       rtrim([ACTNUMBR_2]) as accountNumberSegment2,
