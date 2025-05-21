@@ -885,8 +885,7 @@ CREATE TABLE PM00201 (
 	[WITHLYR] [numeric](19, 5) NOT NULL default 0,
 	[Withholding_LIFE] [numeric](19, 5) NOT NULL default 0,
 	[PrepaymentAmount] [numeric](19, 5) NOT NULL default 0,
-	[DEX_ROW_ID] [int] IDENTITY(1,1) NOT NULL,
- CONSTRAINT [PKPM00201] PRIMARY KEY NONCLUSTERED)
+	[DEX_ROW_ID] [int] IDENTITY(1,1) NOT NULL)
 GO
 
 insert into PM00201 (VENDORID) values ('VEND001')
