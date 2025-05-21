@@ -1,7 +1,6 @@
 # Node Dynamics GP
 
 [![npm (scoped)](https://img.shields.io/npm/v/@cityssm/dynamics-gp)](https://www.npmjs.com/package/@cityssm/dynamics-gp)
-[![Maintainability](https://api.codeclimate.com/v1/badges/b850568e64485c966d4a/maintainability)](https://codeclimate.com/github/cityssm/node-dynamics-gp/maintainability)
 [![codecov](https://codecov.io/gh/cityssm/node-dynamics-gp/branch/main/graph/badge.svg?token=K2D0W6D1LN)](https://codecov.io/gh/cityssm/node-dynamics-gp)
 [![Build Status](https://github.com/cityssm/node-dynamics-gp/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/node-dynamics-gp/actions/workflows/coverage.yml)
 [![DeepSource](https://app.deepsource.com/gh/cityssm/node-dynamics-gp.svg/?label=active+issues&show_trend=true&token=8upUaCFLWbSvxfWIhbeiD2_E)](https://app.deepsource.com/gh/cityssm/node-dynamics-gp/)
@@ -13,7 +12,7 @@ into custom business applications. It connects to the underlying SQL Server dire
 and returns data in easy-to-use Javascript objects.
 
 Built to validate transactions linked from the City of Sault Ste. Marie's
-[Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system).
+[Sunrise CMS](https://github.com/cityssm/sunrise-cms).
 
 _Tested with Microsoft Dynamics GP 2018._
 
