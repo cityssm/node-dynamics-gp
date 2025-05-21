@@ -211,7 +211,7 @@ export class DynamicsGP {
       this.#vendorCache.get(vendorId) ?? undefined
 
     if (vendor === undefined) {
-      const vendors = await this.getVendors({vendorId})
+      const vendors = await this.getVendors({ vendorId })
       vendor = vendors.length > 0 ? vendors[0] : undefined
       this.#vendorCache.set(vendorId, vendor)
     }
@@ -219,7 +219,9 @@ export class DynamicsGP {
     return vendor
   }
 
-  async getVendors(vendorFilters?: Partial<GetVendorsFilters>): Promise<GPVendor[]> {
+  async getVendors(
+    vendorFilters?: Partial<GetVendorsFilters>
+  ): Promise<GPVendor[]> {
     return await _getVendors(this.#mssqlConfig, vendorFilters ?? {})
   }
 
@@ -283,3 +285,5 @@ export type {
   DiamondCashReceipt,
   DiamondExtendedGPInvoice
 } from './diamond/types.js'
+
+export type { GetVendorsFilters } from './gp/getVendors.js'

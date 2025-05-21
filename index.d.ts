@@ -23,3 +23,4 @@ export declare class DynamicsGP {
 }
 export type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';
 export type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
+export type { GetVendorsFilters } from './gp/getVendors.js';
