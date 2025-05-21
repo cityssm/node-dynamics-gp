@@ -223,6 +223,9 @@ await describe('dynamics-gp', async () => {
 
         lastPurchaseDateMin: new Date('2024-01-01')
       })
+
+      console.log(vendors)
+      
       assert.ok(vendors.length > 0)
     })
 
