@@ -82,7 +82,7 @@ export interface GPInvoice extends GPInvoiceDocumentType {
     dateCreated: Date;
     dateModified: Date;
 }
-interface GPInvoiceLineItem {
+export interface GPInvoiceLineItem {
     lineItemNumber: number;
     itemNumber: string;
     quantity: number;
@@ -164,7 +164,9 @@ export interface GPVendor {
     faxNumber: string;
     comment1: string;
     comment2: string;
+    vendorClassId: string;
     dateCreated: Date;
     dateModified: Date;
+    lastPurchaseDate: Date;
 }
 export {};

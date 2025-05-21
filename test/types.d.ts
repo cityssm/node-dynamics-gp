@@ -10,6 +10,10 @@ export interface Config {
     locationCodes: string[];
     vendorId: string;
     vendorIdNotFound: string;
+    notVendorClassIds: string[];
+    vendorClassIds: string[];
+    vendorNameContains: string[];
+    vendorNameDoesNotContain: string[];
     invoiceDocumentType: string;
     invoiceNumber: string;
     invoiceNumberNotFound: string;

@@ -1,7 +1,7 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) {
     const pool = await connect(mssqlConfig);
-    const customerResult = (await pool
+    const customerResult = await pool
         .request()
         .input('customerNumber', customerNumber).query(`SELECT top 1
       rtrim(CUSTNMBR) as customerNumber,
@@ -24,7 +24,7 @@ export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) 
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM RM00101
-      where CUSTNMBR = @customerNumber`));
+      where CUSTNMBR = @customerNumber`);
     return customerResult.recordset.length > 0
         ? customerResult.recordset[0]
         : undefined;

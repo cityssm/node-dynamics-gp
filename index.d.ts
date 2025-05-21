@@ -1,5 +1,6 @@
 import type { config as MSSQLConfig } from 'mssql';
 import type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
+import { type GetVendorsFilters } from './gp/getVendors.js';
 import type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';
 export interface DynamicsGPOptions {
     cacheTTL: number;
@@ -16,6 +17,7 @@ export declare class DynamicsGP {
     getItemByItemNumber(itemNumber: string): Promise<GPItemWithQuantities | undefined>;
     getItemsByLocationCodes(locationCodes?: string[]): Promise<GPItemWithQuantity[]>;
     getVendorByVendorId(vendorId: string): Promise<GPVendor | undefined>;
+    getVendors(vendorFilters?: Partial<GetVendorsFilters>): Promise<GPVendor[]>;
     getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
     getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;
 }

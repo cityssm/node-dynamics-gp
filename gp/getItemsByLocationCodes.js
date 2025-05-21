@@ -14,7 +14,7 @@ export default async function _getItemsByLocationCodes(mssqlConfig, locationCode
         locationCodeWhere += `q.LOCNCODE = @${parameterName}`;
         itemRequest = itemRequest.input(parameterName, locationCode);
     }
-    const itemResult = (await itemRequest.query(`SELECT
+    const itemResult = await itemRequest.query(`SELECT
       rtrim(i.ITEMNMBR) as itemNumber,
       rtrim(i.ITEMDESC) as itemDescription,
       rtrim(i.ITMSHNAM) as itemShortName,
@@ -51,6 +51,6 @@ export default async function _getItemsByLocationCodes(mssqlConfig, locationCode
         
       FROM IV00101 i
       inner join IV00102 q on i.ITEMNMBR = q.ITEMNMBR
-      where (${locationCodeWhere})`));
+      where (${locationCodeWhere})`);
     return itemResult.recordset;
 }

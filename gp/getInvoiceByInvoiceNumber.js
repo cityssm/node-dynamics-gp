@@ -111,13 +111,14 @@ export default async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNum
             : ' or t.DOCTYPE = @invoiceDocumentType'})`;
     }
     sql += ' order by t.DEX_ROW_ID';
-    const invoiceResult = (await invoiceRequest.query(sql));
+    const invoiceResult = await invoiceRequest.query(sql);
     const invoice = invoiceResult.recordset.length > 0 ? invoiceResult.recordset[0] : undefined;
     if (invoice !== undefined) {
         const itemResults = await pool
             .request()
             .input('invoiceDocumentType', invoice.invoiceDocumentType)
-            .input('invoiceNumber', invoice.invoiceNumber).query(`SELECT
+            .input('invoiceNumber', invoice.invoiceNumber)
+            .query(`SELECT
         [LNITMSEQ] as lineItemNumber,
         rtrim([ITEMNMBR]) as itemNumber,
         [QUANTITY] as quantity,

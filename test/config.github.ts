@@ -7,7 +7,7 @@ export const config: Config = {
   mssql: {
     server: 'localhost',
     user: 'sa',
-    // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
     password: 'dbatools.I0',
     database: 'Dynamics',
     options: {
@@ -28,6 +28,12 @@ export const config: Config = {
 
   vendorId: 'VEND001',
   vendorIdNotFound: 'X',
+
+  notVendorClassIds: ['X'],
+  vendorClassIds: ['DEFAULT'],
+
+  vendorNameContains: ['E'],
+  vendorNameDoesNotContain: ['Z'],
 
   invoiceDocumentType: 'IVC',
   invoiceNumber: 'IVC000001',

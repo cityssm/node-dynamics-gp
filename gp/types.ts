@@ -171,7 +171,7 @@ export interface GPVendor {
   vendorCheckName: string
   shortName: string
   contactPerson: string
-  
+
   address1: string
   address2: string
   address3: string
@@ -189,6 +189,9 @@ export interface GPVendor {
   comment1: string
   comment2: string
 
+  vendorClassId: string
+
   dateCreated: Date
   dateModified: Date
+  lastPurchaseDate: Date
 }

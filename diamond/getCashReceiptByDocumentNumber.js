@@ -6,9 +6,10 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         return undefined;
     }
     const pool = await connect(mssqlConfig);
-    const receiptResult = (await pool
+    const receiptResult = await pool
         .request()
-        .input('documentNumber', documentNumber).query(`SELECT top 1
+        .input('documentNumber', documentNumber)
+        .query(`SELECT top 1
       0 as isHistorical,
       '' as transactionSource,
       [dDOCSUFFIX] as documentNumber,
@@ -64,7 +65,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
       FROM [CR30101]
       where dDOCSUFFIX = @documentNumber
       
-      order by isHistorical`));
+      order by isHistorical`);
     const receipt = receiptResult.recordset.length > 0 ? receiptResult.recordset[0] : undefined;
     if (receipt !== undefined) {
         const detailsResult = await pool

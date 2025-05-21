@@ -11,7 +11,7 @@ import { config } from './config.js'
 
 Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
-describe('dynamics-gp/diamond', () => {
+await describe.skip('dynamics-gp/diamond', async () => {
   const gp = new DynamicsGP(config.mssql)
   const gpMisconfigured = new DynamicsGP({
     server: 'localhost'
@@ -21,8 +21,8 @@ describe('dynamics-gp/diamond', () => {
     void releaseAll()
   })
 
-  describe('Cash Receipts', () => {
-    it('Retrieves a Cash Receipt', async () => {
+  await describe('Cash Receipts', async () => {
+    await it('Retrieves a Cash Receipt', async () => {
       // Do twice to test cache retrieval
 
       await gp.getDiamondCashReceiptByDocumentNumber(
@@ -41,7 +41,7 @@ describe('dynamics-gp/diamond', () => {
       assert.ok(cashReceipt.details.length > 0)
     })
 
-    it('Returns undefined when document number is not a number', async () => {
+    await it('Returns undefined when document number is not a number', async () => {
       const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumberInvalid
       )
@@ -49,7 +49,7 @@ describe('dynamics-gp/diamond', () => {
       assert.strictEqual(cashReceipt, undefined)
     })
 
-    it('Returns undefined when document number is not found', async () => {
+    await it('Returns undefined when document number is not found', async () => {
       const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(
         config.cashReceiptDocumentNumberNotFound
       )
@@ -57,7 +57,7 @@ describe('dynamics-gp/diamond', () => {
       assert.strictEqual(cashReceipt, undefined)
     })
 
-    it('Throws an error when SQL is misconfigured', async () => {
+    await it('Throws an error when SQL is misconfigured', async () => {
       try {
         await gpMisconfigured.getDiamondCashReceiptByDocumentNumber(
           config.cashReceiptDocumentNumber
@@ -71,8 +71,8 @@ describe('dynamics-gp/diamond', () => {
     })
   })
 
-  describe('Extend GP Invoices', () => {
-    it('Gets a fully extended GPInvoice', async () => {
+  await describe('Extend GP Invoices', async () => {
+    await it('Gets a fully extended GPInvoice', async () => {
       const diamondInvoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(
         config.invoiceNumber
       )

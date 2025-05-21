@@ -1,7 +1,7 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export default async function _getItemByItemNumber(mssqlConfig, itemNumber) {
     const pool = await connect(mssqlConfig);
-    const itemResult = (await pool.request().input('itemNumber', itemNumber)
+    const itemResult = await pool.request().input('itemNumber', itemNumber)
         .query(`SELECT top 1
       rtrim(ITEMNMBR) as itemNumber,
       rtrim(ITEMDESC) as itemDescription,
@@ -13,7 +13,7 @@ export default async function _getItemByItemNumber(mssqlConfig, itemNumber) {
       CREATDDT as dateCreated,
       MODIFDT as dateModified
       FROM IV00101
-      where ITEMNMBR = @itemNumber`));
+      where ITEMNMBR = @itemNumber`);
     const item = itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined;
     if (item !== undefined) {
         const quantityResults = await pool.request().input('itemNumber', itemNumber)

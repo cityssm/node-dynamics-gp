@@ -8,7 +8,7 @@ import _getInvoiceByInvoiceNumber from './gp/getInvoiceByInvoiceNumber.js';
 import _getInvoiceDocumentTypes from './gp/getInvoiceDocumentTypes.js';
 import _getItemByItemNumber from './gp/getItemByItemNumber.js';
 import _getItemsByLocationCodes from './gp/getItemsByLocationCodes.js';
-import _getVendorByVendorId from './gp/getVendorByVendorId.js';
+import _getVendors from './gp/getVendors.js';
 const defaultOptions = {
     cacheTTL: minutesToSeconds(3),
     documentCacheTTL: minutesToSeconds(1)
@@ -109,10 +109,14 @@ export class DynamicsGP {
     async getVendorByVendorId(vendorId) {
         let vendor = this.#vendorCache.get(vendorId) ?? undefined;
         if (vendor === undefined) {
-            vendor = await _getVendorByVendorId(this.#mssqlConfig, vendorId);
+            const vendors = await this.getVendors({ vendorId });
+            vendor = vendors.length > 0 ? vendors[0] : undefined;
             this.#vendorCache.set(vendorId, vendor);
         }
         return vendor;
+    }
+    async getVendors(vendorFilters) {
+        return await _getVendors(this.#mssqlConfig, vendorFilters ?? {});
     }
     async getDiamondCashReceiptByDocumentNumber(documentNumber) {
         let receipt = this.#diamondCashReceiptCache.get(documentNumber);
