@@ -12,6 +12,7 @@ export default async function _getVendors(mssqlConfig, vendorFilters) {
       rtrim(v.VNDCHKNM) as vendorCheckName,
       rtrim(v.VENDSHNM) as shortName,
       rtrim(v.VNDCNTCT) as contactPerson,
+
       rtrim(v.ADDRESS1) as address1,
       rtrim(v.ADDRESS2) as address2,
       rtrim(v.ADDRESS3) as address3,
@@ -19,13 +20,16 @@ export default async function _getVendors(mssqlConfig, vendorFilters) {
       rtrim(v.STATE) as state,
       rtrim(v.COUNTRY) as country,
       rtrim(v.ZIPCODE) as zipCode,
-      rtrim(v.PHNUMBR1) as phoneNumber1,
-      rtrim(v.PHNUMBR2) as phoneNumber2,
-      rtrim(v.PHONE3) as phoneNumber3,
-      rtrim(v.FAXNUMBR) as faxNumber,
+
+      case when replace(v.PHNUMBR1, '0', '') = '' then '' else rtrim(v.PHNUMBR1) end as phoneNumber1,
+      case when replace(v.PHNUMBR2, '0', '') = '' then '' else rtrim(v.PHNUMBR2) end as phoneNumber2,
+      case when replace(v.PHONE3, '0', '') = '' then '' else rtrim(v.PHONE3) end as phoneNumber3,
+      case when replace(v.FAXNUMBR, '0', '') = '' then '' else rtrim(v.FAXNUMBR) end as faxNumber,
+      
       rtrim(v.COMMENT1) as comment1,
       rtrim(v.COMMENT2) as comment2,
       rtrim(v.VNDCLSID) as vendorClassId,
+
       v.CREATDDT as dateCreated,
       v.MODIFDT as dateModified,
 
