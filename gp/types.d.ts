@@ -110,6 +110,7 @@ interface GPItem {
     itemDescription: string;
     itemShortName: string;
     itemType: string;
+    itemClassCode: string;
     itemGenericDescription: string;
     standardCost: number;
     currentCost: number;

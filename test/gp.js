@@ -103,10 +103,11 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Single Items', async () => {
+    await describe('Single Items', async () => {
         await it('Retrieves an Item', async () => {
             await gp.getItemByItemNumber(config.itemNumber);
             const item = await gp.getItemByItemNumber(config.itemNumber);
+            console.log(item);
             assert.ok(item !== undefined);
             assert.strictEqual(config.itemNumber, item.itemNumber);
         });
@@ -125,7 +126,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Multiple Items', async () => {
+    await describe('Multiple Items', async () => {
         await it('Retrieves Items', async () => {
             const items = await gp.getItemsByLocationCodes(config.locationCodes);
             assert.ok(items.length > 0);
@@ -141,7 +142,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe('Vendors', async () => {
+    await describe.skip('Vendors', async () => {
         await it('Retrieves a Vendor', async () => {
             await gp.getVendorByVendorId(config.vendorId);
             const vendor = await gp.getVendorByVendorId(config.vendorId);

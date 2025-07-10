@@ -150,11 +150,13 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Single Items', async () => {
+  await describe('Single Items', async () => {
     await it('Retrieves an Item', async () => {
       // Do twice to test cache retrieval
       await gp.getItemByItemNumber(config.itemNumber)
       const item = await gp.getItemByItemNumber(config.itemNumber)
+
+      console.log(item)
 
       assert.ok(item !== undefined)
       assert.strictEqual(config.itemNumber, item.itemNumber)
@@ -178,7 +180,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Multiple Items', async () => {
+  await describe('Multiple Items', async () => {
     await it('Retrieves Items', async () => {
       const items = await gp.getItemsByLocationCodes(config.locationCodes)
 
@@ -197,7 +199,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe('Vendors', async () => {
+  await describe.skip('Vendors', async () => {
     await it('Retrieves a Vendor', async () => {
       // Do twice to test cache retrieval
       await gp.getVendorByVendorId(config.vendorId)

@@ -38,6 +38,7 @@ export default async function _getItemsByLocationCodes(
       rtrim(i.ITEMDESC) as itemDescription,
       rtrim(i.ITMSHNAM) as itemShortName,
       rtrim(i.ITEMTYPE) as itemType,
+      rtrim(i.ITMCLSCD) as itemClassCode,
       rtrim(i.ITMGEDSC) as itemGenericDescription,
       i.STNDCOST as standardCost,
       i.CURRCOST as currentCost,

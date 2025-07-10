@@ -20,6 +20,7 @@ export default async function _getItemByItemNumber(
       rtrim(ITEMDESC) as itemDescription,
       rtrim(ITMSHNAM) as itemShortName,
       rtrim(ITEMTYPE) as itemType,
+      rtrim(ITMCLSCD) as itemClassCode,
       rtrim(ITMGEDSC) as itemGenericDescription,
       STNDCOST as standardCost,
       CURRCOST as currentCost,
