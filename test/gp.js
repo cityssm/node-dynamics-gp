@@ -2,10 +2,11 @@ import assert from 'node:assert';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import Debug from 'debug';
-import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js';
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js';
 import { DynamicsGP } from '../index.js';
 import { config } from './config.js';
 Debug.enable(DEBUG_ENABLE_NAMESPACES);
+const debug = Debug(`${DEBUG_NAMESPACE}:test:gp`);
 await describe('dynamics-gp', async () => {
     const gp = new DynamicsGP(config.mssql);
     const gpMisconfigured = new DynamicsGP({
@@ -107,9 +108,10 @@ await describe('dynamics-gp', async () => {
         await it('Retrieves an Item', async () => {
             await gp.getItemByItemNumber(config.itemNumber);
             const item = await gp.getItemByItemNumber(config.itemNumber);
-            console.log(item);
+            debug(item);
             assert.ok(item !== undefined);
             assert.strictEqual(config.itemNumber, item.itemNumber);
+            assert.ok(Object.hasOwn(item, 'itemClassCode'));
         });
         await it('Returns undefined when item number is not found', async () => {
             const item = await gp.getItemByItemNumber(config.itemNumberNotFound);
@@ -130,6 +132,7 @@ await describe('dynamics-gp', async () => {
         await it('Retrieves Items', async () => {
             const items = await gp.getItemsByLocationCodes(config.locationCodes);
             assert.ok(items.length > 0);
+            assert.ok(Object.hasOwn(items[0], 'itemClassCode'));
         });
         await it('Throws an error when SQL is misconfigured', async () => {
             try {
@@ -161,7 +164,7 @@ await describe('dynamics-gp', async () => {
                 vendorNameDoesNotContain: config.vendorNameDoesNotContain,
                 lastPurchaseDateMin: new Date('2024-01-01')
             });
-            console.log(vendors);
+            debug(vendors);
             assert.ok(vendors.length > 0);
         });
         await it('Throws an error when SQL is misconfigured', async () => {
