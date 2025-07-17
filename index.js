@@ -1,5 +1,5 @@
+import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis';
-import NodeCache from 'node-cache';
 import _extendGpInvoice from './diamond/extendGpInvoice.js';
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js';
 import _getAccountByAccountIndex from './gp/getAccountByAccountIndex.js';

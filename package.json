@@ -31,13 +31,13 @@
     "test": "node --test"
   },
   "dependencies": {
+    "@cacheable/node-cache": "^1.6.0",
     "@cityssm/mssql-multi-pool": "^5.1.0",
-    "@cityssm/to-millis": "^1.0.0",
-    "node-cache": "^5.1.2"
+    "@cityssm/to-millis": "^1.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.0.12",
+    "@types/node": "^24.0.14",
     "debug": "^4.4.1",
     "eslint-config-cityssm": "^26.0.0",
     "prettier-config-cityssm": "^1.0.0"
