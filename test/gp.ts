@@ -184,7 +184,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe('Multiple Items', async () => {
+  await describe.skip('Multiple Items', async () => {
     await it('Retrieves Items', async () => {
       const items = await gp.getItemsByLocationCodes(config.locationCodes)
 

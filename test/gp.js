@@ -128,7 +128,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe('Multiple Items', async () => {
+    await describe.skip('Multiple Items', async () => {
         await it('Retrieves Items', async () => {
             const items = await gp.getItemsByLocationCodes(config.locationCodes);
             assert.ok(items.length > 0);

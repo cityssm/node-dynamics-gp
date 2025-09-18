@@ -1,9 +1,9 @@
 export const config = {
     mssql: {
+        database: 'Dynamics',
         server: 'localhost',
         user: 'sa',
         password: 'dbatools.I0',
-        database: 'Dynamics',
         options: {
             encrypt: false
         }

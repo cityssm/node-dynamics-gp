@@ -35,7 +35,7 @@ await describe.skip('dynamics-gp/diamond', async () => {
                 await gpMisconfigured.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
             }
             catch {
-                assert.ok(1);
+                assert.ok(true);
                 return;
             }
             assert.fail();

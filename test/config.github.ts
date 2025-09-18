@@ -5,11 +5,12 @@ import type { Config } from './types.js'
 
 export const config: Config = {
   mssql: {
+    database: 'Dynamics',
     server: 'localhost',
     user: 'sa',
     // eslint-disable-next-line sonarjs/no-hardcoded-passwords
     password: 'dbatools.I0',
-    database: 'Dynamics',
+    
     options: {
       encrypt: false
     }

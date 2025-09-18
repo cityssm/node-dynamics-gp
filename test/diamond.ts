@@ -63,7 +63,7 @@ await describe.skip('dynamics-gp/diamond', async () => {
           config.cashReceiptDocumentNumber
         )
       } catch {
-        assert.ok(1)
+        assert.ok(true)
         return
       }
 
