@@ -1,13 +1,10 @@
-import eslintConfigCityssm, {
-  type Config,
-  tseslint
-} from 'eslint-config-cityssm'
+import eslintConfigCityssm, { defineConfig } from 'eslint-config-cityssm'
 
-const config = tseslint.config(eslintConfigCityssm, {
+const config = defineConfig(eslintConfigCityssm, {
   files: ['**/*.ts'],
   rules: {
     '@cspell/spellchecker': 'off'
   }
-}) as Config
+})
 
 export default config
