@@ -126,7 +126,7 @@ function buildVendorFiltersWhereClause(
   }
 
   if (vendorFilters.vendorId !== undefined) {
-    whereClauses.push(`v.VENDORID = @vendorId`)
+    whereClauses.push('v.VENDORID = @vendorId')
     parameters.vendorId = vendorFilters.vendorId
   }
 
@@ -162,7 +162,7 @@ function buildVendorFiltersWhereClause(
   }
 
   if (vendorFilters.lastPurchaseDateMin !== undefined) {
-    whereClauses.push(`t.LSTPURDT >= @lastPurchaseDateMin`)
+    whereClauses.push('t.LSTPURDT >= @lastPurchaseDateMin')
     parameters.lastPurchaseDateMin = vendorFilters.lastPurchaseDateMin
   }
 

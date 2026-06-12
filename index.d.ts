@@ -1,5 +1,5 @@
 import type { config as MSSQLConfig } from 'mssql';
-import type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
+import type { DiamondCashReceipt, DiamondExtendedGPInvoice, DiamondTaxedProperty, DiamondTaxedPropertyAssessment, DiamondTaxedPropertyOwner } from './diamond/types.js';
 import { type GetVendorsFilters } from './gp/getVendors.js';
 import type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';
 export interface DynamicsGPOptions {
@@ -14,6 +14,9 @@ export declare class DynamicsGP {
     getCustomerByCustomerNumber(customerNumber: string): Promise<GPCustomer | undefined>;
     getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
     getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;
+    getDiamondTaxedPropertyAssessmentsByRollNumber(rollNumber: string): Promise<DiamondTaxedPropertyAssessment[]>;
+    getDiamondTaxedPropertyByRollNumber(rollNumber: string): Promise<DiamondTaxedProperty | undefined>;
+    getDiamondTaxedPropertyOwnersByRollNumber(rollNumber: string): Promise<DiamondTaxedPropertyOwner[]>;
     getInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice | undefined>;
     getInvoiceDocumentTypes(): Promise<GPInvoiceDocumentType[]>;
     getItemByItemNumber(itemNumber: string): Promise<GPItemWithQuantities | undefined>;

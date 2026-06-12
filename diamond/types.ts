@@ -8,12 +8,14 @@ export interface DiamondCashReceipt {
   batchSource: string
   initials: string
   documentDate: Date
-  description: string
+
+  description1: string
   description2: string
   description3: string
   description4: string
   description5: string
   description6: string
+
   details: DiamondCashReceiptDetails[]
   distributions: DiamondCashReceiptDistribution[]
   totalBalance: number
@@ -25,6 +27,7 @@ export interface DiamondCashReceipt {
   creditCardAmount: number
   creditCardName: string
   otherAmount: number
+
   dateCreated: Date
   dateModified: Date
 }
@@ -56,4 +59,53 @@ export interface DiamondTrialBalanceCode {
   trialBalanceCodeDescription?: string
 }
 
-export type DiamondExtendedGPInvoice = GPInvoice & DiamondTrialBalanceCode
+export type DiamondExtendedGPInvoice = DiamondTrialBalanceCode & GPInvoice
+
+export interface DiamondTaxedProperty {
+  rollNumber: string
+
+  addressStreetName: string
+  addressStreetNumber: string
+  addressUnitQualifier: string
+
+  legalDescription1: string
+  legalDescription2: string
+  legalDescription3: string
+  legalDescription4: string
+  legalDescription5: string
+
+  dateCreated: Date
+  dateModified: Date
+}
+
+export interface DiamondTaxedPropertyOwner {
+  customerNumber: string
+  ownerType: 'Mortgage Holder' | 'Primary Owner' | 'Secondary Owner' | 'Unknown'
+
+  ownerDateCreated: Date
+  ownerDateModified: Date
+
+  customerName: string
+
+  address1: string
+  address2: string
+  address3: string
+  city: string
+  state: string
+  country: string
+  zipCode: string
+
+  phoneNumber1: string
+  phoneNumber2: string
+  phoneNumber3: string
+
+  faxNumber: string
+
+  customerDateCreated: Date
+  customerDateModified: Date
+}
+
+export interface DiamondTaxedPropertyAssessment {
+  assessmentYear: number
+  assessedValue: number
+}

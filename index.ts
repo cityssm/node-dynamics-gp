@@ -4,9 +4,15 @@ import type { config as MSSQLConfig } from 'mssql'
 
 import _extendGpInvoice from './diamond/extendGpInvoice.js'
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js'
+import _getTaxedPropertyAssessmentsByRollNumber from './diamond/getTaxedPropertyAssessmentsByRollNumber.js'
+import _getTaxedPropertyByRollNumber from './diamond/getTaxedPropertyByRollNumber.js'
+import _getTaxedPropertyOwnersByRollNumber from './diamond/getTaxedPropertyOwnersByRollNumber.js'
 import type {
   DiamondCashReceipt,
-  DiamondExtendedGPInvoice
+  DiamondExtendedGPInvoice,
+  DiamondTaxedProperty,
+  DiamondTaxedPropertyAssessment,
+  DiamondTaxedPropertyOwner
 } from './diamond/types.js'
 import _getAccountByAccountIndex from './gp/getAccountByAccountIndex.js'
 import _getCustomerByCustomerNumber from './gp/getCustomerByCustomerNumber.js'
@@ -56,6 +62,9 @@ export class DynamicsGP {
   readonly #customerCache: NodeCache<GPCustomer | undefined>
   readonly #diamondCashReceiptCache: NodeCache<DiamondCashReceipt | undefined>
   readonly #diamondInvoiceCache: NodeCache<DiamondExtendedGPInvoice | undefined>
+  readonly #diamondTaxedPropertyCache: NodeCache<
+    DiamondTaxedProperty | undefined
+  >
 
   readonly #invoiceCache: NodeCache<GPInvoice | undefined>
   #invoiceDocumentTypesCache: GPInvoiceDocumentType[] = []
@@ -88,6 +97,10 @@ export class DynamicsGP {
     this.#diamondInvoiceCache = new NodeCache({
       stdTTL: this.#options.documentCacheTTL
     })
+
+    this.#diamondTaxedPropertyCache = new NodeCache({
+      stdTTL: this.#options.documentCacheTTL
+    })
   }
 
   clearCaches(): void {
@@ -102,6 +115,7 @@ export class DynamicsGP {
 
     this.#diamondCashReceiptCache.flushAll()
     this.#diamondInvoiceCache.flushAll()
+    this.#diamondTaxedPropertyCache.flushAll()
   }
 
   async getAccountByAccountIndex(
@@ -174,6 +188,41 @@ export class DynamicsGP {
     }
 
     return diamondInvoice
+  }
+
+  async getDiamondTaxedPropertyAssessmentsByRollNumber(
+    rollNumber: string
+  ): Promise<DiamondTaxedPropertyAssessment[]> {
+    return await _getTaxedPropertyAssessmentsByRollNumber(
+      this.#mssqlConfig,
+      rollNumber
+    )
+  }
+
+  async getDiamondTaxedPropertyByRollNumber(
+    rollNumber: string
+  ): Promise<DiamondTaxedProperty | undefined> {
+    let taxedProperty = this.#diamondTaxedPropertyCache.get(rollNumber)
+
+    if (taxedProperty === undefined) {
+      taxedProperty = await _getTaxedPropertyByRollNumber(
+        this.#mssqlConfig,
+        rollNumber
+      )
+
+      this.#diamondTaxedPropertyCache.set(rollNumber, taxedProperty)
+    }
+
+    return taxedProperty
+  }
+
+  async getDiamondTaxedPropertyOwnersByRollNumber(
+    rollNumber: string
+  ): Promise<DiamondTaxedPropertyOwner[]> {
+    return await _getTaxedPropertyOwnersByRollNumber(
+      this.#mssqlConfig,
+      rollNumber
+    )
   }
 
   async getInvoiceByInvoiceNumber(

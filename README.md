@@ -7,9 +7,9 @@
 
 _Read only inquiries into Microsoft Dynamics GP using a SQL Server connection._
 
-The purpose of this project to make it easy to incorporate **on prem** Dynamics GP data
-into custom business applications. It connects to the underlying SQL Server directly,
-and returns data in easy-to-use Javascript objects.
+The purpose of this project to make it easy to incorporate **on prem**
+Dynamics GP data into custom business applications. It connects to the
+underlying SQL Server directly, and returns data in easy-to-use Javascript objects.
 
 Built to validate transactions linked from the City of Sault Ste. Marie's
 [Sunrise CMS](https://github.com/cityssm/sunrise-cms).
@@ -22,7 +22,8 @@ _Tested with Microsoft Dynamics GP 2018._
 
 - 🙌 **Temporary caching** to reduce database hits and function return times.
 
-- 🙌 **All whitespace trimmed** from the end of the `char` data. Strings are ready to use!
+- 🙌 **All whitespace trimmed** from the end of the `char` data.
+  Strings are ready to use!
 
 - 🙌 **Consistent and clear field names.** For example:
   - `PRIMVNDR` becomes `primaryVendorId`
@@ -78,6 +79,14 @@ The functions below query Dynamics GP tables with extensions from
 const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber('123456')
 
 const invoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber)
+
+const propertyDetails = await gp.getDiamondTaxedPropertyByRollNumber(rollNumber)
+
+const propertyOwners =
+  await gp.getDiamondTaxedPropertyOwnersByRollNumber(rollNumber)
+  
+const propertyAssessmentHistory =
+  await gp.getDiamondTaxedPropertyAssessmentsByRollNumber(rollNumber)
 ```
 
 ## Contributions
@@ -86,3 +95,8 @@ Is a field you need missing? An entire table?
 [Create an issue](https://github.com/cityssm/node-dynamics-gp/issues) with your request,
 or better yet, [submit a pull request](https://github.com/cityssm/node-dynamics-gp/pulls)
 implementing the feature you need!
+
+## Related Projects
+
+[**MPAC Tools**](https://github.com/cityssm/node-mpac-tools/)<br />
+Lookups and utilities for working with MPAC data.

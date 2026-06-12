@@ -8,10 +8,10 @@ export const config: Config = {
     database: 'Dynamics',
     server: 'localhost',
     user: 'sa',
-    
+
     // eslint-disable-next-line sonarjs/no-hardcoded-passwords
     password: 'dbatools.I0',
-    
+
     options: {
       encrypt: false
     }
@@ -43,5 +43,7 @@ export const config: Config = {
 
   cashReceiptDocumentNumber: 1,
   cashReceiptDocumentNumberInvalid: 'X',
-  cashReceiptDocumentNumberNotFound: 2
+  cashReceiptDocumentNumberNotFound: 2,
+
+  taxedPropertyRollNumber: '010000000000000'
 }

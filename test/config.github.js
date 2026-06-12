@@ -26,5 +26,6 @@ export const config = {
     invoiceNumberNotFound: 'X',
     cashReceiptDocumentNumber: 1,
     cashReceiptDocumentNumberInvalid: 'X',
-    cashReceiptDocumentNumberNotFound: 2
+    cashReceiptDocumentNumberNotFound: 2,
+    taxedPropertyRollNumber: '010000000000000'
 };

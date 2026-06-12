@@ -1,6 +1,6 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js';
-export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumber) {
+export default async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumber) {
     if (typeof documentNumber === 'string' &&
         Number.isNaN(Number.parseFloat(documentNumber))) {
         return undefined;
@@ -18,7 +18,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         rtrim([BCHSOURC]) AS batchSource,
         rtrim([dINITIALS]) AS initials,
         [dDATE] AS documentDate,
-        rtrim([dDESC]) AS description,
+        rtrim([dDESC]) AS description1,
         rtrim([dDESC2]) AS description2,
         rtrim([dDESC3]) AS description3,
         rtrim([dDESC4]) AS description4,
@@ -48,7 +48,7 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
         rtrim([BCHSOURC]) AS batchSource,
         rtrim([dINITIALS]) AS initials,
         [dDATE] AS documentDate,
-        rtrim([dDESC]) AS description,
+        rtrim([dDESC]) AS description1,
         rtrim([dDESC2]) AS description2,
         rtrim([dDESC3]) AS description3,
         rtrim([dDESC4]) AS description4,
@@ -129,4 +129,3 @@ export async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumbe
     }
     return receipt;
 }
-export default _getCashReceiptByDocumentNumber;

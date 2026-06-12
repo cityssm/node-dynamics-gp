@@ -2,6 +2,9 @@ import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis';
 import _extendGpInvoice from './diamond/extendGpInvoice.js';
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js';
+import _getTaxedPropertyAssessmentsByRollNumber from './diamond/getTaxedPropertyAssessmentsByRollNumber.js';
+import _getTaxedPropertyByRollNumber from './diamond/getTaxedPropertyByRollNumber.js';
+import _getTaxedPropertyOwnersByRollNumber from './diamond/getTaxedPropertyOwnersByRollNumber.js';
 import _getAccountByAccountIndex from './gp/getAccountByAccountIndex.js';
 import _getCustomerByCustomerNumber from './gp/getCustomerByCustomerNumber.js';
 import _getInvoiceByInvoiceNumber from './gp/getInvoiceByInvoiceNumber.js';
@@ -21,6 +24,7 @@ export class DynamicsGP {
     #customerCache;
     #diamondCashReceiptCache;
     #diamondInvoiceCache;
+    #diamondTaxedPropertyCache;
     #invoiceCache;
     #invoiceDocumentTypesCache = [];
     #invoiceDocumentTypesCacheExpiryMillis = 0;
@@ -44,6 +48,9 @@ export class DynamicsGP {
         this.#diamondInvoiceCache = new NodeCache({
             stdTTL: this.#options.documentCacheTTL
         });
+        this.#diamondTaxedPropertyCache = new NodeCache({
+            stdTTL: this.#options.documentCacheTTL
+        });
     }
     clearCaches() {
         this.#accountCache.flushAll();
@@ -55,6 +62,7 @@ export class DynamicsGP {
         this.#invoiceDocumentTypesCacheExpiryMillis = 0;
         this.#diamondCashReceiptCache.flushAll();
         this.#diamondInvoiceCache.flushAll();
+        this.#diamondTaxedPropertyCache.flushAll();
     }
     async getAccountByAccountIndex(accountIndex) {
         let account = this.#accountCache.get(accountIndex) ?? undefined;
@@ -91,6 +99,20 @@ export class DynamicsGP {
             }
         }
         return diamondInvoice;
+    }
+    async getDiamondTaxedPropertyAssessmentsByRollNumber(rollNumber) {
+        return await _getTaxedPropertyAssessmentsByRollNumber(this.#mssqlConfig, rollNumber);
+    }
+    async getDiamondTaxedPropertyByRollNumber(rollNumber) {
+        let taxedProperty = this.#diamondTaxedPropertyCache.get(rollNumber);
+        if (taxedProperty === undefined) {
+            taxedProperty = await _getTaxedPropertyByRollNumber(this.#mssqlConfig, rollNumber);
+            this.#diamondTaxedPropertyCache.set(rollNumber, taxedProperty);
+        }
+        return taxedProperty;
+    }
+    async getDiamondTaxedPropertyOwnersByRollNumber(rollNumber) {
+        return await _getTaxedPropertyOwnersByRollNumber(this.#mssqlConfig, rollNumber);
     }
     async getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
         return await this.#getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName, false);

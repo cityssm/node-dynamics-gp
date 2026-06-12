@@ -35,7 +35,8 @@
   ],
   "scripts": {
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test \"test/**/*.test.js\"",
-    "test": "node --test \"test/**/*.test.js\""
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:diamond": "node --test test/diamond.test.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^3.0.1",

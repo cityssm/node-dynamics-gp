@@ -10,7 +10,7 @@ import type { DiamondCashReceipt } from './types.js'
  * @param documentNumber - The document number of the cash receipt to retrieve.
  * @returns A promise that resolves to the cash receipt, or undefined if not found.
  */
-export async function _getCashReceiptByDocumentNumber(
+export default async function _getCashReceiptByDocumentNumber(
   mssqlConfig: mssql.config,
   documentNumber: number | string
 ): Promise<DiamondCashReceipt | undefined> {
@@ -35,7 +35,7 @@ export async function _getCashReceiptByDocumentNumber(
         rtrim([BCHSOURC]) AS batchSource,
         rtrim([dINITIALS]) AS initials,
         [dDATE] AS documentDate,
-        rtrim([dDESC]) AS description,
+        rtrim([dDESC]) AS description1,
         rtrim([dDESC2]) AS description2,
         rtrim([dDESC3]) AS description3,
         rtrim([dDESC4]) AS description4,
@@ -65,7 +65,7 @@ export async function _getCashReceiptByDocumentNumber(
         rtrim([BCHSOURC]) AS batchSource,
         rtrim([dINITIALS]) AS initials,
         [dDATE] AS documentDate,
-        rtrim([dDESC]) AS description,
+        rtrim([dDESC]) AS description1,
         rtrim([dDESC2]) AS description2,
         rtrim([dDESC3]) AS description3,
         rtrim([dDESC4]) AS description4,
@@ -159,5 +159,3 @@ export async function _getCashReceiptByDocumentNumber(
 
   return receipt
 }
-
-export default _getCashReceiptByDocumentNumber

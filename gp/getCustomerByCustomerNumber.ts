@@ -8,7 +8,7 @@ import type { GPCustomer } from './types.js'
  * @param customerNumber - The customer number to look up.
  * @returns A promise that resolves to the GP customer, or undefined if not found.
  */
-export async function _getCustomerByCustomerNumber(
+export default async function _getCustomerByCustomerNumber(
   mssqlConfig: mssql.config,
   customerNumber: string
 ): Promise<GPCustomer | undefined> {
@@ -48,5 +48,3 @@ export async function _getCustomerByCustomerNumber(
     ? customerResult.recordset[0]
     : undefined
 }
-
-export default _getCustomerByCustomerNumber

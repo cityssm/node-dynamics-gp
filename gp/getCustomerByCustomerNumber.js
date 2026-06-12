@@ -1,5 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
-export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) {
+export default async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) {
     const pool = await connect(mssqlConfig);
     const customerResult = await pool
         .request()
@@ -34,4 +34,3 @@ export async function _getCustomerByCustomerNumber(mssqlConfig, customerNumber) 
         ? customerResult.recordset[0]
         : undefined;
 }
-export default _getCustomerByCustomerNumber;

@@ -11,7 +11,7 @@ import { config } from './config.js'
 
 Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
-await describe.skip('dynamics-gp/diamond', async () => {
+await describe('dynamics-gp/diamond', async () => {
   const gp = new DynamicsGP(config.mssql)
   const gpMisconfigured = new DynamicsGP({
     server: 'localhost'
@@ -21,7 +21,7 @@ await describe.skip('dynamics-gp/diamond', async () => {
     void releaseAll()
   })
 
-  await describe('Cash Receipts', async () => {
+  await describe.skip('Cash Receipts', async () => {
     await it('Retrieves a Cash Receipt', async () => {
       // Do twice to test cache retrieval
 
@@ -71,7 +71,7 @@ await describe.skip('dynamics-gp/diamond', async () => {
     })
   })
 
-  await describe('Extend GP Invoices', async () => {
+  await describe.skip('Extend GP Invoices', async () => {
     await it('Gets a fully extended GPInvoice', async () => {
       const diamondInvoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(
         config.invoiceNumber
@@ -79,6 +79,39 @@ await describe.skip('dynamics-gp/diamond', async () => {
 
       assert.ok(diamondInvoice !== undefined)
       assert.ok(diamondInvoice.trialBalanceCode !== undefined)
+    })
+  })
+
+  await describe('Taxed Properties', async () => {
+    await it('Gets a taxed property by roll number', async () => {
+      const property = await gp.getDiamondTaxedPropertyByRollNumber(
+        config.taxedPropertyRollNumber
+      )
+
+      assert.ok(property !== undefined)
+      assert.strictEqual(property.rollNumber, config.taxedPropertyRollNumber)
+    })
+
+    await it('Returns undefined when roll number is not found', async () => {
+      const property = await gp.getDiamondTaxedPropertyByRollNumber('X')
+
+      assert.strictEqual(property, undefined)
+    })
+
+    await it('Gets taxed property owners by roll number', async () => {
+      const owners = await gp.getDiamondTaxedPropertyOwnersByRollNumber(
+        config.taxedPropertyRollNumber
+      )
+
+      assert.ok(owners.length > 0)
+    })
+
+    await it('Gets taxed property assessments by roll number', async () => {
+      const assessments = await gp.getDiamondTaxedPropertyAssessmentsByRollNumber(
+        config.taxedPropertyRollNumber
+      )
+
+      assert.ok(assessments.length > 0)
     })
   })
 })

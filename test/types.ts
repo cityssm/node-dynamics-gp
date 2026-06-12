@@ -30,4 +30,6 @@ export interface Config {
   cashReceiptDocumentNumber: number | string
   cashReceiptDocumentNumberInvalid: string
   cashReceiptDocumentNumberNotFound: number
+
+  taxedPropertyRollNumber: string
 }
