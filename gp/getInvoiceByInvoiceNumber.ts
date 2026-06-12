@@ -19,104 +19,109 @@ export default async function _getInvoiceByInvoiceNumber(
 
   const invoiceRequest = pool.request().input('invoiceNumber', invoiceNumber)
 
-  let sql = `select top 1
-    rtrim(t.DOCTYABR) as documentTypeAbbreviation,
-    rtrim(t.DOCTYNAM) as documentTypeName,
-    i.* from (
-      SELECT top 1
-      0 as isHistorical,
-      i.DOCTYPE as invoiceDocumentType,
-      rtrim(i.INVCNMBR) as invoiceNumber,
-      rtrim(i.BACHNUMB) as batchNumber,
-      rtrim(i.BCHSOURC) as batchSource,
-      rtrim(i.CUSTNMBR) as customerNumber,
-      rtrim(i.CUSTNAME) as customerName,
-      i.DOCDATE as documentDate,
-      i.POSTDATE as datePosted,
-      i.GLPOSTDT as datePostedGl,
-      i.QUOTEDAT as dateQuoted,
-      i.ORDRDATE as dateOrdered,
-      i.DISCDATE as termDiscountDate,
-      i.DUEDATE as dateDue,
-      i.DOCAMNT as documentAmount,
-      i.SUBTOTAL as subtotal,
-      i.FRTAMNT as freightAmount,
-      i.MISCAMNT as miscellaneousAmount,
-      i.TRDISAMT as tradeDiscountAmount,
-      i.TAXAMNT as taxAmount,
-      i.ACCTAMNT as accountAmount,
-      i.PYMTRCVD as paymentReceived,
-      i.CODAMNT as codAmount,
-      rtrim(i.CNTCPRSN) as contactPerson,
-      rtrim(i.ADDRESS1) as address1,
-      rtrim(i.ADDRESS2) as address2,
-      rtrim(i.ADDRESS3) as address3,
-      rtrim(i.CITY) as city,
-      rtrim(i.STATE) as state,
-      rtrim(i.COUNTRY) as country,
-      rtrim(i.ZIPCODE) as zipCode,
-      rtrim(i.PHNUMBR1) as phoneNumber1,
-      rtrim(i.PHNUMBR2) as phoneNumber2,
-      rtrim(i.PHONE3) as phoneNumber3,
-      rtrim(i.FAXNUMBR) as faxNumber,
-      rtrim(i.COMMENT_1) as comment1,
-      rtrim(i.COMMENT_2) as comment2,
-      rtrim(i.COMMENT_3) as comment3,
-      rtrim(i.COMMENT_4) as comment4,
-      i.CREATDDT as dateCreated,
-      i.MODIFDT as dateModified
-      FROM IVC10100 i
-      where i.INVCNMBR = @invoiceNumber
-  
-      union
-  
-      SELECT TOP 1
-      1 as isHistorical,
-      i.DOCTYPE as invoiceDocumentType,
-      rtrim(i.INVCNMBR) as invoiceNumber,
-      rtrim(i.BACHNUMB) as batchNumber,
-      rtrim(i.BCHSOURC) as batchSource,
-      rtrim(i.CUSTNMBR) as customerNumber,
-      rtrim(i.CUSTNAME) as customerName,
-      i.DOCDATE as documentDate,
-      i.POSTDATE as datePosted,
-      i.GLPOSTDT as datePostedGl,
-      i.QUOTEDAT as dateQuoted,
-      i.ORDRDATE as dateOrdered,
-      i.DISCDATE as termDiscountDate,
-      i.DUEDATE as dateDue,
-      i.DOCAMNT as documentAmount,
-      i.SUBTOTAL as subtotal,
-      i.FRTAMNT as freightAmount,
-      i.MISCAMNT as miscellaneousAmount,
-      i.TRDISAMT as tradeDiscountAmount,
-      i.TAXAMNT as taxAmount,
-      i.ACCTAMNT as accountAmount,
-      i.PYMTRCVD as paymentReceived,
-      i.CODAMNT as codAmount,
-      rtrim(i.CNTCPRSN) as contactPerson,
-      rtrim(i.ADDRESS1) as address1,
-      rtrim(i.ADDRESS2) as address2,
-      rtrim(i.ADDRESS3) as address3,
-      rtrim(i.CITY) as city,
-      rtrim(i.STATE) as state,
-      rtrim(i.COUNTRY) as country,
-      rtrim(i.ZIPCODE) as zipCode,
-      rtrim(i.PHNUMBR1) as phoneNumber1,
-      rtrim(i.PHNUMBR2) as phoneNumber2,
-      rtrim(i.PHONE3) as phoneNumber3,
-      rtrim(i.FAXNUMBR) as faxNumber,
-      rtrim(i.COMMENT_1) as comment1,
-      rtrim(i.COMMENT_2) as comment2,
-      rtrim(i.COMMENT_3) as comment3,
-      rtrim(i.COMMENT_4) as comment4,
-      i.CREATDDT as dateCreated,
-      i.MODIFDT as dateModified
-      FROM IVC30101 i
-      where i.INVCNMBR = @invoiceNumber
-    ) i
-
-    left join IVC40101 t on i.invoiceDocumentType = t.DOCTYPE`
+  let sql = /* sql */ `
+    SELECT
+      TOP 1 rtrim(t.DOCTYABR) AS documentTypeAbbreviation,
+      rtrim(t.DOCTYNAM) AS documentTypeName,
+      i.*
+    FROM
+      (
+        SELECT
+          TOP 1 0 AS isHistorical,
+          i.DOCTYPE AS invoiceDocumentType,
+          rtrim(i.INVCNMBR) AS invoiceNumber,
+          rtrim(i.BACHNUMB) AS batchNumber,
+          rtrim(i.BCHSOURC) AS batchSource,
+          rtrim(i.CUSTNMBR) AS customerNumber,
+          rtrim(i.CUSTNAME) AS customerName,
+          i.DOCDATE AS documentDate,
+          i.POSTDATE AS datePosted,
+          i.GLPOSTDT AS datePostedGl,
+          i.QUOTEDAT AS dateQuoted,
+          i.ORDRDATE AS dateOrdered,
+          i.DISCDATE AS termDiscountDate,
+          i.DUEDATE AS dateDue,
+          i.DOCAMNT AS documentAmount,
+          i.SUBTOTAL AS subtotal,
+          i.FRTAMNT AS freightAmount,
+          i.MISCAMNT AS miscellaneousAmount,
+          i.TRDISAMT AS tradeDiscountAmount,
+          i.TAXAMNT AS taxAmount,
+          i.ACCTAMNT AS accountAmount,
+          i.PYMTRCVD AS paymentReceived,
+          i.CODAMNT AS codAmount,
+          rtrim(i.CNTCPRSN) AS contactPerson,
+          rtrim(i.ADDRESS1) AS address1,
+          rtrim(i.ADDRESS2) AS address2,
+          rtrim(i.ADDRESS3) AS address3,
+          rtrim(i.CITY) AS city,
+          rtrim(i.STATE) AS state,
+          rtrim(i.COUNTRY) AS country,
+          rtrim(i.ZIPCODE) AS zipCode,
+          rtrim(i.PHNUMBR1) AS phoneNumber1,
+          rtrim(i.PHNUMBR2) AS phoneNumber2,
+          rtrim(i.PHONE3) AS phoneNumber3,
+          rtrim(i.FAXNUMBR) AS faxNumber,
+          rtrim(i.COMMENT_1) AS comment1,
+          rtrim(i.COMMENT_2) AS comment2,
+          rtrim(i.COMMENT_3) AS comment3,
+          rtrim(i.COMMENT_4) AS comment4,
+          i.CREATDDT AS dateCreated,
+          i.MODIFDT AS dateModified
+        FROM
+          IVC10100 i
+        WHERE
+          i.INVCNMBR = @invoiceNumber
+        UNION
+        SELECT
+          TOP 1 1 AS isHistorical,
+          i.DOCTYPE AS invoiceDocumentType,
+          rtrim(i.INVCNMBR) AS invoiceNumber,
+          rtrim(i.BACHNUMB) AS batchNumber,
+          rtrim(i.BCHSOURC) AS batchSource,
+          rtrim(i.CUSTNMBR) AS customerNumber,
+          rtrim(i.CUSTNAME) AS customerName,
+          i.DOCDATE AS documentDate,
+          i.POSTDATE AS datePosted,
+          i.GLPOSTDT AS datePostedGl,
+          i.QUOTEDAT AS dateQuoted,
+          i.ORDRDATE AS dateOrdered,
+          i.DISCDATE AS termDiscountDate,
+          i.DUEDATE AS dateDue,
+          i.DOCAMNT AS documentAmount,
+          i.SUBTOTAL AS subtotal,
+          i.FRTAMNT AS freightAmount,
+          i.MISCAMNT AS miscellaneousAmount,
+          i.TRDISAMT AS tradeDiscountAmount,
+          i.TAXAMNT AS taxAmount,
+          i.ACCTAMNT AS accountAmount,
+          i.PYMTRCVD AS paymentReceived,
+          i.CODAMNT AS codAmount,
+          rtrim(i.CNTCPRSN) AS contactPerson,
+          rtrim(i.ADDRESS1) AS address1,
+          rtrim(i.ADDRESS2) AS address2,
+          rtrim(i.ADDRESS3) AS address3,
+          rtrim(i.CITY) AS city,
+          rtrim(i.STATE) AS state,
+          rtrim(i.COUNTRY) AS country,
+          rtrim(i.ZIPCODE) AS zipCode,
+          rtrim(i.PHNUMBR1) AS phoneNumber1,
+          rtrim(i.PHNUMBR2) AS phoneNumber2,
+          rtrim(i.PHONE3) AS phoneNumber3,
+          rtrim(i.FAXNUMBR) AS faxNumber,
+          rtrim(i.COMMENT_1) AS comment1,
+          rtrim(i.COMMENT_2) AS comment2,
+          rtrim(i.COMMENT_3) AS comment3,
+          rtrim(i.COMMENT_4) AS comment4,
+          i.CREATDDT AS dateCreated,
+          i.MODIFDT AS dateModified
+        FROM
+          IVC30101 i
+        WHERE
+          i.INVCNMBR = @invoiceNumber
+      ) i
+      LEFT JOIN IVC40101 t ON i.invoiceDocumentType = t.DOCTYPE
+  `
 
   if (invoiceDocumentTypeOrAbbreviationOrName !== undefined) {
     invoiceRequest.input(
@@ -148,32 +153,37 @@ export default async function _getInvoiceByInvoiceNumber(
       .request()
       .input('invoiceDocumentType', invoice.invoiceDocumentType)
       .input('invoiceNumber', invoice.invoiceNumber)
-      .query<GPInvoiceLineItem>(`SELECT
-        [LNITMSEQ] as lineItemNumber,
-        rtrim([ITEMNMBR]) as itemNumber,
-        [QUANTITY] as quantity,
-        [QTYINSVC] as quantityInService,
-        [QTYINUSE] as quantityInUse,
-        [QTYDMGED] as quantityDamaged,
-        [QTYRTRND] as quantityReturned,
-        [QTYONHND] as quantityOnHand,
-        [EXTQTYSEL] as existingQuantitySelected,
-        rtrim([UOFM]) as unitOfMeasurement,
-        [UNITCOST] as unitCost,
-        [EXTDCOST] as extendedCost,
-        [ATYALLOC] as quantityAllocated,
-        rtrim([LOCNCODE]) as locationCode,
-        [XTNDPRCE] as extendedPrice,
-        [UNITPRCE] as unitPrice,
-        [TAXAMNT] as taxAmount,
-        rtrim([ITEMDESC]) as itemDescription,
-        [EXPTSHIP] as shipDateExpected,
-        [ACTLSHIP] as shipDateActual,
-        [ReqShipDate] as shipDateRequested
-        FROM ${invoice.isHistorical === 1 ? '[IVC30102]' : '[IVC10101]'}
-        where INVCNMBR = @invoiceNumber
-        and DOCTYPE = @invoiceDocumentType
-        order by LNITMSEQ`)
+      .query<GPInvoiceLineItem>(/* sql */ `
+        SELECT
+          [LNITMSEQ] AS lineItemNumber,
+          rtrim([ITEMNMBR]) AS itemNumber,
+          [QUANTITY] AS quantity,
+          [QTYINSVC] AS quantityInService,
+          [QTYINUSE] AS quantityInUse,
+          [QTYDMGED] AS quantityDamaged,
+          [QTYRTRND] AS quantityReturned,
+          [QTYONHND] AS quantityOnHand,
+          [EXTQTYSEL] AS existingQuantitySelected,
+          rtrim([UOFM]) AS unitOfMeasurement,
+          [UNITCOST] AS unitCost,
+          [EXTDCOST] AS extendedCost,
+          [ATYALLOC] AS quantityAllocated,
+          rtrim([LOCNCODE]) AS locationCode,
+          [XTNDPRCE] AS extendedPrice,
+          [UNITPRCE] AS unitPrice,
+          [TAXAMNT] AS taxAmount,
+          rtrim([ITEMDESC]) AS itemDescription,
+          [EXPTSHIP] AS shipDateExpected,
+          [ACTLSHIP] AS shipDateActual,
+          [ReqShipDate] AS shipDateRequested
+        FROM
+          ${invoice.isHistorical === 1 ? '[IVC30102]' : '[IVC10101]'}
+        WHERE
+          INVCNMBR = @invoiceNumber
+          AND DOCTYPE = @invoiceDocumentType
+        ORDER BY
+          LNITMSEQ
+      `)
 
     invoice.lineItems = itemResults.recordset
   }

@@ -17,17 +17,17 @@ function getInvoiceCacheKey(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrNa
     return `${(invoiceDocumentTypeOrAbbreviationOrName ?? '').toString()}::${invoiceNumber}`;
 }
 export class DynamicsGP {
-    #mssqlConfig;
-    #options;
     #accountCache;
     #customerCache;
-    #invoiceCache;
-    #itemCache;
-    #vendorCache;
-    #invoiceDocumentTypesCache = [];
-    #invoiceDocumentTypesCacheExpiryMillis = 0;
     #diamondCashReceiptCache;
     #diamondInvoiceCache;
+    #invoiceCache;
+    #invoiceDocumentTypesCache = [];
+    #invoiceDocumentTypesCacheExpiryMillis = 0;
+    #itemCache;
+    #mssqlConfig;
+    #options;
+    #vendorCache;
     constructor(mssqlConfig, options) {
         this.#mssqlConfig = mssqlConfig;
         this.#options = { ...defaultOptions, ...options };
@@ -51,7 +51,6 @@ export class DynamicsGP {
         this.#invoiceCache.flushAll();
         this.#itemCache.flushAll();
         this.#vendorCache.flushAll();
-        this.#vendorCache.flushAll();
         this.#invoiceDocumentTypesCache = [];
         this.#invoiceDocumentTypesCacheExpiryMillis = 0;
         this.#diamondCashReceiptCache.flushAll();
@@ -73,16 +72,25 @@ export class DynamicsGP {
         }
         return customer;
     }
-    async #getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName, skipCache = false) {
+    async getDiamondCashReceiptByDocumentNumber(documentNumber) {
+        let receipt = this.#diamondCashReceiptCache.get(documentNumber);
+        if (receipt === undefined) {
+            receipt = await _getCashReceiptByDocumentNumber(this.#mssqlConfig, documentNumber);
+            this.#diamondCashReceiptCache.set(documentNumber, receipt);
+        }
+        return receipt;
+    }
+    async getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
         const cacheKey = getInvoiceCacheKey(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
-        let invoice = this.#invoiceCache.get(cacheKey) ?? undefined;
-        if (invoice === undefined || skipCache) {
-            invoice = await _getInvoiceByInvoiceNumber(this.#mssqlConfig, invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
-            if (!skipCache) {
-                this.#invoiceCache.set(cacheKey, invoice);
+        let diamondInvoice = this.#diamondInvoiceCache.get(cacheKey) ?? undefined;
+        if (diamondInvoice === undefined) {
+            const gpInvoice = await this.#getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
+            if (gpInvoice !== undefined) {
+                diamondInvoice = await _extendGpInvoice(this.#mssqlConfig, gpInvoice);
+                this.#diamondInvoiceCache.set(cacheKey, diamondInvoice);
             }
         }
-        return invoice;
+        return diamondInvoice;
     }
     async getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
         return await this.#getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName, false);
@@ -118,24 +126,15 @@ export class DynamicsGP {
     async getVendors(vendorFilters) {
         return await _getVendors(this.#mssqlConfig, vendorFilters ?? {});
     }
-    async getDiamondCashReceiptByDocumentNumber(documentNumber) {
-        let receipt = this.#diamondCashReceiptCache.get(documentNumber);
-        if (receipt === undefined) {
-            receipt = await _getCashReceiptByDocumentNumber(this.#mssqlConfig, documentNumber);
-            this.#diamondCashReceiptCache.set(documentNumber, receipt);
-        }
-        return receipt;
-    }
-    async getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName) {
+    async #getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName, skipCache = false) {
         const cacheKey = getInvoiceCacheKey(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
-        let diamondInvoice = this.#diamondInvoiceCache.get(cacheKey) ?? undefined;
-        if (diamondInvoice === undefined) {
-            const gpInvoice = await this.#getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
-            if (gpInvoice !== undefined) {
-                diamondInvoice = await _extendGpInvoice(this.#mssqlConfig, gpInvoice);
-                this.#diamondInvoiceCache.set(cacheKey, diamondInvoice);
+        let invoice = this.#invoiceCache.get(cacheKey) ?? undefined;
+        if (invoice === undefined || skipCache) {
+            invoice = await _getInvoiceByInvoiceNumber(this.#mssqlConfig, invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);
+            if (!skipCache) {
+                this.#invoiceCache.set(cacheKey, invoice);
             }
         }
-        return diamondInvoice;
+        return invoice;
     }
 }

@@ -8,6 +8,7 @@ export const config: Config = {
     database: 'Dynamics',
     server: 'localhost',
     user: 'sa',
+    
     // eslint-disable-next-line sonarjs/no-hardcoded-passwords
     password: 'dbatools.I0',
     

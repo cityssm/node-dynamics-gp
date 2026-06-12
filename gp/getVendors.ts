@@ -36,40 +36,46 @@ export default async function _getVendors(
     request.input(parameterName, parameterValue)
   }
 
-  const vendorResult = await request.query<GPVendor>(`SELECT
-      rtrim(v.VENDORID) as vendorId,
-      rtrim(v.VENDNAME) as vendorName,
-      rtrim(v.VNDCHKNM) as vendorCheckName,
-      rtrim(v.VENDSHNM) as shortName,
-      rtrim(v.VNDCNTCT) as contactPerson,
-
-      rtrim(v.ADDRESS1) as address1,
-      rtrim(v.ADDRESS2) as address2,
-      rtrim(v.ADDRESS3) as address3,
-      rtrim(v.CITY) as city,
-      rtrim(v.STATE) as state,
-      rtrim(v.COUNTRY) as country,
-      rtrim(v.ZIPCODE) as zipCode,
-
-      case when replace(v.PHNUMBR1, '0', '') = '' then '' else rtrim(v.PHNUMBR1) end as phoneNumber1,
-      case when replace(v.PHNUMBR2, '0', '') = '' then '' else rtrim(v.PHNUMBR2) end as phoneNumber2,
-      case when replace(v.PHONE3, '0', '') = '' then '' else rtrim(v.PHONE3) end as phoneNumber3,
-      case when replace(v.FAXNUMBR, '0', '') = '' then '' else rtrim(v.FAXNUMBR) end as faxNumber,
-      
-      rtrim(v.COMMENT1) as comment1,
-      rtrim(v.COMMENT2) as comment2,
-      rtrim(v.VNDCLSID) as vendorClassId,
-
-      v.CREATDDT as dateCreated,
-      v.MODIFDT as dateModified,
-
-      t.LSTPURDT as lastPurchaseDate
-
-    FROM PM00200 v
-    LEFT JOIN PM00201 t
-      ON v.VENDORID = t.VENDORID
-
-    ${whereClause}`)
+  const vendorResult = await request.query<GPVendor>(/* sql */ `
+    SELECT
+      rtrim(v.VENDORID) AS vendorId,
+      rtrim(v.VENDNAME) AS vendorName,
+      rtrim(v.VNDCHKNM) AS vendorCheckName,
+      rtrim(v.VENDSHNM) AS shortName,
+      rtrim(v.VNDCNTCT) AS contactPerson,
+      rtrim(v.ADDRESS1) AS address1,
+      rtrim(v.ADDRESS2) AS address2,
+      rtrim(v.ADDRESS3) AS address3,
+      rtrim(v.CITY) AS city,
+      rtrim(v.STATE) AS state,
+      rtrim(v.COUNTRY) AS country,
+      rtrim(v.ZIPCODE) AS zipCode,
+      CASE
+        WHEN replace(v.PHNUMBR1, '0', '') = '' THEN ''
+        ELSE rtrim(v.PHNUMBR1)
+      END AS phoneNumber1,
+      CASE
+        WHEN replace(v.PHNUMBR2, '0', '') = '' THEN ''
+        ELSE rtrim(v.PHNUMBR2)
+      END AS phoneNumber2,
+      CASE
+        WHEN replace(v.PHONE3, '0', '') = '' THEN ''
+        ELSE rtrim(v.PHONE3)
+      END AS phoneNumber3,
+      CASE
+        WHEN replace(v.FAXNUMBR, '0', '') = '' THEN ''
+        ELSE rtrim(v.FAXNUMBR)
+      END AS faxNumber,
+      rtrim(v.COMMENT1) AS comment1,
+      rtrim(v.COMMENT2) AS comment2,
+      rtrim(v.VNDCLSID) AS vendorClassId,
+      v.CREATDDT AS dateCreated,
+      v.MODIFDT AS dateModified,
+      t.LSTPURDT AS lastPurchaseDate
+    FROM
+      PM00200 v
+      LEFT JOIN PM00201 t ON v.VENDORID = t.VENDORID ${whereClause}
+  `)
 
   return vendorResult.recordset
 }

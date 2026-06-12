@@ -12,12 +12,16 @@ export default async function _getInvoiceDocumentTypes(
 ): Promise<GPInvoiceDocumentType[]> {
   const pool = await connect(mssqlConfig)
 
-  const result = await pool.request()
-    .query<GPInvoiceDocumentType>(`SELECT DOCTYPE as invoiceDocumentType,
-      rtrim(DOCTYABR) as documentTypeAbbreviation,
-      rtrim(DOCTYNAM) as documentTypeName
-      FROM IVC40101
-      order by DEX_ROW_ID`)
+  const result = await pool.request().query<GPInvoiceDocumentType>(/* sql */ `
+    SELECT
+      DOCTYPE AS invoiceDocumentType,
+      rtrim(DOCTYABR) AS documentTypeAbbreviation,
+      rtrim(DOCTYNAM) AS documentTypeName
+    FROM
+      IVC40101
+    ORDER BY
+      DEX_ROW_ID
+  `)
 
   return result.recordset
 }

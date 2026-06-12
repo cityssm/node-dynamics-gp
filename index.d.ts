@@ -12,15 +12,15 @@ export declare class DynamicsGP {
     clearCaches(): void;
     getAccountByAccountIndex(accountIndex: number | string): Promise<GPAccount | undefined>;
     getCustomerByCustomerNumber(customerNumber: string): Promise<GPCustomer | undefined>;
+    getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
+    getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;
     getInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice | undefined>;
     getInvoiceDocumentTypes(): Promise<GPInvoiceDocumentType[]>;
     getItemByItemNumber(itemNumber: string): Promise<GPItemWithQuantities | undefined>;
     getItemsByLocationCodes(locationCodes?: string[]): Promise<GPItemWithQuantity[]>;
     getVendorByVendorId(vendorId: string): Promise<GPVendor | undefined>;
     getVendors(vendorFilters?: Partial<GetVendorsFilters>): Promise<GPVendor[]>;
-    getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
-    getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;
 }
-export type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';
 export type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
 export type { GetVendorsFilters } from './gp/getVendors.js';
+export type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';

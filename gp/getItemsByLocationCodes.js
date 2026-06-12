@@ -14,44 +14,62 @@ export default async function _getItemsByLocationCodes(mssqlConfig, locationCode
         locationCodeWhere += `q.LOCNCODE = @${parameterName}`;
         itemRequest = itemRequest.input(parameterName, locationCode);
     }
-    const itemResult = await itemRequest.query(`SELECT
-      rtrim(i.ITEMNMBR) as itemNumber,
-      rtrim(i.ITEMDESC) as itemDescription,
-      rtrim(i.ITMSHNAM) as itemShortName,
-      rtrim(i.ITEMTYPE) as itemType,
-      rtrim(i.ITMCLSCD) as itemClassCode,
-      rtrim(i.ITMGEDSC) as itemGenericDescription,
-      i.STNDCOST as standardCost,
-      i.CURRCOST as currentCost,
-      i.CREATDDT as dateCreated,
-      i.MODIFDT as dateModified,
-
-      rtrim(q.LOCNCODE) as locationCode,
-      rtrim(q.BINNMBR) as binNumber,
-      rtrim(q.PRIMVNDR) as primaryVendorId,
-      q.BGNGQTY as beginningQuantity,
-      q.LSORDQTY as lastOrderedQuantity,
-      q.LSTORDDT as lastOrderedDate,
-      rtrim(q.LSORDVND) as lastOrderedVendorId,
-      q.LRCPTQTY as lastReceiptedQuantity,
-      q.LSRCPTDT as lastReceiptedDate,
-      q.QTYRQSTN as quantityRequisitioned,
-      q.QTYONORD as quantityOnOrder,
-      q.QTYBKORD as quantityBackOrdered,
-      q.QTY_Drop_Shipped as quantityDropShipped,
-      q.QTYINUSE as quantityInUse,
-      q.QTYINSVC as quantityInService,
-      q.QTYRTRND as quantityReturned,
-      q.QTYDMGED as quantityDamaged,
-      q.QTYONHND as quantityOnHand,
-      q.ATYALLOC as quantityAllocated,
-      q.QTYCOMTD as quantityCommitted,
-      q.QTYSOLD as quantitySold,
-      dateadd(second, DATEPART(second, q.LSTCNTTM), dateadd(minute, DATEPART(minute, q.LSTCNTTM), dateadd(hour, DATEPART(hour, q.LSTCNTTM), q.LSTCNTDT))) as lastCountDateTime,
-      dateadd(second, DATEPART(second, q.NXTCNTTM), dateadd(minute, DATEPART(minute, q.NXTCNTTM), dateadd(hour, DATEPART(hour, q.NXTCNTTM), q.NXTCNTDT))) as nextCountDateTime
-        
-      FROM IV00101 i
-      inner join IV00102 q on i.ITEMNMBR = q.ITEMNMBR
-      where (${locationCodeWhere})`);
+    const itemResult = await itemRequest.query(`
+    SELECT
+      rtrim(i.ITEMNMBR) AS itemNumber,
+      rtrim(i.ITEMDESC) AS itemDescription,
+      rtrim(i.ITMSHNAM) AS itemShortName,
+      rtrim(i.ITEMTYPE) AS itemType,
+      rtrim(i.ITMCLSCD) AS itemClassCode,
+      rtrim(i.ITMGEDSC) AS itemGenericDescription,
+      i.STNDCOST AS standardCost,
+      i.CURRCOST AS currentCost,
+      i.CREATDDT AS dateCreated,
+      i.MODIFDT AS dateModified,
+      rtrim(q.LOCNCODE) AS locationCode,
+      rtrim(q.BINNMBR) AS binNumber,
+      rtrim(q.PRIMVNDR) AS primaryVendorId,
+      q.BGNGQTY AS beginningQuantity,
+      q.LSORDQTY AS lastOrderedQuantity,
+      q.LSTORDDT AS lastOrderedDate,
+      rtrim(q.LSORDVND) AS lastOrderedVendorId,
+      q.LRCPTQTY AS lastReceiptedQuantity,
+      q.LSRCPTDT AS lastReceiptedDate,
+      q.QTYRQSTN AS quantityRequisitioned,
+      q.QTYONORD AS quantityOnOrder,
+      q.QTYBKORD AS quantityBackOrdered,
+      q.QTY_Drop_Shipped AS quantityDropShipped,
+      q.QTYINUSE AS quantityInUse,
+      q.QTYINSVC AS quantityInService,
+      q.QTYRTRND AS quantityReturned,
+      q.QTYDMGED AS quantityDamaged,
+      q.QTYONHND AS quantityOnHand,
+      q.ATYALLOC AS quantityAllocated,
+      q.QTYCOMTD AS quantityCommitted,
+      q.QTYSOLD AS quantitySold,
+      dateadd(
+        second,
+        DATEPART(second, q.LSTCNTTM),
+        dateadd(
+          minute,
+          DATEPART(minute, q.LSTCNTTM),
+          dateadd(hour, DATEPART(hour, q.LSTCNTTM), q.LSTCNTDT)
+        )
+      ) AS lastCountDateTime,
+      dateadd(
+        second,
+        DATEPART(second, q.NXTCNTTM),
+        dateadd(
+          minute,
+          DATEPART(minute, q.NXTCNTTM),
+          dateadd(hour, DATEPART(hour, q.NXTCNTTM), q.NXTCNTDT)
+        )
+      ) AS nextCountDateTime
+    FROM
+      IV00101 i
+      INNER JOIN IV00102 q ON i.ITEMNMBR = q.ITEMNMBR
+    WHERE
+      (${locationCodeWhere})
+  `);
     return itemResult.recordset;
 }

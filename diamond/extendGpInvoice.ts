@@ -27,12 +27,16 @@ export default async function _extendGpInvoice(
   const tbcResult = await pool
     .request()
     .input('invoiceNumber', gpInvoice.invoiceNumber)
-    .query<DiamondTrialBalanceCode>(`SELECT top 1
-      t.dCUSTTBCODE as trialBalanceCode,
-      t.dDESC as trialBalanceCodeDescription
-      FROM SF120 i
-      inner join SF023 t on i.dcusttbcode = t.dcusttbcode
-      where docnumbr = @invoiceNumber`)
+    .query<DiamondTrialBalanceCode>(/* sql */ `
+      SELECT
+        TOP 1 t.dCUSTTBCODE AS trialBalanceCode,
+        t.dDESC AS trialBalanceCodeDescription
+      FROM
+        SF120 i
+        INNER JOIN SF023 t ON i.dcusttbcode = t.dcusttbcode
+      WHERE
+        docnumbr = @invoiceNumber
+    `)
 
   const trialBalanceCode =
     tbcResult.recordset.length > 0 ? tbcResult.recordset[0] : undefined

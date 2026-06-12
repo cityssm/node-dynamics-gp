@@ -52,20 +52,21 @@ function getInvoiceCacheKey(
 }
 
 export class DynamicsGP {
-  readonly #mssqlConfig: MSSQLConfig
-  readonly #options: DynamicsGPOptions
-
   readonly #accountCache: NodeCache<GPAccount | undefined>
   readonly #customerCache: NodeCache<GPCustomer | undefined>
-  readonly #invoiceCache: NodeCache<GPInvoice | undefined>
-  readonly #itemCache: NodeCache<GPItemWithQuantities | undefined>
-  readonly #vendorCache: NodeCache<GPVendor | undefined>
+  readonly #diamondCashReceiptCache: NodeCache<DiamondCashReceipt | undefined>
+  readonly #diamondInvoiceCache: NodeCache<DiamondExtendedGPInvoice | undefined>
 
+  readonly #invoiceCache: NodeCache<GPInvoice | undefined>
   #invoiceDocumentTypesCache: GPInvoiceDocumentType[] = []
   #invoiceDocumentTypesCacheExpiryMillis = 0
 
-  readonly #diamondCashReceiptCache: NodeCache<DiamondCashReceipt | undefined>
-  readonly #diamondInvoiceCache: NodeCache<DiamondExtendedGPInvoice | undefined>
+  readonly #itemCache: NodeCache<GPItemWithQuantities | undefined>
+
+  readonly #mssqlConfig: MSSQLConfig
+  readonly #options: DynamicsGPOptions
+
+  readonly #vendorCache: NodeCache<GPVendor | undefined>
 
   constructor(mssqlConfig: MSSQLConfig, options?: Partial<DynamicsGPOptions>) {
     this.#mssqlConfig = mssqlConfig
@@ -94,7 +95,6 @@ export class DynamicsGP {
     this.#customerCache.flushAll()
     this.#invoiceCache.flushAll()
     this.#itemCache.flushAll()
-    this.#vendorCache.flushAll()
     this.#vendorCache.flushAll()
 
     this.#invoiceDocumentTypesCache = []
@@ -133,31 +133,47 @@ export class DynamicsGP {
     return customer
   }
 
-  async #getInvoiceByInvoiceNumber(
+  async getDiamondCashReceiptByDocumentNumber(
+    documentNumber: number | string
+  ): Promise<DiamondCashReceipt | undefined> {
+    let receipt = this.#diamondCashReceiptCache.get(documentNumber)
+
+    if (receipt === undefined) {
+      receipt = await _getCashReceiptByDocumentNumber(
+        this.#mssqlConfig,
+        documentNumber
+      )
+      this.#diamondCashReceiptCache.set(documentNumber, receipt)
+    }
+
+    return receipt
+  }
+
+  async getDiamondExtendedInvoiceByInvoiceNumber(
     invoiceNumber: string,
-    invoiceDocumentTypeOrAbbreviationOrName?: number | string,
-    skipCache = false
-  ): Promise<GPInvoice | undefined> {
+    invoiceDocumentTypeOrAbbreviationOrName?: number | string
+  ): Promise<DiamondExtendedGPInvoice | undefined> {
     const cacheKey = getInvoiceCacheKey(
       invoiceNumber,
       invoiceDocumentTypeOrAbbreviationOrName
     )
 
-    let invoice = this.#invoiceCache.get(cacheKey) ?? undefined
+    let diamondInvoice = this.#diamondInvoiceCache.get(cacheKey) ?? undefined
 
-    if (invoice === undefined || skipCache) {
-      invoice = await _getInvoiceByInvoiceNumber(
-        this.#mssqlConfig,
+    if (diamondInvoice === undefined) {
+      const gpInvoice = await this.#getInvoiceByInvoiceNumber(
         invoiceNumber,
         invoiceDocumentTypeOrAbbreviationOrName
       )
 
-      if (!skipCache) {
-        this.#invoiceCache.set(cacheKey, invoice)
+      if (gpInvoice !== undefined) {
+        diamondInvoice = await _extendGpInvoice(this.#mssqlConfig, gpInvoice)
+
+        this.#diamondInvoiceCache.set(cacheKey, diamondInvoice)
       }
     }
 
-    return invoice
+    return diamondInvoice
   }
 
   async getInvoiceByInvoiceNumber(
@@ -220,49 +236,40 @@ export class DynamicsGP {
     return await _getVendors(this.#mssqlConfig, vendorFilters ?? {})
   }
 
-  async getDiamondCashReceiptByDocumentNumber(
-    documentNumber: number | string
-  ): Promise<DiamondCashReceipt | undefined> {
-    let receipt = this.#diamondCashReceiptCache.get(documentNumber)
-
-    if (receipt === undefined) {
-      receipt = await _getCashReceiptByDocumentNumber(
-        this.#mssqlConfig,
-        documentNumber
-      )
-      this.#diamondCashReceiptCache.set(documentNumber, receipt)
-    }
-
-    return receipt
-  }
-
-  async getDiamondExtendedInvoiceByInvoiceNumber(
+  async #getInvoiceByInvoiceNumber(
     invoiceNumber: string,
-    invoiceDocumentTypeOrAbbreviationOrName?: number | string
-  ): Promise<DiamondExtendedGPInvoice | undefined> {
+    invoiceDocumentTypeOrAbbreviationOrName?: number | string,
+    skipCache = false
+  ): Promise<GPInvoice | undefined> {
     const cacheKey = getInvoiceCacheKey(
       invoiceNumber,
       invoiceDocumentTypeOrAbbreviationOrName
     )
 
-    let diamondInvoice = this.#diamondInvoiceCache.get(cacheKey) ?? undefined
+    let invoice = this.#invoiceCache.get(cacheKey) ?? undefined
 
-    if (diamondInvoice === undefined) {
-      const gpInvoice = await this.#getInvoiceByInvoiceNumber(
+    if (invoice === undefined || skipCache) {
+      invoice = await _getInvoiceByInvoiceNumber(
+        this.#mssqlConfig,
         invoiceNumber,
         invoiceDocumentTypeOrAbbreviationOrName
       )
 
-      if (gpInvoice !== undefined) {
-        diamondInvoice = await _extendGpInvoice(this.#mssqlConfig, gpInvoice)
-
-        this.#diamondInvoiceCache.set(cacheKey, diamondInvoice)
+      if (!skipCache) {
+        this.#invoiceCache.set(cacheKey, invoice)
       }
     }
 
-    return diamondInvoice
+    return invoice
   }
 }
+
+export type {
+  DiamondCashReceipt,
+  DiamondExtendedGPInvoice
+} from './diamond/types.js'
+
+export type { GetVendorsFilters } from './gp/getVendors.js'
 
 export type {
   GPAccount,
@@ -273,10 +280,3 @@ export type {
   GPItemWithQuantity,
   GPVendor
 } from './gp/types.js'
-
-export type {
-  DiamondCashReceipt,
-  DiamondExtendedGPInvoice
-} from './diamond/types.js'
-
-export type { GetVendorsFilters } from './gp/getVendors.js'

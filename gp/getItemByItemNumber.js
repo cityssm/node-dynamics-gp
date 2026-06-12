@@ -1,49 +1,77 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 export default async function _getItemByItemNumber(mssqlConfig, itemNumber) {
     const pool = await connect(mssqlConfig);
-    const itemResult = await pool.request().input('itemNumber', itemNumber)
-        .query(`SELECT top 1
-      rtrim(ITEMNMBR) as itemNumber,
-      rtrim(ITEMDESC) as itemDescription,
-      rtrim(ITMSHNAM) as itemShortName,
-      rtrim(ITEMTYPE) as itemType,
-      rtrim(ITMCLSCD) as itemClassCode,
-      rtrim(ITMGEDSC) as itemGenericDescription,
-      STNDCOST as standardCost,
-      CURRCOST as currentCost,
-      CREATDDT as dateCreated,
-      MODIFDT as dateModified
-      FROM IV00101
-      where ITEMNMBR = @itemNumber`);
+    const itemResult = await pool
+        .request()
+        .input('itemNumber', itemNumber)
+        .query(`
+      SELECT
+        TOP 1 rtrim(ITEMNMBR) AS itemNumber,
+        rtrim(ITEMDESC) AS itemDescription,
+        rtrim(ITMSHNAM) AS itemShortName,
+        rtrim(ITEMTYPE) AS itemType,
+        rtrim(ITMCLSCD) AS itemClassCode,
+        rtrim(ITMGEDSC) AS itemGenericDescription,
+        STNDCOST AS standardCost,
+        CURRCOST AS currentCost,
+        CREATDDT AS dateCreated,
+        MODIFDT AS dateModified
+      FROM
+        IV00101
+      WHERE
+        ITEMNMBR = @itemNumber
+    `);
     const item = itemResult.recordset.length > 0 ? itemResult.recordset[0] : undefined;
     if (item !== undefined) {
-        const quantityResults = await pool.request().input('itemNumber', itemNumber)
-            .query(`SELECT
-        rtrim(LOCNCODE) as locationCode,
-        rtrim(BINNMBR) as binNumber,
-        rtrim(PRIMVNDR) as primaryVendorId,
-        BGNGQTY as beginningQuantity,
-        LSORDQTY as lastOrderedQuantity,
-        LSTORDDT as lastOrderedDate,
-        rtrim(LSORDVND) as lastOrderedVendorId,
-        LRCPTQTY as lastReceiptedQuantity,
-        LSRCPTDT as lastReceiptedDate,
-        QTYRQSTN as quantityRequisitioned,
-        QTYONORD as quantityOnOrder,
-        QTYBKORD as quantityBackOrdered,
-        QTY_Drop_Shipped as quantityDropShipped,
-        QTYINUSE as quantityInUse,
-        QTYINSVC as quantityInService,
-        QTYRTRND as quantityReturned,
-        QTYDMGED as quantityDamaged,
-        QTYONHND as quantityOnHand,
-        ATYALLOC as quantityAllocated,
-        QTYCOMTD as quantityCommitted,
-        QTYSOLD as quantitySold,
-        dateadd(second, DATEPART(second, LSTCNTTM), dateadd(minute, DATEPART(minute, LSTCNTTM), dateadd(hour, DATEPART(hour, LSTCNTTM), LSTCNTDT))) as lastCountDateTime,
-        dateadd(second, DATEPART(second, NXTCNTTM), dateadd(minute, DATEPART(minute, NXTCNTTM), dateadd(hour, DATEPART(hour, NXTCNTTM), NXTCNTDT))) as nextCountDateTime
-        FROM IV00102
-        where ITEMNMBR = @itemNumber`);
+        const quantityResults = await pool
+            .request()
+            .input('itemNumber', itemNumber)
+            .query(`
+        SELECT
+          rtrim(LOCNCODE) AS locationCode,
+          rtrim(BINNMBR) AS binNumber,
+          rtrim(PRIMVNDR) AS primaryVendorId,
+          BGNGQTY AS beginningQuantity,
+          LSORDQTY AS lastOrderedQuantity,
+          LSTORDDT AS lastOrderedDate,
+          rtrim(LSORDVND) AS lastOrderedVendorId,
+          LRCPTQTY AS lastReceiptedQuantity,
+          LSRCPTDT AS lastReceiptedDate,
+          QTYRQSTN AS quantityRequisitioned,
+          QTYONORD AS quantityOnOrder,
+          QTYBKORD AS quantityBackOrdered,
+          QTY_Drop_Shipped AS quantityDropShipped,
+          QTYINUSE AS quantityInUse,
+          QTYINSVC AS quantityInService,
+          QTYRTRND AS quantityReturned,
+          QTYDMGED AS quantityDamaged,
+          QTYONHND AS quantityOnHand,
+          ATYALLOC AS quantityAllocated,
+          QTYCOMTD AS quantityCommitted,
+          QTYSOLD AS quantitySold,
+          dateadd(
+            second,
+            DATEPART(second, LSTCNTTM),
+            dateadd(
+              minute,
+              DATEPART(minute, LSTCNTTM),
+              dateadd(hour, DATEPART(hour, LSTCNTTM), LSTCNTDT)
+            )
+          ) AS lastCountDateTime,
+          dateadd(
+            second,
+            DATEPART(second, NXTCNTTM),
+            dateadd(
+              minute,
+              DATEPART(minute, NXTCNTTM),
+              dateadd(hour, DATEPART(hour, NXTCNTTM), NXTCNTDT)
+            )
+          ) AS nextCountDateTime
+        FROM
+          IV00102
+        WHERE
+          ITEMNMBR = @itemNumber
+      `);
         item.quantities = quantityResults.recordset;
     }
     return item;

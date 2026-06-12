@@ -1,4 +1,6 @@
-import eslintConfigCityssm, { defineConfig } from 'eslint-config-cityssm'
+import eslintConfigCityssm, {
+  defineConfig
+} from 'eslint-config-cityssm/eslint.packageConfig.js'
 
 const config = defineConfig(eslintConfigCityssm, {
   files: ['**/*.ts'],
