@@ -14,7 +14,7 @@ await describe('dynamics-gp/diamond', async () => {
     after(() => {
         void releaseAll();
     });
-    await describe.skip('Cash Receipts', async () => {
+    await describe('Cash Receipts', async () => {
         await it('Retrieves a Cash Receipt', async () => {
             await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
             const cashReceipt = await gp.getDiamondCashReceiptByDocumentNumber(config.cashReceiptDocumentNumber);
@@ -41,7 +41,7 @@ await describe('dynamics-gp/diamond', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Extend GP Invoices', async () => {
+    await describe('Extend GP Invoices', async () => {
         await it('Gets a fully extended GPInvoice', async () => {
             const diamondInvoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(config.invoiceNumber);
             assert.ok(diamondInvoice !== undefined);

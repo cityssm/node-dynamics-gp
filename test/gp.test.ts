@@ -23,7 +23,7 @@ await describe('dynamics-gp', async () => {
     void releaseAll()
   })
 
-  await describe.skip('Accounts', async () => {
+  await describe('Accounts', async () => {
     await it('Retrieves an Account', async () => {
       // Do twice to test cache retrieval
       await gp.getAccountByAccountIndex(config.accountIndex)
@@ -53,7 +53,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Customers', async () => {
+  await describe('Customers', async () => {
     await it('Retrieves a Customer', async () => {
       // Do twice to test cache retrieval
       await gp.getCustomerByCustomerNumber(config.customerNumber)
@@ -85,7 +85,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Invoice Document Types', async () => {
+  await describe('Invoice Document Types', async () => {
     await it('Retrieves Invoice Document Types', async () => {
       // Do twice to test cache retrieval
       await gp.getInvoiceDocumentTypes()
@@ -106,7 +106,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Invoices', async () => {
+  await describe('Invoices', async () => {
     await it('Retrieves an Invoice', async () => {
       // Do twice to test cache retrieval
       await gp.getInvoiceByInvoiceNumber(
@@ -184,7 +184,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Multiple Items', async () => {
+  await describe('Multiple Items', async () => {
     await it('Retrieves Items', async () => {
       const items = await gp.getItemsByLocationCodes(config.locationCodes)
 
@@ -205,7 +205,7 @@ await describe('dynamics-gp', async () => {
     })
   })
 
-  await describe.skip('Vendors', async () => {
+  await describe('Vendors', async () => {
     await it('Retrieves a Vendor', async () => {
       // Do twice to test cache retrieval
       await gp.getVendorByVendorId(config.vendorId)
@@ -233,7 +233,7 @@ await describe('dynamics-gp', async () => {
       })
 
       debug(vendors)
-      
+
       assert.ok(vendors.length > 0)
     })
 

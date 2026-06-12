@@ -15,7 +15,7 @@ await describe('dynamics-gp', async () => {
     after(() => {
         void releaseAll();
     });
-    await describe.skip('Accounts', async () => {
+    await describe('Accounts', async () => {
         await it('Retrieves an Account', async () => {
             await gp.getAccountByAccountIndex(config.accountIndex);
             const account = await gp.getAccountByAccountIndex(config.accountIndex);
@@ -37,7 +37,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Customers', async () => {
+    await describe('Customers', async () => {
         await it('Retrieves a Customer', async () => {
             await gp.getCustomerByCustomerNumber(config.customerNumber);
             const customer = await gp.getCustomerByCustomerNumber(config.customerNumber);
@@ -59,7 +59,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Invoice Document Types', async () => {
+    await describe('Invoice Document Types', async () => {
         await it('Retrieves Invoice Document Types', async () => {
             await gp.getInvoiceDocumentTypes();
             const invoiceDocumentTypes = await gp.getInvoiceDocumentTypes();
@@ -76,7 +76,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Invoices', async () => {
+    await describe('Invoices', async () => {
         await it('Retrieves an Invoice', async () => {
             await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
             const invoice = await gp.getInvoiceByInvoiceNumber(config.invoiceNumber, config.invoiceDocumentType);
@@ -128,7 +128,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Multiple Items', async () => {
+    await describe('Multiple Items', async () => {
         await it('Retrieves Items', async () => {
             const items = await gp.getItemsByLocationCodes(config.locationCodes);
             assert.ok(items.length > 0);
@@ -145,7 +145,7 @@ await describe('dynamics-gp', async () => {
             assert.fail();
         });
     });
-    await describe.skip('Vendors', async () => {
+    await describe('Vendors', async () => {
         await it('Retrieves a Vendor', async () => {
             await gp.getVendorByVendorId(config.vendorId);
             const vendor = await gp.getVendorByVendorId(config.vendorId);
