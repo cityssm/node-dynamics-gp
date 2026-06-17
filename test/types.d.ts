@@ -21,4 +21,9 @@ export interface Config {
     cashReceiptDocumentNumberInvalid: string;
     cashReceiptDocumentNumberNotFound: number;
     taxedPropertyRollNumber: string;
+    taxedPropertyAddress: {
+        civicNumber: string;
+        streetName: string;
+        unitNumberOrQualifier?: string;
+    };
 }

@@ -10,6 +10,11 @@ export declare class DynamicsGP {
     #private;
     constructor(mssqlConfig: MSSQLConfig, options?: Partial<DynamicsGPOptions>);
     clearCaches(): void;
+    findDiamondTaxedPropertiesByAddress(address: {
+        civicNumber: string;
+        streetName: string;
+        unitNumberOrQualifier?: string;
+    }, exactMatch?: boolean): Promise<DiamondTaxedProperty[]>;
     getAccountByAccountIndex(accountIndex: number | string): Promise<GPAccount | undefined>;
     getCustomerByCustomerNumber(customerNumber: string): Promise<GPCustomer | undefined>;
     getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;

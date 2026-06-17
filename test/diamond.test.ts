@@ -113,5 +113,23 @@ await describe('dynamics-gp/diamond', async () => {
 
       assert.ok(assessments.length > 0)
     })
+
+    await it('Gets taxed properties by address', async () => {
+      const properties = await gp.findDiamondTaxedPropertiesByAddress(
+        config.taxedPropertyAddress
+      )
+
+      assert.ok(properties.length > 0)
+
+      assert.strictEqual(
+        properties[0].addressStreetNumber,
+        config.taxedPropertyAddress.civicNumber
+      )
+
+      assert.strictEqual(
+        properties[0].rollNumber,
+        config.taxedPropertyRollNumber
+      )
+    })
   })
 })

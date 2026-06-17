@@ -3,6 +3,7 @@ import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 
 import _extendGpInvoice from './diamond/extendGpInvoice.js'
+import _findTaxedPropertiesByAddress from './diamond/findTaxedPropertiesByAddress.js'
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js'
 import _getTaxedPropertyAssessmentsByRollNumber from './diamond/getTaxedPropertyAssessmentsByRollNumber.js'
 import _getTaxedPropertyByRollNumber from './diamond/getTaxedPropertyByRollNumber.js'
@@ -116,6 +117,21 @@ export class DynamicsGP {
     this.#diamondCashReceiptCache.flushAll()
     this.#diamondInvoiceCache.flushAll()
     this.#diamondTaxedPropertyCache.flushAll()
+  }
+
+  async findDiamondTaxedPropertiesByAddress(
+    address: {
+      civicNumber: string
+      streetName: string
+      unitNumberOrQualifier?: string
+    },
+    exactMatch = false
+  ): Promise<DiamondTaxedProperty[]> {
+    return await _findTaxedPropertiesByAddress(
+      this.#mssqlConfig,
+      address,
+      exactMatch
+    )
   }
 
   async getAccountByAccountIndex(

@@ -27,5 +27,9 @@ export const config = {
     cashReceiptDocumentNumber: 1,
     cashReceiptDocumentNumberInvalid: 'X',
     cashReceiptDocumentNumberNotFound: 2,
-    taxedPropertyRollNumber: '010000000000000'
+    taxedPropertyRollNumber: '010000000000000',
+    taxedPropertyAddress: {
+        civicNumber: '100',
+        streetName: 'Test Street'
+    }
 };

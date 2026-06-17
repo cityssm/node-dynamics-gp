@@ -84,7 +84,7 @@ const propertyDetails = await gp.getDiamondTaxedPropertyByRollNumber(rollNumber)
 
 const propertyOwners =
   await gp.getDiamondTaxedPropertyOwnersByRollNumber(rollNumber)
-  
+
 const propertyAssessmentHistory =
   await gp.getDiamondTaxedPropertyAssessmentsByRollNumber(rollNumber)
 ```
@@ -100,3 +100,6 @@ implementing the feature you need!
 
 [**MPAC Tools**](https://github.com/cityssm/node-mpac-tools/)<br />
 Lookups and utilities for working with MPAC data.
+
+[**Street Name Normalize**](https://github.com/cityssm/street-name-normalize)<br />
+Takes street names with various abbreviations and attempts to expand them.

@@ -41,6 +41,7 @@
   "dependencies": {
     "@cacheable/node-cache": "^3.0.1",
     "@cityssm/mssql-multi-pool": "^5.1.4",
+    "@cityssm/street-name-normalize": "^2.0.0",
     "@cityssm/to-millis": "^1.0.1"
   },
   "devDependencies": {

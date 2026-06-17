@@ -32,4 +32,10 @@ export interface Config {
   cashReceiptDocumentNumberNotFound: number
 
   taxedPropertyRollNumber: string
+
+  taxedPropertyAddress: {
+    civicNumber: string
+    streetName: string
+    unitNumberOrQualifier?: string
+  }
 }
