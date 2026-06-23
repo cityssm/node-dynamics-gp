@@ -22,6 +22,7 @@ import _getInvoiceDocumentTypes from './gp/getInvoiceDocumentTypes.js'
 import _getItemByItemNumber from './gp/getItemByItemNumber.js'
 import _getItemsByLocationCodes from './gp/getItemsByLocationCodes.js'
 import _getVendors, { type GetVendorsFilters } from './gp/getVendors.js'
+import _testConnection from './gp/testConnection.js'
 import type {
   GPAccount,
   GPCustomer,
@@ -257,6 +258,7 @@ export class DynamicsGP {
       this.#invoiceDocumentTypesCache = await _getInvoiceDocumentTypes(
         this.#mssqlConfig
       )
+
       this.#invoiceDocumentTypesCacheExpiryMillis =
         Date.now() + secondsToMillis(this.#options.cacheTTL)
     }
@@ -299,6 +301,10 @@ export class DynamicsGP {
     vendorFilters?: Partial<GetVendorsFilters>
   ): Promise<GPVendor[]> {
     return await _getVendors(this.#mssqlConfig, vendorFilters ?? {})
+  }
+
+  async testConnection(): Promise<boolean> {
+    return await _testConnection(this.#mssqlConfig)
   }
 
   async #getInvoiceByInvoiceNumber(

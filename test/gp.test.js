@@ -15,6 +15,22 @@ await describe('dynamics-gp', async () => {
     after(() => {
         void releaseAll();
     });
+    await describe('Test Connection', async () => {
+        await it('Returns true when connection is successful', async () => {
+            const result = await gp.testConnection();
+            assert.strictEqual(result, true);
+        });
+        await it('Throws an error when SQL is misconfigured', async () => {
+            try {
+                await gpMisconfigured.testConnection();
+            }
+            catch {
+                assert.ok(true);
+                return;
+            }
+            assert.fail();
+        });
+    });
     await describe('Accounts', async () => {
         await it('Retrieves an Account', async () => {
             await gp.getAccountByAccountIndex(config.accountIndex);

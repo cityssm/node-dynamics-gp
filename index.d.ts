@@ -28,6 +28,7 @@ export declare class DynamicsGP {
     getItemsByLocationCodes(locationCodes?: string[]): Promise<GPItemWithQuantity[]>;
     getVendorByVendorId(vendorId: string): Promise<GPVendor | undefined>;
     getVendors(vendorFilters?: Partial<GetVendorsFilters>): Promise<GPVendor[]>;
+    testConnection(): Promise<boolean>;
 }
 export type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
 export type { GetVendorsFilters } from './gp/getVendors.js';

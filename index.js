@@ -13,6 +13,7 @@ import _getInvoiceDocumentTypes from './gp/getInvoiceDocumentTypes.js';
 import _getItemByItemNumber from './gp/getItemByItemNumber.js';
 import _getItemsByLocationCodes from './gp/getItemsByLocationCodes.js';
 import _getVendors from './gp/getVendors.js';
+import _testConnection from './gp/testConnection.js';
 const defaultOptions = {
     cacheTTL: minutesToSeconds(3),
     documentCacheTTL: minutesToSeconds(1)
@@ -151,6 +152,9 @@ export class DynamicsGP {
     }
     async getVendors(vendorFilters) {
         return await _getVendors(this.#mssqlConfig, vendorFilters ?? {});
+    }
+    async testConnection() {
+        return await _testConnection(this.#mssqlConfig);
     }
     async #getInvoiceByInvoiceNumber(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName, skipCache = false) {
         const cacheKey = getInvoiceCacheKey(invoiceNumber, invoiceDocumentTypeOrAbbreviationOrName);

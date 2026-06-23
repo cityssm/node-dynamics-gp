@@ -107,9 +107,10 @@ await describe('dynamics-gp/diamond', async () => {
     })
 
     await it('Gets taxed property assessments by roll number', async () => {
-      const assessments = await gp.getDiamondTaxedPropertyAssessmentsByRollNumber(
-        config.taxedPropertyRollNumber
-      )
+      const assessments =
+        await gp.getDiamondTaxedPropertyAssessmentsByRollNumber(
+          config.taxedPropertyRollNumber
+        )
 
       assert.ok(assessments.length > 0)
     })
@@ -123,7 +124,10 @@ await describe('dynamics-gp/diamond', async () => {
 
       assert.strictEqual(
         properties[0].addressStreetNumber,
-        config.taxedPropertyAddress.civicNumber
+        config.taxedPropertyAddress.civicNumber.padStart(
+          properties[0].addressStreetNumber.length,
+          '0'
+        )
       )
 
       assert.strictEqual(

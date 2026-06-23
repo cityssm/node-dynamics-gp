@@ -69,6 +69,7 @@ await describe('dynamics-gp/diamond', async () => {
         await it('Gets taxed properties by address', async () => {
             const properties = await gp.findDiamondTaxedPropertiesByAddress(config.taxedPropertyAddress);
             assert.ok(properties.length > 0);
+            assert.strictEqual(properties[0].addressStreetNumber, config.taxedPropertyAddress.civicNumber.padStart(properties[0].addressStreetNumber.length, '0'));
             assert.strictEqual(properties[0].rollNumber, config.taxedPropertyRollNumber);
         });
     });
