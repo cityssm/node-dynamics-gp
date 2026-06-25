@@ -16,6 +16,7 @@ export declare class DynamicsGP {
         unitNumberOrQualifier?: string;
     }, exactMatch?: boolean): Promise<DiamondTaxedProperty[]>;
     getAccountByAccountIndex(accountIndex: number | string): Promise<GPAccount | undefined>;
+    getAllDiamondTaxedProperties(limit?: number, offset?: number): Promise<DiamondTaxedProperty[]>;
     getCustomerByCustomerNumber(customerNumber: string): Promise<GPCustomer | undefined>;
     getDiamondCashReceiptByDocumentNumber(documentNumber: number | string): Promise<DiamondCashReceipt | undefined>;
     getDiamondExtendedInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<DiamondExtendedGPInvoice | undefined>;

@@ -4,6 +4,7 @@ import type { config as MSSQLConfig } from 'mssql'
 
 import _extendGpInvoice from './diamond/extendGpInvoice.js'
 import _findTaxedPropertiesByAddress from './diamond/findTaxedPropertiesByAddress.js'
+import _getAllTaxedProperties from './diamond/getAllTaxedProperties.js'
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js'
 import _getTaxedPropertyAssessmentsByRollNumber from './diamond/getTaxedPropertyAssessmentsByRollNumber.js'
 import _getTaxedPropertyByRollNumber from './diamond/getTaxedPropertyByRollNumber.js'
@@ -146,6 +147,13 @@ export class DynamicsGP {
     }
 
     return account
+  }
+
+  async getAllDiamondTaxedProperties(
+    limit = -1,
+    offset = 0
+  ): Promise<DiamondTaxedProperty[]> {
+    return await _getAllTaxedProperties(this.#mssqlConfig, limit, offset)
   }
 
   async getCustomerByCustomerNumber(

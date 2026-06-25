@@ -2,6 +2,7 @@ import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds, secondsToMillis } from '@cityssm/to-millis';
 import _extendGpInvoice from './diamond/extendGpInvoice.js';
 import _findTaxedPropertiesByAddress from './diamond/findTaxedPropertiesByAddress.js';
+import _getAllTaxedProperties from './diamond/getAllTaxedProperties.js';
 import _getCashReceiptByDocumentNumber from './diamond/getCashReceiptByDocumentNumber.js';
 import _getTaxedPropertyAssessmentsByRollNumber from './diamond/getTaxedPropertyAssessmentsByRollNumber.js';
 import _getTaxedPropertyByRollNumber from './diamond/getTaxedPropertyByRollNumber.js';
@@ -76,6 +77,9 @@ export class DynamicsGP {
             this.#accountCache.set(accountIndex, account);
         }
         return account;
+    }
+    async getAllDiamondTaxedProperties(limit = -1, offset = 0) {
+        return await _getAllTaxedProperties(this.#mssqlConfig, limit, offset);
     }
     async getCustomerByCustomerNumber(customerNumber) {
         let customer = this.#customerCache.get(customerNumber) ?? undefined;

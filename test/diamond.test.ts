@@ -135,5 +135,11 @@ await describe('dynamics-gp/diamond', async () => {
         config.taxedPropertyRollNumber
       )
     })
+
+    await it('Gets all taxed properties', async () => {
+      const properties = await gp.getAllDiamondTaxedProperties()
+
+      assert.ok(properties.length > 0)
+    })
   })
 })
