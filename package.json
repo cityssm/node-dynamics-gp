@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/dynamics-gp",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Read only inquiries into Microsoft Dynamics GP using a SQL Server connection.",
   "keywords": [
     "cash-receipts",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.13",
-    "@types/node": "^26.0.0",
+    "@types/node": "^26.0.1",
     "debug": "^4.4.3",
     "eslint-config-cityssm": "^41.0.0",
     "prettier-config-cityssm": "^2.1.2"
