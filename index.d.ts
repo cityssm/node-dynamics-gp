@@ -30,6 +30,6 @@ export declare class DynamicsGP {
     getVendors(vendorFilters?: Partial<GetVendorsFilters>): Promise<GPVendor[]>;
     testConnection(): Promise<boolean>;
 }
-export type { DiamondCashReceipt, DiamondExtendedGPInvoice } from './diamond/types.js';
+export type { DiamondCashReceipt, DiamondExtendedGPInvoice, DiamondTaxedProperty, DiamondTaxedPropertyAssessment, DiamondTaxedPropertyOwner } from './diamond/types.js';
 export type { GetVendorsFilters } from './gp/getVendors.js';
 export type { GPAccount, GPCustomer, GPInvoice, GPInvoiceDocumentType, GPItemWithQuantities, GPItemWithQuantity, GPVendor } from './gp/types.js';

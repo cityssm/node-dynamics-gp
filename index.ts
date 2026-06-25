@@ -337,7 +337,10 @@ export class DynamicsGP {
 
 export type {
   DiamondCashReceipt,
-  DiamondExtendedGPInvoice
+  DiamondExtendedGPInvoice,
+  DiamondTaxedProperty,
+  DiamondTaxedPropertyAssessment,
+  DiamondTaxedPropertyOwner
 } from './diamond/types.js'
 
 export type { GetVendorsFilters } from './gp/getVendors.js'
