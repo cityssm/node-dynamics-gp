@@ -137,9 +137,10 @@ await describe('dynamics-gp/diamond', async () => {
     })
 
     await it('Gets all taxed properties', async () => {
-      const properties = await gp.getAllDiamondTaxedProperties()
+      const properties = await gp.getAllDiamondTaxedProperties(1000)
 
       assert.ok(properties.length > 0)
+      assert.ok(properties.length <= 1000)
     })
   })
 })
