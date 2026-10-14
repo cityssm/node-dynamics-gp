@@ -42,11 +42,12 @@ export default async function _findTaxedPropertiesByAddress(mssqlConfig, address
     sql += ' ORDER BY r.dROLLNMBR';
     const propertyResult = await request.query(sql);
     const properties = propertyResult.recordset;
+    const propertiesToReturn = [];
     for (const property of properties) {
-        if (property.addressStreetNumber !==
+        if (property.addressStreetNumber ===
             address.civicNumber.padStart(property.addressStreetNumber.length, '0')) {
-            properties.splice(properties.indexOf(property), 1);
+            propertiesToReturn.push(property);
         }
     }
-    return properties;
+    return propertiesToReturn;
 }

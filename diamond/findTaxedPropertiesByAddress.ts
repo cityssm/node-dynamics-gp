@@ -76,15 +76,17 @@ export default async function _findTaxedPropertiesByAddress(
 
   const properties = propertyResult.recordset
 
+  const propertiesToReturn = [] as DiamondTaxedProperty[]
+
   for (const property of properties) {
     // Check for matching civic number which may have zero-padding
     if (
-      property.addressStreetNumber !==
+      property.addressStreetNumber ===
       address.civicNumber.padStart(property.addressStreetNumber.length, '0')
     ) {
-      properties.splice(properties.indexOf(property), 1)
+      propertiesToReturn.push(property)
     }
   }
 
-  return properties
+  return propertiesToReturn
 }

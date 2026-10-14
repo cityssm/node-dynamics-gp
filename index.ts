@@ -53,11 +53,9 @@ const defaultOptions: DynamicsGPOptions = {
 
 function getInvoiceCacheKey(
   invoiceNumber: string,
-  invoiceDocumentTypeOrAbbreviationOrName?: number | string
+  invoiceDocumentTypeOrAbbreviationOrName: number | string = ''
 ): string {
-  return `${(
-    invoiceDocumentTypeOrAbbreviationOrName ?? ''
-  ).toString()}::${invoiceNumber}`
+  return `${invoiceDocumentTypeOrAbbreviationOrName.toString()}::${invoiceNumber}`
 }
 
 export class DynamicsGP {
@@ -200,7 +198,7 @@ export class DynamicsGP {
     let diamondInvoice = this.#diamondInvoiceCache.get(cacheKey) ?? undefined
 
     if (diamondInvoice === undefined) {
-      const gpInvoice = await this.#getInvoiceByInvoiceNumber(
+      const gpInvoice = await this.getInvoiceByInvoiceNumber(
         invoiceNumber,
         invoiceDocumentTypeOrAbbreviationOrName
       )
@@ -252,13 +250,29 @@ export class DynamicsGP {
 
   async getInvoiceByInvoiceNumber(
     invoiceNumber: string,
-    invoiceDocumentTypeOrAbbreviationOrName?: number | string
+    invoiceDocumentTypeOrAbbreviationOrName?: number | string,
+    shouldSkipCache = false
   ): Promise<GPInvoice | undefined> {
-    return await this.#getInvoiceByInvoiceNumber(
+    const cacheKey = getInvoiceCacheKey(
       invoiceNumber,
-      invoiceDocumentTypeOrAbbreviationOrName,
-      false
+      invoiceDocumentTypeOrAbbreviationOrName
     )
+
+    let invoice = this.#invoiceCache.get(cacheKey) ?? undefined
+
+    if (invoice === undefined || shouldSkipCache) {
+      invoice = await _getInvoiceByInvoiceNumber(
+        this.#mssqlConfig,
+        invoiceNumber,
+        invoiceDocumentTypeOrAbbreviationOrName
+      )
+
+      if (!shouldSkipCache) {
+        this.#invoiceCache.set(cacheKey, invoice)
+      }
+    }
+
+    return invoice
   }
 
   async getInvoiceDocumentTypes(): Promise<GPInvoiceDocumentType[]> {
@@ -298,7 +312,7 @@ export class DynamicsGP {
 
     if (vendor === undefined) {
       const vendors = await this.getVendors({ vendorId })
-      vendor = vendors.length > 0 ? vendors[0] : undefined
+      vendor = vendors[0]
       this.#vendorCache.set(vendorId, vendor)
     }
 
@@ -313,33 +327,6 @@ export class DynamicsGP {
 
   async testConnection(): Promise<boolean> {
     return await _testConnection(this.#mssqlConfig)
-  }
-
-  async #getInvoiceByInvoiceNumber(
-    invoiceNumber: string,
-    invoiceDocumentTypeOrAbbreviationOrName?: number | string,
-    skipCache = false
-  ): Promise<GPInvoice | undefined> {
-    const cacheKey = getInvoiceCacheKey(
-      invoiceNumber,
-      invoiceDocumentTypeOrAbbreviationOrName
-    )
-
-    let invoice = this.#invoiceCache.get(cacheKey) ?? undefined
-
-    if (invoice === undefined || skipCache) {
-      invoice = await _getInvoiceByInvoiceNumber(
-        this.#mssqlConfig,
-        invoiceNumber,
-        invoiceDocumentTypeOrAbbreviationOrName
-      )
-
-      if (!skipCache) {
-        this.#invoiceCache.set(cacheKey, invoice)
-      }
-    }
-
-    return invoice
   }
 }
 

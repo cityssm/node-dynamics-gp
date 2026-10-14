@@ -111,7 +111,7 @@ export default async function _getInvoiceByInvoiceNumber(mssqlConfig, invoiceNum
       t.DOCTYABR = @invoiceDocumentType
       or t.DOCTYNAM = @invoiceDocumentType
       ${typeof invoiceDocumentTypeOrAbbreviationOrName === 'string' &&
-            Number.isNaN(Number.parseInt(invoiceDocumentTypeOrAbbreviationOrName, 10))
+            Number.isNaN(Math.trunc(Number(invoiceDocumentTypeOrAbbreviationOrName)))
             ? ''
             : ' or t.DOCTYPE = @invoiceDocumentType'})`;
     }

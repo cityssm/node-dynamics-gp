@@ -16,7 +16,7 @@ export default async function _getCashReceiptByDocumentNumber(
 ): Promise<DiamondCashReceipt | undefined> {
   if (
     typeof documentNumber === 'string' &&
-    Number.isNaN(Number.parseFloat(documentNumber))
+    Number.isNaN(Number(documentNumber))
   ) {
     return undefined
   }
@@ -144,15 +144,18 @@ export default async function _getCashReceiptByDocumentNumber(
       receipt.distributions = distributionResult.recordset
 
       for (const distribution of receipt.distributions) {
+        // eslint-disable-next-line no-await-in-loop
         const account = await _getAccountByAccountIndex(
           mssqlConfig,
           distribution.accountIndex
         )
 
-        if (account !== undefined) {
-          distribution.accountNumber = account.accountNumber
-          distribution.accountDescription = account.accountDescription
+        if (account === undefined) {
+          continue
         }
+
+        distribution.accountNumber = account.accountNumber
+        distribution.accountDescription = account.accountDescription
       }
     }
   }

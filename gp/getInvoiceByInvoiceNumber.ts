@@ -2,7 +2,6 @@ import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { GPInvoice, GPInvoiceLineItem } from './types.js'
 
-// eslint-disable-next-line no-secrets/no-secrets
 /**
  * Inquiry > Sales > Invoice
  * @param mssqlConfig - The mssql configuration object.
@@ -135,7 +134,7 @@ export default async function _getInvoiceByInvoiceNumber(
       ${
         typeof invoiceDocumentTypeOrAbbreviationOrName === 'string' &&
         Number.isNaN(
-          Number.parseInt(invoiceDocumentTypeOrAbbreviationOrName, 10)
+          Math.trunc(Number(invoiceDocumentTypeOrAbbreviationOrName))
         )
           ? ''
           : ' or t.DOCTYPE = @invoiceDocumentType'

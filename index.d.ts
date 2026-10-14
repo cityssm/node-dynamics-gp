@@ -23,7 +23,7 @@ export declare class DynamicsGP {
     getDiamondTaxedPropertyAssessmentsByRollNumber(rollNumber: string): Promise<DiamondTaxedPropertyAssessment[]>;
     getDiamondTaxedPropertyByRollNumber(rollNumber: string): Promise<DiamondTaxedProperty | undefined>;
     getDiamondTaxedPropertyOwnersByRollNumber(rollNumber: string): Promise<DiamondTaxedPropertyOwner[]>;
-    getInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string): Promise<GPInvoice | undefined>;
+    getInvoiceByInvoiceNumber(invoiceNumber: string, invoiceDocumentTypeOrAbbreviationOrName?: number | string, shouldSkipCache?: boolean): Promise<GPInvoice | undefined>;
     getInvoiceDocumentTypes(): Promise<GPInvoiceDocumentType[]>;
     getItemByItemNumber(itemNumber: string): Promise<GPItemWithQuantities | undefined>;
     getItemsByLocationCodes(locationCodes?: string[]): Promise<GPItemWithQuantity[]>;

@@ -2,7 +2,7 @@ import { connect } from '@cityssm/mssql-multi-pool';
 import _getAccountByAccountIndex from '../gp/getAccountByAccountIndex.js';
 export default async function _getCashReceiptByDocumentNumber(mssqlConfig, documentNumber) {
     if (typeof documentNumber === 'string' &&
-        Number.isNaN(Number.parseFloat(documentNumber))) {
+        Number.isNaN(Number(documentNumber))) {
         return undefined;
     }
     const pool = await connect(mssqlConfig);
@@ -120,10 +120,11 @@ export default async function _getCashReceiptByDocumentNumber(mssqlConfig, docum
             receipt.distributions = distributionResult.recordset;
             for (const distribution of receipt.distributions) {
                 const account = await _getAccountByAccountIndex(mssqlConfig, distribution.accountIndex);
-                if (account !== undefined) {
-                    distribution.accountNumber = account.accountNumber;
-                    distribution.accountDescription = account.accountDescription;
+                if (account === undefined) {
+                    continue;
                 }
+                distribution.accountNumber = account.accountNumber;
+                distribution.accountDescription = account.accountDescription;
             }
         }
     }
