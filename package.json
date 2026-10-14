@@ -40,17 +40,17 @@
     "test:diamond": "node --test test/diamond.test.js"
   },
   "dependencies": {
-    "@cacheable/node-cache": "^3.0.1",
-    "@cityssm/mssql-multi-pool": "^5.1.4",
+    "@cacheable/node-cache": "^3.1.1",
+    "@cityssm/mssql-multi-pool": "^5.2.0",
     "@cityssm/street-name-normalize": "^2.0.0",
     "@cityssm/to-millis": "^1.0.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.13",
-    "@types/node": "^26.0.1",
+    "@types/node": "^26.6.5",
     "debug": "^4.4.3",
-    "eslint-config-cityssm": "^41.0.0",
-    "prettier-config-cityssm": "^2.1.2"
+    "eslint-config-cityssm": "^58.0.0",
+    "prettier-config-cityssm": "^2.2.0"
   },
   "engines": {
     "node": ">=22.0.0"
